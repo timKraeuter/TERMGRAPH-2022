@@ -1,0 +1,68 @@
+\documentclass[adraft, copyright, creativecommons]{eptcs} % TODO: Change to submission at the end
+\providecommand{\event}{TERMGRAPH 2022} % Name of the event you are submitting to
+\usepackage{breakurl}             % Not needed if you use pdflatex only.
+\usepackage{underscore}           % Only needed if you use pdflatex.
+
+\title{BPMN semantics formalization and \\ model checking using graph grammars}
+\author{Tim Kräuter
+\institute{NICTA\\ Sydney, Australia}
+\institute{School of Computer Science and Engineering\\
+University of New South Wales\thanks{A fine university.}\\
+Sydney, Australia}
+\email{tkra@hvl.no}
+\and
+Co Author \qquad\qquad Yet S. Else
+\institute{Stanford Univeristy\\
+California, USA}
+\email{\quad is@gmail.com \quad\qquad somebody@else.org}
+}
+\def\titlerunning{BPMN semantics formalization and model checking using graph grammars}
+\def\authorrunning{Kräuter \textit{et al.}}
+\begin{document}
+\maketitle
+
+% Maximum 8 pages for the first extended abstract!
+
+\begin{abstract}
+TBD abstract
+\end{abstract}
+
+\section{Introduction}
+\begin{itemize}
+    \item State goals: Semantics formalization/reference implementation and model checking.
+\end{itemize}
+
+\section{BPMN semantics formalization}
+\begin{itemize}
+    \item General approach: Model transformation from any bpmn file to a graph grammar. Rules are generated specifically for each file.
+    \item Go through the BPMN spec and explain the formalization similar to the structure in \cite{vangorpVisualTokenbasedFormalization2013}.
+    \item Talk about best practices which help explain why some elements have not been formalized yet (Problems with the inclusive gateway).
+\end{itemize}
+
+\section{Related work}
+\begin{itemize}
+    \item Compare extend of the formalization in this paper with other papers formalizing BPMN semantics (Make a big table with the futures and different approaches).
+    \item Other formalizations are given in: \cite{vangorpVisualTokenbasedFormalization2013} graph transformations, \cite{wongProcessSemanticsBPMN2008} CSP, \cite{dijkmanSemanticsAnalysisBusiness2008} Petri Nets and more to find ...
+    \item Especially talk about \cite{vangorpVisualTokenbasedFormalization2013} since it also used graph rewriting but differently: fixed set of rules vs. generated set of rules by a model transformation from bpmn + differences in the resulting tools (we read bpmn files directly).
+    \item At the end we should cover more of the semantics than any currently given approach.
+    \item Might also be interesting to compare use to Camunda or the bpmn-js token simulator. However these projects have different goals.
+\end{itemize}
+
+\section{Model checking BPMN}
+\begin{itemize}
+    \item Graph grammar generates state space.
+    \item Graph conditions can be used to add atomic propositions to the state space.
+    \item Temporal Logic can be used for model checking with the defined atomic propositions.
+    \item LTL properties can for example be checked in Groove.
+\end{itemize}
+\section{Related work}
+\begin{itemize}
+    \item Talk about the tool prototype.
+    \item No installation should be needed.
+\end{itemize}
+
+\section{Conclusion}
+
+\bibliographystyle{eptcs}
+\bibliography{bib} % TODO: Should be bib.
+\end{document}
