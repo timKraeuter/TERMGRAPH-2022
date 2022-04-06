@@ -1,20 +1,24 @@
 \documentclass[adraft, copyright, creativecommons]{eptcs} % TODO: Change to submission at the end
 \providecommand{\event}{TERMGRAPH 2022} % Name of the event you are submitting to
-\usepackage{breakurl}             % Not needed if you use pdflatex only.
+% \usepackage{breakurl}             % Not needed if you use pdflatex only.
 \usepackage{underscore}           % Only needed if you use pdflatex.
 
+% My packages
+\usepackage{orcidlink} % Orcid links
+\newcommand\Mark[1]{\textsuperscript#1}
+
 \title{BPMN semantics formalization and \\ model checking using graph grammars}
-\author{Tim Kräuter
-\institute{NICTA\\ Sydney, Australia}
-\institute{School of Computer Science and Engineering\\
-University of New South Wales\thanks{A fine university.}\\
-Sydney, Australia}
-\email{tkra@hvl.no}
-\and
-Co Author \qquad\qquad Yet S. Else
-\institute{Stanford Univeristy\\
-California, USA}
-\email{\quad is@gmail.com \quad\qquad somebody@else.org}
+\author{Tim Kräuter\Mark{*}\orcidlink{0000-0003-1795-0611}, \quad
+Harald König\Mark{\textdagger}\Mark{*}\orcidlink{0000-0001-6304-6311}, \quad
+Adrian Rutle\Mark{*}\orcidlink{0000-0002-4158-1644}, \quad
+Yngve Lamo\Mark{*}\orcidlink{0000-0001-9196-1779}
+\institute{
+\Mark{*}Western Norway University of Applied Sciences, Bergen, Norway
+}
+\institute{
+\Mark{\textdagger}University of Applied Sciences, FHDW, Hannover, Germany}
+% \email{\{tkra, aru, yla\}@hvl.no, harald.koenig@fhdw.de}
+\email{tkra@hvl.no, harald.koenig@fhdw.de, aru@hvl.no, yla@hvl.no}
 }
 \def\titlerunning{BPMN semantics formalization and model checking using graph grammars}
 \def\authorrunning{Kräuter \textit{et al.}}
