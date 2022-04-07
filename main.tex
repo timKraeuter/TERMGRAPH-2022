@@ -7,6 +7,11 @@
 \usepackage{orcidlink} % Orcid links
 \newcommand\Mark[1]{\textsuperscript#1}
 
+% Footnotes inside tables
+\usepackage{footnote}
+\makesavenoteenv{tabular}
+\makesavenoteenv{table}
+
 \title{BPMN semantics formalization and \\ model checking using graph grammars}
 \author{Tim Kräuter\Mark{*}\orcidlink{0000-0003-1795-0611}, \quad
 Harald König\Mark{\textdagger}\Mark{*}\orcidlink{0000-0001-6304-6311}, \quad
@@ -17,7 +22,6 @@ Yngve Lamo\Mark{*}\orcidlink{0000-0001-9196-1779}
 }
 \institute{
 \Mark{\textdagger}University of Applied Sciences, FHDW, Hannover, Germany}
-% \email{\{tkra, aru, yla\}@hvl.no, harald.koenig@fhdw.de}
 \email{tkra@hvl.no, harald.koenig@fhdw.de, aru@hvl.no, yla@hvl.no}
 }
 \def\titlerunning{BPMN semantics formalization and model checking using graph grammars}
@@ -26,6 +30,7 @@ Yngve Lamo\Mark{*}\orcidlink{0000-0001-9196-1779}
 \maketitle
 
 % Maximum 8 pages for the first extended abstract!
+% At the end 15 pages for the proceedings.
 
 \begin{abstract}
 TBD abstract
@@ -45,12 +50,62 @@ TBD abstract
 
 \section{Related work}
 \begin{itemize}
-    \item Compare extend of the formalization in this paper with other papers formalizing BPMN semantics (Make a big table with the futures and different approaches).
-    \item Other formalizations are given in: \cite{vangorpVisualTokenbasedFormalization2013} graph transformations, \cite{wongProcessSemanticsBPMN2008} CSP, \cite{dijkmanSemanticsAnalysisBusiness2008} Petri Nets and more to find ...
-    \item Especially talk about \cite{vangorpVisualTokenbasedFormalization2013} since it also used graph rewriting but differently: fixed set of rules vs. generated set of rules by a model transformation from bpmn + differences in the resulting tools (we read bpmn files directly).
-    \item At the end we should cover more of the semantics than any currently given approach.
-    \item Might also be interesting to compare use to Camunda or the bpmn-js token simulator. However these projects have different goals.
+    \item Compare the extent of the formalization in this paper with other papers formalizing BPMN semantics (Make a big table with the futures and different approaches).
+    \item Other formalizations are given in: \cite{vangorpVisualTokenbasedFormalization2013} graph transformations, \cite{wongProcessSemanticsBPMN2008} CSP, \cite{dijkmanSemanticsAnalysisBusiness2008} Petri Nets, Maude / Rewriting logic \cite{corradiniFormalApproachAnalysis2021} and more ...
+    \item Especially talks about \cite{vangorpVisualTokenbasedFormalization2013} since it also used graph rewriting but differently: fixed set of rules vs. generated set of rules by a model transformation from bpmn + differences in the resulting tools (we read bpmn files directly).
+    \item At the end we should cover more of the semantics than any currently given approach see \cite{corradiniFormalApproachAnalysis2021} for a recent overview.
+    \item Might also be interesting to compare use to Camunda or the bpmn-js token simulator. However, these projects have different goals.
 \end{itemize}
+
+% Maybe add the First order logic one cited by corradini.
+% Add one more maybe from van gorp
+\begin{table}[h]
+
+    \caption{Features supported by BPMN semantics (structure from \cite{vangorpVisualTokenbasedFormalization2013}).}
+    \label{tab:supportedFeatures}
+    \begin{tabular}{l l l l l l} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+    \hline
+      Feature & Van Gorp &  Corradini & Houhou & Camunda & This\\
+      & et al. \cite{vangorpVisualTokenbasedFormalization2013} & et al. \cite{corradiniFormalApproachAnalysis2021}& et al. \cite{houhouFirstOrderLogicSemantics2019} & BPM? & paper\\
+      \hline
+      \textit{Instantiation and termination} & & &\\
+      Start event instantiation & X & X & & & X\\
+      Exclusive event-based gateway instantiation & X & ? & & & ?\\
+      Parallel event-based gateway instantiation &  & ? & & & ?\\
+      Receive task instantiation &  & ? & & & X\\
+      Normal process completion & X & X & & & X\\
+      \textit{Activities} & & & & &\\
+      Activity & X & X & & & X\\
+      Subprocess & X & X* & & & X\\
+      Ad-hoc subprocesses &  & ? & & &\\
+      Event subprocesses & & & &  & \color{yellow}X\\ % Yellow means I want to support this but not implemented yet.
+      Loop activity & X & ? & & & ?\\
+      Multiple instance activity &  & ? & & & \\
+      \textit{Gateways} & & & & &\\
+      Parallel gateway & X & X & & & X\\
+      Exclusive gateway & X & X & & & X\\
+      Inclusive gateway (split) & X & X & & & X\\
+      Inclusive gateway (merge) & X & & & & X*\\
+      Event-based gateway &  & X\footnote{Does not support receive tasks after event-based gateways.} & & & X\\
+      Complex gateway & & & & &\\
+      \textit{Events} &  &  &  &  & \\
+      None Events & X &  &  &  & X\\
+      Message events & X &  &  &  & X\\
+      Timer Events &  &  &  &  & X*\\
+      Escalation Events & &  &  &  & \\
+      Error Events (catch) & X &  &  &  & \color{yellow}X\\
+      Error Events (throw) & X &  &  &  & \color{yellow}X\\
+      Cancel Events & X &  &  &  & \color{yellow}X\\
+      Compensation Events & X &  &  &  & \color{yellow}X\\
+      Conditional Events &  &  &  &  & \\
+      Link Events & X &  &  &  & X\\
+      Signal Events & X &  &  &  & X\\
+      Multiple Events &  &  &  &  & \\
+      Terminate Events & X &  &  &  & X\\
+      Event subprocesses &  &  &  &  & \\
+    \end{tabular}
+
+\end{table}
 
 \section{Model checking BPMN}
 \begin{itemize}
@@ -58,11 +113,17 @@ TBD abstract
     \item Graph conditions can be used to add atomic propositions to the state space.
     \item Temporal Logic can be used for model checking with the defined atomic propositions.
     \item LTL properties can for example be checked in Groove.
+    \item Might look at some soundness things as in s3 and bprove. Can we check them easily and how?
 \end{itemize}
-\section{Related work}
+
+\section{Implementation}
 \begin{itemize}
-    \item Talk about the tool prototype.
+    \item Talk about the tool implementation.
     \item No installation should be needed.
+    \item Model transformation from BPMN to GG, concretely
+    \item Web tool which takes a bpmn-file and generates a zip containing a graph grammar for groove to be downloaded, i.e.
+    \item The generated GG can be used for simulation and model checking in Groove.
+    \item We could also integrate an easier way to define atomic propositions directly using BPMN syntax and not in groove.
 \end{itemize}
 
 \section{Conclusion}
