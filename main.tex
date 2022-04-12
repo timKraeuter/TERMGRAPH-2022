@@ -38,14 +38,15 @@ TBD abstract
 
 \section{Introduction}
 \begin{itemize}
-    \item State goals: Semantics formalization/reference implementation and model checking.
+    \item State goals: Semantics formalization/reference implementation
+    \item Easy BPMN model checking (definition of propositions using BPMN syntax!)
 \end{itemize}
 
 \section{BPMN semantics formalization}
 \begin{itemize}
-    \item General approach: Model transformation from any bpmn file to a graph grammar. Rules are generated specifically for each file.
+    \item General approach: Model transformation from any BPMN file to a graph grammar. Rules are generated specifically for each file.
     \item Go through the BPMN spec and explain the formalization similar to the structure in \cite{vangorpVisualTokenbasedFormalization2013}.
-    \item Talk about best practices which help explain why some elements have not been formalized yet (Problems with the inclusive gateway).
+    \item Talk about best practices that help explain why some elements have not been formalized yet (Problems with the inclusive gateway, complex gateway, etc.).
 \end{itemize}
 
 \section{Related work}
@@ -56,11 +57,10 @@ TBD abstract
     \item At the end we should cover more of the semantics than any currently given approach see \cite{corradiniFormalApproachAnalysis2021} for a recent overview.
     \item Might also be interesting to compare use to Camunda or the bpmn-js token simulator. However, these projects have different goals.
 \end{itemize}
-% TODO: Where to put boundary events?
 % Add one more maybe from van gorp
 \begin{table}[h]
 
-    \caption{Features supported by BPMN semantics (structure from \cite{vangorpVisualTokenbasedFormalization2013}).}
+    \caption{Features supported by BPMN semantics (features similar to \cite{vangorpVisualTokenbasedFormalization2013}).}
     \label{tab:supportedFeatures}
     \begin{tabular}{l l l l l l} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
     \hline
@@ -115,9 +115,10 @@ TBD abstract
 \begin{itemize}
     \item Graph grammar generates state space.
     \item Graph conditions can be used to add atomic propositions to the state space.
+    \item We generate graph conditions based on BPMN syntax (a big part of the novelty since this increases usability.)
     \item Temporal Logic can be used for model checking with the defined atomic propositions.
     \item LTL properties can for example be checked in Groove.
-    \item Might look at some soundness things as in s3 and bprove. Can we check them easily and how?
+    \item Might look at some soundness things as in s3 and Bprove. Can we check them easily and how?
 \end{itemize}
 
 \section{Implementation}
@@ -125,11 +126,15 @@ TBD abstract
     \item Talk about the tool implementation.
     \item No installation should be needed.
     \item Model transformation from BPMN to GG, concretely
-    \item Web tool which takes a bpmn-file and generates a zip containing a graph grammar for groove to be downloaded, i.e.
+    \item Web tool which takes a BPMN-file and generates a zip containing a graph grammar for Groove to be downloaded, i.e.
     \item The generated GG can be used for simulation and model checking in Groove.
-    \item We could also integrate an easier way to define atomic propositions directly using BPMN syntax and not in groove.
+    \item We could also integrate an easier way to define atomic propositions directly using BPMN syntax and not in Groove.
 \end{itemize}
+\subsection{Model-transformation to Groove}
+\subsection{Evaluation}
+Evaluation using multiple test cases.
 
+Add a table here which test cases cover what part of the semantics.
 \section{Conclusion}
 
 \bibliographystyle{eptcs}
