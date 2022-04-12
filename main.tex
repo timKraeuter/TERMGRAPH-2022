@@ -56,8 +56,7 @@ TBD abstract
     \item At the end we should cover more of the semantics than any currently given approach see \cite{corradiniFormalApproachAnalysis2021} for a recent overview.
     \item Might also be interesting to compare use to Camunda or the bpmn-js token simulator. However, these projects have different goals.
 \end{itemize}
-
-% Maybe add the First order logic one cited by corradini.
+% TODO: Where to put boundary events?
 % Add one more maybe from van gorp
 \begin{table}[h]
 
@@ -65,20 +64,19 @@ TBD abstract
     \label{tab:supportedFeatures}
     \begin{tabular}{l l l l l l} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
     \hline
-      Feature & Van Gorp &  Corradini & Houhou & Camunda & This\\
-      & et al. \cite{vangorpVisualTokenbasedFormalization2013} & et al. \cite{corradiniFormalApproachAnalysis2021}& et al. \cite{houhouFirstOrderLogicSemantics2019} & BPM? & paper\\
+      Feature & Van Gorp &  Corradini & Houhou & ??? & This\\
+      & et al. \cite{vangorpVisualTokenbasedFormalization2013} & et al. \cite{corradiniFormalApproachAnalysis2021}& et al. \cite{houhouFirstOrderLogicSemantics2019} & ??? & paper\\
       \hline
       \textit{Instantiation and termination} & & &\\
       Start event instantiation & X & X & & & X\\
-      Exclusive event-based gateway instantiation & X & ? & & & ?\\
-      Parallel event-based gateway instantiation &  & ? & & & ?\\
+      Exclusive event-based gateway instantiation & X & ? & & & X\\
+      Parallel event-based gateway instantiation &  & ? & & & \\
       Receive task instantiation &  & ? & & & X\\
       Normal process completion & X & X & & & X\\
       \textit{Activities} & & & & &\\
       Activity & X & X & & & X\\
       Subprocess & X & X* & & & X\\
       Ad-hoc subprocesses &  & ? & & &\\
-      Event subprocesses & & & &  & \color{yellow}X\\ % Yellow means I want to support this but not implemented yet.
       Loop activity & X & ? & & & ?\\
       Multiple instance activity &  & ? & & & \\
       \textit{Gateways} & & & & &\\
@@ -86,23 +84,29 @@ TBD abstract
       Exclusive gateway & X & X & & & X\\
       Inclusive gateway (split) & X & X & & & X\\
       Inclusive gateway (merge) & X & & & & X*\\
-      Event-based gateway &  & X\footnote{Does not support receive tasks after event-based gateways.} & & & X\\
+      Event-based gateway &  & X\footnote{Does not support receive tasks after event-based gateways.} & & & X\\ % No timer and conditional events after event based gateway supported.
       Complex gateway & & & & &\\
       \textit{Events} &  &  &  &  & \\
-      None Events & X &  &  &  & X\\
-      Message events & X &  &  &  & X\\
-      Timer Events &  &  &  &  & X*\\
-      Escalation Events & &  &  &  & \\
-      Error Events (catch) & X &  &  &  & \color{yellow}X\\
-      Error Events (throw) & X &  &  &  & \color{yellow}X\\
-      Cancel Events & X &  &  &  & \color{yellow}X\\
-      Compensation Events & X &  &  &  & \color{yellow}X\\
-      Conditional Events &  &  &  &  & \\
-      Link Events & X &  &  &  & X\\
-      Signal Events & X &  &  &  & X\\
-      Multiple Events &  &  &  &  & \\
-      Terminate Events & X &  &  &  & X\\
-      Event subprocesses &  &  &  &  & \\
+      None Events & X & ? & ? &  & X\\
+      Message events & X & ? & ? &  & X\\
+      Timer Events &  & ? & ? &  & X*\\
+      Escalation Events & & ? & ? &  & \\
+      Error Events (catch) & X & ? & ? &  & \color{yellow}X\\ % Yellow means I want to support this but not implemented yet.
+      Error Events (throw) & X & ? & ? &  & \color{yellow}X\\
+      Cancel Events & X & ? & ? &  & \color{yellow}X\\
+      Compensation Events & X & ? & ? &  & \color{yellow}X\\
+      Conditional Events &  & ? & ? &  & \\
+      Link Events & X & ? & ? &  & X\\
+      Signal Events & X & ? & ? &  & X\\
+      Multiple Events &  & & ? &  & \\
+      Terminate Events & X & ? & ? &  & X\\
+     Boundary Events & ? & & ? &  & X\\ % To the same extent as the event support
+      \textit{Event subprocess} &  &  &  &  & \\
+      Message Start Event &  & & ? &  & X\\
+      Message Start Event (non-interrupting) & & & ? &  & X\\
+      Signal Start Event &  & & ? &  & X\\
+      Signal Start Event (non-interrupting) &  & & ? &  & X\\
+      Other Start Events &  & & ? &  & \\ % Conditional and Escalation.
     \end{tabular}
 
 \end{table}
