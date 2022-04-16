@@ -108,19 +108,36 @@ A production rule $P= L \overset{l}{\leftarrow} K \overset{r}{\to} R$ consists o
 % Exclusive gateway, parallel gateway, inclusive gateway, exclusive event based gateway
 \subsection{Events}
 
-% In the spec this is below events
+% In the spec, this is below events
 \subsection{Event Sub-Processes}
 
 \section{Related work}
-\begin{itemize}
-    \item Compare the extent of the formalization in this paper with other papers formalizing BPMN semantics (Make a big table with the futures and different approaches).
-    \item Other formalizations are given in: \cite{vangorpVisualTokenbasedFormalization2013} graph transformations, \cite{wongProcessSemanticsBPMN2008} CSP, \cite{dijkmanSemanticsAnalysisBusiness2008} Petri Nets, Maude / Rewriting logic \cite{corradiniFormalApproachAnalysis2021} and more ...
-    \item Especially talks about \cite{vangorpVisualTokenbasedFormalization2013} since it also used graph rewriting but differently: fixed set of rules vs. generated set of rules by a model transformation from bpmn + differences in the resulting tools (we read bpmn files directly).
-    \item At the end we should cover more of the semantics than any currently given approach see \cite{corradiniFormalApproachAnalysis2021} for a recent overview.
-    \item Might also be interesting to compare use to Camunda or the bpmn-js token simulator. However, these projects have different goals.
-\end{itemize}
+% \begin{itemize}
+%     \item Compare the extent of the formalization in this paper with other papers formalizing BPMN semantics (Make a big table with the futures and different approaches).
+%     \item Other formalizations are given in: \cite{vangorpVisualTokenbasedFormalization2013} graph transformations, \cite{wongProcessSemanticsBPMN2008} CSP, \cite{dijkmanSemanticsAnalysisBusiness2008} Petri Nets, Maude / Rewriting logic \cite{corradiniFormalApproachAnalysis2021} and more ...
+%     \item Especially talks about \cite{vangorpVisualTokenbasedFormalization2013} since it also used graph rewriting but differently: fixed set of rules vs. generated set of rules by a model transformation from bpmn + differences in the resulting tools (we read bpmn files directly).
+%     \item At the end we should cover more of the semantics than any currently given approach see \cite{corradiniFormalApproachAnalysis2021} for a recent overview.
+%     \item Might also be interesting to compare use to Camunda or the bpmn-js token simulator. However, these projects have different goals.
+% \end{itemize}
+
+% Van gorp
+A \gls*{bpmn} formalization based on in-place graph transformation rules is given in \cite{vangorpVisualTokenbasedFormalization2013}.
+The formalization covers a substantial part of the \gls*{bpmn} specification, including complex concepts such as inclusive gateway merge and compensation.
+In addition, graph transformation rules are visual and thus can easily be matched to the informal description of the execution semantics in the specification \cite{objectmanagementgroupBusinessProcessModel2013}.
+The fixed set of graph transformation rules was implemented in a prototype using GrGen.NET \cite{vangorpVisualTokenbasedFormalization2013}.
+Unfortunately, the implementation is not publicly accessible anymore.
+
+% BProve/Corradini
+The tool BProVe\footnote{\url{http://pros.unicam.it/bprove/}} is based on formal \gls*{bpmn} semantics given in rewriting logic and implemented in the Maude system.
+Using these semantics, BProVe enables the verification of temporal properties for process models.
+Furthermore, the tool is easily accessible online and includes multiple predefined properties, such as checking for dead activities and process completion \cite{corradiniFormalApproachAnalysis2021}.
+
+% First order
+
+\Cref{tab:supportedFeatures} depicts which features of the \gls*{bpmn} execution semantics are supported by the different approaches.
+
 % Add one more maybe from van gorp
-\begin{table}[h]
+\begin{table}[htbp]
 
     \caption{Features supported by BPMN semantics (features similar to \cite{vangorpVisualTokenbasedFormalization2013}).}
     \label{tab:supportedFeatures}
@@ -173,6 +190,10 @@ A production rule $P= L \overset{l}{\leftarrow} K \overset{r}{\to} R$ consists o
 
 \end{table}
 
+% Summarize the findings and explain them in more detail
+% Our semantics should be the most complete to date
+% Our semantics is also quite understandable, i hope.
+
 \section{Model checking BPMN}
 Model checking a \gls*{bpmn} process model is straightforward after a graph grammar describing its execution semantics has been generated.
 \Cref{fig:modelChecking} depicts the inputs and outputs of model checking.
@@ -186,17 +207,17 @@ Model checking a \gls*{bpmn} process model is straightforward after a graph gram
 
 Besides a graph grammar, a set of temporal properties to be checked and the atomic propositions used in the properties are supplied.
 Atomic propositions must be formalized as graphs that can be matched to each state in the state space.
-An atomic propositions holds in a state if and only if the graph associated with the atomic proposition is a subgraph of the graph associated with the state. % Cite groove/rensink here.
+An atomic proposition holds in a state if and only if the graph associated with the atomic proposition is a subgraph of the graph associated with the state. % Cite groove/rensink here.
 This enables model checking of temporal properties using the defined atomic propositions.
 
 % Defining atomic propositions in BPMN is a novelty.
 Since we want to hide as much complexity as possible from a user who is model checking his \gls*{bpmn} process model, we let them define atomic propositions using the familiar \gls*{bpmn} syntax.
-\gls*{bpmn} is most of the time explained and formalized using tokens, which are flowing through the process model.
-Thus, to define an atomic proposition we let the user attach tokens to his \gls*{bpmn} process model which we can automatically convert to a graph condition.
+\gls*{bpmn} is usually explained and formalized using tokens, which flow through the process model.
+Thus, to define an atomic proposition, we let the user attach tokens to his \gls*{bpmn} process model, which we can automatically convert to a graph condition.
 
 For example, the token distribution shown in \cref{fig:atomicProposition} defines two running process instances with a token in task A/B.
 Differently colored tokens belong to different process instances.
-This visualization is significantly inspired by the excellent bpmn-js-token-simulation\footnote{\url{https://github.com/bpmn-io/bpmn-js-token-simulation}}.
+This visualization was significantly inspired by the excellent bpmn-js-token-simulation\footnote{\url{https://github.com/bpmn-io/bpmn-js-token-simulation}}.
 % TODO: Implement this
 
 % TODO: Change the picture to svg once implemented etc.
@@ -210,9 +231,9 @@ This visualization is significantly inspired by the excellent bpmn-js-token-simu
 % \begin{itemize}
 %     \item Graph grammar generates state space.
 %     \item Graph conditions can be used to add atomic propositions to the state space.
-%     \item We generate graph conditions based on BPMN syntax (a big part of the novelty since this increases usability.)
+%     \item We generate graph-conditions based on BPMN syntax (a big part of the novelty since this increases usability.)
 %     \item Temporal Logic can be used for model checking with the defined atomic propositions.
-%     \item LTL properties can for example be checked in Groove.
+%     \item LTL properties can, for example be checked in Groove.
 %     \item Might look at some soundness things as in s3 and Bprove. Can we check them easily and how?
 % \end{itemize}
 
