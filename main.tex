@@ -147,45 +147,45 @@ Furthermore, the tool is easily accessible online and includes multiple predefin
       & et al. \cite{vangorpVisualTokenbasedFormalization2013} & et al. \cite{corradiniFormalApproachAnalysis2021}& et al. \cite{houhouFirstOrderLogicSemantics2019} & ??? & paper\\
       \hline
       \textit{Instantiation and termination} & & &\\
-      Start event instantiation & X & X & & & X\\
+      Start event instantiation & X & X & X & & X\\
       Exclusive event-based gateway instantiation & X & ? & & & X\\
       Parallel event-based gateway instantiation &  & ? & & & \\
       Receive task instantiation &  & ? & & & X\\
-      Normal process completion & X & X & & & X\\
+      Normal process completion & X & X & X & & X\\
       \textit{Activities} & & & & &\\
-      Activity & X & X & & & X\\
-      Subprocess & X & X* & & & X\\
+      Activity & X & X & X & & X\\
+      Subprocess & X & X* & X & & X\\
       Ad-hoc subprocesses &  & ? & & &\\
       Loop activity & X & ? & & & ?\\
       Multiple instance activity &  & ? & & & \\
       \textit{Gateways} & & & & &\\
-      Parallel gateway & X & X & & & X\\
-      Exclusive gateway & X & X & & & X\\
-      Inclusive gateway (split) & X & X & & & X\\
-      Inclusive gateway (merge) & X & & & & X*\\
-      Event-based gateway &  & X\footnote{Does not support receive tasks after event-based gateways.} & & & X\\ % No timer and conditional events after event based gateway supported.
+      Parallel gateway & X & X & X & & X\\
+      Exclusive gateway & X & X & X & & X\\
+      Inclusive gateway (split) & X & X & X & & X\\
+      Inclusive gateway (merge) & X & & X & & X*\\
+      Event-based gateway &  & X\footnote{Does not support receive tasks after event-based gateways.} & X & & X\\ % No timer and conditional events after event based gateway supported.
       Complex gateway & & & & &\\
       \textit{Events} &  &  &  &  & \\
-      None Events & X & ? & ? &  & X\\
-      Message events & X & ? & ? &  & X\\
-      Timer Events &  & ? & ? &  & X*\\
-      Escalation Events & & ? & ? &  & \\
-      Error Events (catch) & X & ? & ? &  & \color{yellow}X\\ % Yellow means I want to support this but not implemented yet.
-      Error Events (throw) & X & ? & ? &  & \color{yellow}X\\
-      Cancel Events & X & ? & ? &  & \color{yellow}X\\
-      Compensation Events & X & ? & ? &  & \color{yellow}X\\
-      Conditional Events &  & ? & ? &  & \\
-      Link Events & X & ? & ? &  & X\\
-      Signal Events & X & ? & ? &  & X\\
-      Multiple Events &  & & ? &  & \\
-      Terminate Events & X & ? & ? &  & X\\
-     Boundary Events & ? & & ? &  & X\\ % To the same extent as the event support
+      None Events & X & ? & &  & X\\
+      Message events & X & ? & X &  & X\\
+      Timer Events &  & ? & X &  & X*\\
+      Escalation Events & & ? & &  & \\
+      Error Events (catch) & X & ? & &  & \color{yellow}X\\ % Yellow means I want to support this but not implemented yet.
+      Error Events (throw) & X & ? & &  & \color{yellow}X\\
+      Cancel Events & X & ? & &  & \color{yellow}X\\
+      Compensation Events & X & ? & &  & \color{yellow}X\\
+      Conditional Events &  & ? & &  & \\
+      Link Events & X & ? & &  & X\\
+      Signal Events & X & ? & &  & X\\
+      Multiple Events &  & & &  & \\
+      Terminate Events & X & ? & X & & X\\
+     Boundary Events & ? & & X\footnote{Message and timer events} &  & X\\ % To the same extent as the event support
       \textit{Event subprocess} &  &  &  &  & \\
-      Message Start Event &  & & ? &  & X\\
-      Message Start Event (non-interrupting) & & & ? &  & X\\
-      Signal Start Event &  & & ? &  & X\\
-      Signal Start Event (non-interrupting) &  & & ? &  & X\\
-      Other Start Events &  & & ? &  & \\ % Conditional and Escalation.
+      Message Start Event &  & & &  & X\\
+      Message Start Event (non-interrupting) & & & &  & X\\
+      Signal Start Event &  & & &  & X\\
+      Signal Start Event (non-interrupting) &  & & &  & X\\
+      Other Start Events &  & & &  & \\ % Conditional and Escalation.
     \end{tabular}
 
 \end{table}
