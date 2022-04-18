@@ -40,7 +40,7 @@ Yngve Lamo\Mark{*}\orcidlink{0000-0001-9196-1779}
 \maketitle
 
 % Maximum 8 pages for the first extended abstract!
-% At the end 15 pages for the proceedings.
+% At the end, 15 pages for the proceedings.
 
 % TODO: Semantics vs. execution semantics?
 
@@ -61,7 +61,7 @@ TBD abstract
 %     \item Talk about best practices that help explain why some elements have not been formalized yet (Problems with the inclusive gateway, complex gateway, etc.).
 % \end{itemize}
 % General approach
-We have developed a novel approach with the goal to cover as many of the \gls*{bpmn} features as possible.
+We have developed a novel approach to cover as many of the \gls*{bpmn} features as possible.
 Our approach is summarized as a \gls*{bpmn} process model in \cref{fig:approach}.
 It is based on a model transformation from \gls*{bpmn} process models to graph grammars.
 Thus, our approach is \textit{generative}, i.e., it constructs a new graph grammar including rules and a start graph for each \gls*{bpmn} process model.
@@ -98,7 +98,7 @@ A production rule $P= L \overset{l}{\leftarrow} K \overset{r}{\to} R$ consists o
 % Rule application definition
 
 
-% What about nested rules and nacs?
+% What about nested rules and NACS?
 
 % Formalization
 \subsection{Process instantiation and termination}
@@ -112,14 +112,6 @@ A production rule $P= L \overset{l}{\leftarrow} K \overset{r}{\to} R$ consists o
 \subsection{Event Sub-Processes}
 
 \section{Related work}
-% \begin{itemize}
-%     \item Compare the extent of the formalization in this paper with other papers formalizing BPMN semantics (Make a big table with the futures and different approaches).
-%     \item Other formalizations are given in: \cite{vangorpVisualTokenbasedFormalization2013} graph transformations, \cite{wongProcessSemanticsBPMN2008} CSP, \cite{dijkmanSemanticsAnalysisBusiness2008} Petri Nets, Maude / Rewriting logic \cite{corradiniFormalApproachAnalysis2021} and more ...
-%     \item Especially talks about \cite{vangorpVisualTokenbasedFormalization2013} since it also used graph rewriting but differently: fixed set of rules vs. generated set of rules by a model transformation from bpmn + differences in the resulting tools (we read bpmn files directly).
-%     \item At the end we should cover more of the semantics than any currently given approach see \cite{corradiniFormalApproachAnalysis2021} for a recent overview.
-%     \item Might also be interesting to compare use to Camunda or the bpmn-js token simulator. However, these projects have different goals.
-% \end{itemize}
-
 % Van gorp
 A \gls*{bpmn} formalization based on in-place graph transformation rules is given in \cite{vangorpVisualTokenbasedFormalization2013}.
 The formalization covers a substantial part of the \gls*{bpmn} specification, including complex concepts such as inclusive gateway merge and compensation.
@@ -130,81 +122,103 @@ Unfortunately, the implementation is not publicly accessible anymore.
 % BProve/Corradini
 The tool BProVe\footnote{\url{http://pros.unicam.it/bprove/}} is based on formal \gls*{bpmn} semantics given in rewriting logic and implemented in the Maude system.
 Using these semantics, BProVe enables the verification of custom temporal properties for process models.
-Furthermore, the tool is easily accessible online and includes multiple predefined properties, such as checking for dead activities and process completion \cite{corradiniFormalApproachAnalysis2021}.
+Furthermore, the tool is easily accessible online and includes multiple predefined properties, such as checking for dead activities and process completion \cite{corradiniBProVeToolSupport2017, corradiniFormalApproachAnalysis2021}.
 
 % Houhou
 The verification framework \textsf{fbpmn} uses first-order logic to formalize and check \gls*{bpmn} process models \cite{houhouFirstOrderLogicSemantics2019, houhouFirstOrderLogicVerification2022}.
-This formalization is then realized in the TLA\textsuperscript{+} formal language and can be model checked using TLC.
+This formalization is then realized in the TLA\textsuperscript{+} formal language and can be model-checked using TLC.
 Their framework and related information is open source and freely available online\footnote{\url{https://github.com/pascalpoizat/fbpmn}}.
-Similar to BProVe, \textsf{fbpmn} multiple useful predefined properties to be checked for process models.
+Similar to BProVe, \textsf{fbpmn} multiple beneficial predefined properties to be checked for process models.
 However, they do not allow a user to define custom temporal properties.
 
-Besides, these three approaches there are many more \gls*{bpmn} formalizations, for example, based on Petri Nets or process algebras \cite{corradiniFormalApproachAnalysis2021, houhouFirstOrderLogicVerification2022, vangorpVisualTokenbasedFormalization2013}.
-We picked these three approaches since they support a considerable subset of the \gls*{bpmn} features, have easily accessible and well documented tool support and are recent.
+Besides, these three approaches there are many more \gls*{bpmn} formalizations, for example, based on Petri Nets \cite{dijkmanSemanticsAnalysisBusiness2008} or process algebras \cite{wongProcessSemanticsBPMN2008}.
+We picked them since they support a significant subset of the \gls*{bpmn} features, have easily accessible and well-documented tool support, and are pretty recent.
 
-Nevertheless, different approaches support a different subset of the \gls*{bpmn} features which impacts their usefulness in practical scenarios.
+Nevertheless, different approaches support a different subset of the \gls*{bpmn} features, which impacts their usefulness in practical scenarios.
 \Cref{tab:supportedFeatures} depicts which features of the \gls*{bpmn} execution semantics are supported by the different approaches and our approach.
+% TODO: Check that this matches the BPMN spec and mention it
 
-% Add one more maybe from van gorp
 \begin{table}[htbp]
-
-    \caption{Features supported by BPMN semantics (features similar to \cite{vangorpVisualTokenbasedFormalization2013}).}
+    \caption{Features supported by BPMN semantics (characterization based on \cite{vangorpVisualTokenbasedFormalization2013}).}
     \label{tab:supportedFeatures}
-    \begin{tabular}{l l l l l l} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+    \begin{tabular}{l l l l l}
     \hline
-      Feature & Van Gorp &  Corradini & Houhou & ??? & This\\
-      & et al. \cite{vangorpVisualTokenbasedFormalization2013} & et al. \cite{corradiniFormalApproachAnalysis2021}& et al. \cite{houhouFirstOrderLogicSemantics2019, houhouFirstOrderLogicVerification2022} & ??? & paper\\
+      Feature & Van Gorp &  Corradini & Houhou & This\\
+      & et al. \cite{vangorpVisualTokenbasedFormalization2013} & et al. \cite{corradiniFormalApproachAnalysis2021}& et al. \cite{houhouFirstOrderLogicVerification2022} & paper\\
       \hline
-      \textit{Instantiation and termination} & & &\\
-      Start event instantiation & X & X & X & & X\\
-      Exclusive event-based gateway instantiation & X & & & & X\\
-      Parallel event-based gateway instantiation &  & & & & \\
-      Receive task instantiation & & & & & X\\
-      Normal process completion & X & X & X & & X\\
-      \textit{Activities} & & & & &\\
-      Activity & X & X & X & & X\\
-      Subprocess & X & X* & X & & X\\
-      Ad-hoc subprocesses & & & & &\\
-      Loop activity & X & & & & ?\\
-      Multiple instance activity & & & & & \\
-      \textit{Gateways} & & & & &\\
-      Parallel gateway & X & X & X & & X\\
-      Exclusive gateway & X & X & X & & X\\
-      Inclusive gateway (split) & X & X & X & & X\\
-      Inclusive gateway (merge) & X & & X & & X*\\
-      Event-based gateway &  & X\footnote{Does not support receive tasks after event-based gateways.} & X & & X\\ % No timer and conditional events after event based gateway supported.
-      Complex gateway & & & & &\\
-      \textit{Events} &  &  &  &  & \\
-      None Events & X & & &  & X\\
-      Message events & X & X & X &  & X\\
-      Timer Events & & & X &  & X*\\
-      Escalation Events & & & &  & \\
-      Error Events (catch) & X & & &  & \color{yellow}X\\ % Yellow means I want to support this but not implemented yet.
-      Error Events (throw) & X & & &  & \color{yellow}X\\
-      Cancel Events & X & & &  & \color{yellow}X\\
-      Compensation Events & X & & &  & \color{yellow}X\\
-      Conditional Events &  & & &  & \\
-      Link Events & X & & &  & X\\
-      Signal Events & X & & &  & X\\
-      Multiple Events &  & & &  & \\
-      Terminate Events & X & X & X & & X\\
-     Boundary Events & & & X\footnote{Message and timer events} &  & X\\ % To the same extent as the event support
-      \textit{Event subprocess} &  &  &  &  & \\
-      Message Start Event &  & & &  & X\\
-      Message Start Event (non-interrupting) & & & &  & X\\
-      Signal Start Event &  & & &  & X\\
-      Signal Start Event (non-interrupting) &  & & &  & X\\
-      Other Start Events &  & & &  & \\ % Conditional and Escalation.
+      \textit{Instantiation and termination} & &\\
+      Start event instantiation & X & X & X & X\\
+      Exclusive event-based gateway instantiation & X & & & X\\
+      Parallel event-based gateway instantiation &  & & & \\
+      Receive task instantiation & & & & X\\
+      Normal process completion & X & X & X & X\\
+      \textit{Activities} & & & &\\
+      Activity & X & X & X & X\\
+      Subprocess & X & X* & X & X\\
+      Ad-hoc subprocesses & & & &\\
+      Loop activity & X & & & ?\\
+      Multiple instance activity & & & & \\
+      \textit{Gateways} & & & &\\
+      Parallel gateway & X & X & X & X\\
+      Exclusive gateway & X & X & X & X\\
+      Inclusive gateway (split) & X & X & X & X\\
+      Inclusive gateway (merge) & X & & X & X*\\
+      Event-based gateway &  & X\footnote{Does not support receive tasks after event-based gateways.} & X & X\\ % No timer and conditional events after event based gateway supported.
+      Complex gateway & & & &\\
+      \textit{Events} & & & & \\
+      None Events & X & & & X\\
+      Message events & X & X & X & X\\
+      Timer Events & & & X & X*\\
+      Escalation Events & & & & \\
+      Error Events (catch) & X & & & \color{yellow}X\\ % Yellow means I want to support this but not implemented yet.
+      Error Events (throw) & X & & & \color{yellow}X\\
+      Cancel Events & X & & & \color{yellow}X\\
+      Compensation Events & X & & & \color{yellow}X\\
+      Conditional Events & & & &\\
+      Link Events & X & & & X\\
+      Signal Events & X & & & X\\
+      Multiple Events &  & & & \\
+      Terminate Events & X & X & X & X\\
+     Boundary Events & X\footnote{Only interrupting and } & & X\footnote{Message and timer events} & X\\ % To the same extent as the event support
+      \textit{Event subprocess} &  &  &  & \\
+      Message Start Event &  & & & X\\
+      Message Start Event (non-interrupting) & & & & X\\
+      Signal Start Event &  & & & X\\
+      Signal Start Event (non-interrupting) &  & & & X\\
+      Other Start Events &  & & & \\ % Conditional and Escalation.
     \end{tabular}
-
 \end{table}
 
 % Summarize the findings and explain them in more detail
-% Our semantics should be the most complete to date
-% Our semantics is also quite understandable, i hope.
+% Explain Van Gorp in detail
+Van Gorp et al. \cite{vangorpVisualTokenbasedFormalization2013} cover a large part of the \gls*{bpmn} semantics.
+However, they do not support Event-based gateways and event subprocesses, while their support for boundary events is minimal.
+Especially, Event-based gateways are often used and supported by every other approach.
 
+% Explain Corradini in detail
+Corradini et al. \cite{corradiniFormalApproachAnalysis2021} does only support message and terminate events.
+However, many other types of events exist and are used in practice.
+In addition, they do not support the occurrence of receive tasks after Event-based gateways.
+Nevertheless, the same behavior can be achieved using message events.
+% Limited subprocess support?
+
+% Explain Houhou in detail
+Houhou et al. only support message, timer, and terminate events.
+However, they support the use of message and timer events as both interrupting and non-interrupting boundary events.
+Their event support remains limited compared to other approaches.
+
+% Explain our approach in more detail. What are we lacking?
+
+% Our semantics should be the most complete to date
+% Our semantics is also quite understandable.
+
+
+% Our semantics is the only one that generates "rules" and not only converts the model to some representation, right?. So we are higher-order?
+Besides semantics, our approach is also unique since it not only transforms a \gls*{bpmn} process model into a different representation but also generates graph-transformation rules for this specific model.
+Other approaches, for example, rely on a fixed generic set of rules \cite{vangorpVisualTokenbasedFormalization2013} or Maude implementation \cite{corradiniFormalApproachAnalysis2021}.
+% What about Houhou?
 \section{Model checking BPMN}
-Model checking a \gls*{bpmn} process model is straightforward after a graph grammar describing its execution semantics has been generated.
+Model-checking a \gls*{bpmn} process model is straightforward after a graph grammar describing its execution semantics has been generated.
 \Cref{fig:modelChecking} depicts the inputs and outputs of model checking.
 
 \begin{figure}[h]
@@ -216,7 +230,7 @@ Model checking a \gls*{bpmn} process model is straightforward after a graph gram
 
 Besides a graph grammar, a set of temporal properties to be checked and the atomic propositions used in the properties are supplied.
 Atomic propositions must be formalized as graphs that can be matched to each state in the state space.
-An atomic proposition holds in a state if and only if the graph associated with the atomic proposition is a subgraph of the graph associated with the state. % Cite groove/rensink here.
+An atomic proposition holds in a state if and only if the graph associated with the atomic proposition is a subgraph of the graph associated with the state. % Cite groove/Rensink here.
 This enables model checking of temporal properties using the defined atomic propositions.
 
 % Defining atomic propositions in BPMN is a novelty.
@@ -237,14 +251,7 @@ This visualization was significantly inspired by the excellent bpmn-js-token-sim
     \label{fig:atomicProposition}
 \end{figure}
 
-% \begin{itemize}
-%     \item Graph grammar generates state space.
-%     \item Graph conditions can be used to add atomic propositions to the state space.
-%     \item We generate graph-conditions based on BPMN syntax (a big part of the novelty since this increases usability.)
-%     \item Temporal Logic can be used for model checking with the defined atomic propositions.
-%     \item LTL properties can, for example be checked in Groove.
-%     \item Might look at some soundness things as in s3 and Bprove. Can we check them easily and how?
-% \end{itemize}
+% TODO: We might look at some soundness things as in s3 and Bprove. Can we check them easily, and how?
 
 \section{Implementation}
 % \begin{itemize}
