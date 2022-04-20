@@ -101,15 +101,55 @@ A production rule $P= L \overset{l}{\leftarrow} K \overset{r}{\to} R$ consists o
 % What about nested rules and NACS?
 
 % Formalization
-\subsection{Process instantiation and termination}
+\subsection{Formalization}
 
-\subsection{Activities}
-\subsection{Gateways}
+\Cref{fig:bpmnfeaturesOverview} depicts the \gls*{bpmn} features supported by our approach.
+It shows which events, gateways, activities and edges are included in the formalization.
+
+% Describe which events are supported/ not supported. Not finalized yet
+% Describe boundary events. Not finalized yet.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/bpmn_semantics-feature_overview.pdf}
+    \caption{Overview of the supported \gls*{bpmn} features (structure adapted from \cite{houhouFirstOrderLogicVerification2022})}
+    \label{fig:bpmnfeaturesOverview}
+\end{figure}
+
+% Describe which tasks are supported and that other tasks are meant by AT.
+We support receive and send tasks which can be connected to each other or message events using message flows across different pools in a \gls*{bpmn} process model.
+Receive tasks can instantiate a process instance if they do not have any incoming sequence flows and the \textsf{instantiating} property is set.
+Other tasks such as service, user, script, business rule, manual and undefined tasks are handled uniformly.
+
+% Describe supported sub processes.
+Furthermore, we support two types of sub processes.
+First, the occurrence of expanded sub processes in the sequence flow.
+Second, the occurrence of event sub processes in pools.
+Event sub processes can be started by message or signal start events either interrupting or non-interrupting.
+
+% Describe gateways.
+All gateways are supported besides the complex gateway.
+However, the complex gateway is not used often \cite{freundRealLifeBPMNUsing2019} and not also not supported by other recent approaches \cite{corradiniFormalApproachAnalysis2021, houhouFirstOrderLogicVerification2022, vangorpVisualTokenbasedFormalization2013}.
+% Describe edges. --> Default and conditional flows?
+
+\subsubsection{Type graph}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/bpmn_semantics-typegraph.pdf}
+    \caption{BPMN execution type graph} % TODO: Cite my ecmfa paper?
+    \label{fig:typeGraph}
+\end{figure}
+
+\subsubsection{Process instantiation and termination}
+
+\subsubsection{Activities}
+\subsubsection{Gateways}
 % Exclusive gateway, parallel gateway, inclusive gateway, exclusive event based gateway
-\subsection{Events}
+\subsubsection{Events}
 
 % In the spec, this is below events
-\subsection{Event Sub-Processes}
+\subsubsection{Event Sub-Processes}
 
 \section{Related work}
 % Van gorp
@@ -263,6 +303,14 @@ This visualization was significantly inspired by the excellent bpmn-js-token-sim
 %     \item We could also integrate an easier way to define atomic propositions directly using BPMN syntax and not in Groove.
 % \end{itemize}
 \subsection{Model-transformation to Groove}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{images/impl.png}
+    \caption{Implementation}
+    \label{fig:impl}
+\end{figure}
+
 \subsection{Evaluation}
 Evaluation using multiple test cases.
 
