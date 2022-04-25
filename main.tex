@@ -287,19 +287,26 @@ Two BPMN specific behavioral properties namely, Safeness and Soundness are defin
 We do not consider structural properties since they can be checked using a standard process modeling tool without execution.
 % Safe
 A BPMN process model is \emph{safe}, if during its execution at most one token occurs along the same sequence flow \cite{corradiniClassificationBPMNCollaborations2018}.
-Safeness is checked in our implementation using the following LTL property.
+\emph{Safeness} is checked in our implementation using the following LTL property.
 
 \begin{align}
     \square (\neg \,\text{Unsafe}) \label{eq:safeness}
 \end{align}
-The atomic property unsafe is true if and only if two tokens of one process snapshot have the same position\footnote{Link a GitHub repository with the concrete groove graph condition here.}.
 
-A BPMN process model is \emph{sound}, if \cite{corradiniClassificationBPMNCollaborations2018}.
-% BPMN specific properties
+The atomic property \textsf{Unsafe} is true if and only if two tokens of one process snapshot have the same position\footnote{An implementation of the atomic property \textsf{Unsafe} in groove is contained in the artifacts of this paper \cite{ArtifactsTERMGRAPH2022}.}.
+
 % Soundness (do it similar to houhou)
-% Safe
+A BPMN process model is \emph{sound}, if it can complete its execution without leaving active elements and all the model elements can be activated in at least one of the execution traces \cite{corradiniClassificationBPMNCollaborations2018}.
+\emph{Soundness} is checked in our implementation using the following LTL property.
 
+\begin{align}
+    \lozenge (\square(\text{AllTerminated})) \label{eq:soundness}
+\end{align}
 
+The atomic property \textsf{AllTerminated} is true if and only if there exists no process snapshot in the state running, i.e., all process snapshots are terminated\footnote{An implementation of the atomic property \textsf{AllTerminated} in groove is contained in the artifacts of this paper \cite{ArtifactsTERMGRAPH2022}.}.
+% TODO: This must not guarantee the activation of everything I think! Instantiate event based gateways for example!.
+
+Both properties can be checked using our implementation \cite{ArtifactsTERMGRAPH2022}.
 \subsection{Custom properties}
 % Custom LTL properties
 
