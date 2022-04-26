@@ -16,3 +16,8 @@ The atomic property **AllTerminated** is implemented by the following graph cond
 ![Atomic property AllTerminated implemented in groove.](./AllTerminated.png)
 
 The property matches whenever there is no process snapshot in the state running. This all process snapshots are terminated, i.e., have no tokens.
+
+# Implementation
+TODO: Link tool repo and tool website
+
+TODO: Add table for the testsuite here.

@@ -180,10 +180,9 @@ We picked them since they support a significant subset of the \gls*{bpmn} featur
 
 Nevertheless, different approaches support a different subset of the \gls*{bpmn} features, which impacts their usefulness in practical scenarios.
 \Cref{tab:supportedFeatures} depicts which features of the \gls*{bpmn} execution semantics are supported by the different approaches and our approach.
-% TODO: Check that this matches the BPMN spec and mention it
 
 \begin{table}[htbp]
-    \caption{Features supported by BPMN semantics (characterization based on \cite{vangorpVisualTokenbasedFormalization2013}).}
+    \caption{Features supported by BPMN semantics (overview based on \cite{vangorpVisualTokenbasedFormalization2013}).}
     \label{tab:supportedFeatures}
     \begin{tabular}{l l l l l}
     \hline
@@ -329,33 +328,32 @@ This leads to a significant advantage compared to currently implemented approach
 The token visualization was significantly inspired by the excellent bpmn-js-token-simulation\footnote{\url{https://github.com/bpmn-io/bpmn-js-token-simulation}}.
 
 \section{Implementation}
-First, we will describe the tool we developed to implement our approach.
-We are using the graph transformation tool Groove\footnote{\url{https://groove.ewi.utwente.nl/about}} in our implementation \cite{ghamarianModellingAnalysisUsing2012, rensinkGROOVESimulatorTool2004}, since it supports all the theoretical constructs that we need.
-
-Second, we will describe how we used a comprehensive test suite to evaluate that our approach covers the presented features of the BPMN semantics.
-% \begin{itemize}
-%     \item Talk about the tool implementation.
-%     \item No installation should be needed.
-%     \item Model transformation from BPMN to GG, concretely
-%     \item Web tool which takes a BPMN-file and generates a zip containing a graph grammar for Groove to be downloaded, i.e.
-%     \item The generated GG can be used for simulation and model checking in Groove.
-%     \item We could also integrate an easier way to define atomic propositions directly using BPMN syntax and not in Groove.
-% \end{itemize}
-\subsection{Model-transformation to Groove}
+% Tool
+\Cref{fig:implScreenshot} depicts a screenshot of the implemented tool.
+The tool is open-source, publicly available and does not require any installation \cite{ArtifactsTERMGRAPH2022}.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/impl.png}
+    \includegraphics[width=0.6\textwidth]{images/impl.png}
     \caption{Screenshot of the web interface of the tool}
     \label{fig:implScreenshot}
 \end{figure}
 
-\subsection{Evaluation}
-Evaluation using multiple test cases.
+The tool implements the approach depicted in \cref{fig:approach}.
+We are using the graph transformation tool Groove\footnote{\url{https://groove.ewi.utwente.nl/about}} in our implementation \cite{ghamarianModellingAnalysisUsing2012, rensinkGROOVESimulatorTool2004}, since it supports all the theoretical constructs that we need.
 
-Add a table here which test cases cover what part of the semantics.
+% Evaluation
+To evaluate the correctness of our implementation we created a comprehensive test suite, which verifies correct rule generation for the implemented BPMN features \cite{ArtifactsTERMGRAPH2022}.
+
 \section{Conclusion}
+% Summary
 
+% Future work
+% Performance evaluation compared to other approaches and these repositories cited in the other papers
+% More semantics
+% Implementing the atomic proposition definition
+% Counter example simulation similar to houhou
+% Automatize more bpmn specific properties
 \bibliographystyle{eptcs}
 \bibliography{bib} % TODO: Should be bib.
 \end{document}
