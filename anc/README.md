@@ -1,5 +1,5 @@
 
-_# BPMN specific properties
+# BPMN specific properties
 
 ## Safeness
 
