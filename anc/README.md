@@ -4,25 +4,25 @@
 
 ### Safeness
 
-The atomic property **Unsafe** is implemented by the following graph condition in groove:
+The atomic property **Unsafe** is implemented by the following graph condition in Groove:
 
-![Atomic property Unsafe implemented in groove.](./Unsafe.png)
+![Atomic property Unsafe implemented in Groove.](./Unsafe.png)
 
 The property matches whenever two tokens of one process snapshot have the same position (but have different identities).
 
 ### Option to complete
 
-The atomic property **AllTerminated** is implemented by the following graph condition in groove:
+The atomic property **AllTerminated** is implemented by the following graph condition in Groove:
 
-![Atomic property AllTerminated implemented in groove.](./AllTerminated.png)
+![Atomic property AllTerminated implemented in Groove.](./AllTerminated.png)
 
-The property matches whenever there is no process snapshot in the state running. This all process snapshots are terminated, i.e., have no tokens.
+The property matches whenever there is no process snapshot in the state running. All process snapshots are terminated, i.e., have no tokens.
 
 ## Custom properties
 Defining atomic propositions directly in the tool by distributing tokens over the process model has not been implemented yet.
-Thus, for the time being custom properties have to be checked in Groove by defining atomic propositions there.
+Thus, for the time being, custom properties have to be checked in Groove by defining atomic propositions there.
 
-Adding this feature in the tool is planned for the full version of this paper due to current time constraints of the authors.
+Adding this feature is planned for the full version of the paper due to the current time constraints.
 # Implementation
 
 ## Tool
