@@ -9,7 +9,7 @@ The atomic property **Unsafe** is implemented by the following graph condition i
 
 The property matches whenever two tokens of one process snapshot have the same position (but have different identities).
 
-## Soundness
+## Option to complete
 
 The atomic property **AllTerminated** is implemented by the following graph condition in groove:
 

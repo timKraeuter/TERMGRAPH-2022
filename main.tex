@@ -284,29 +284,30 @@ Then, we describe how custom properties can be constructed and checked.
 
 \subsection{BPMN specific properties}
 Two BPMN specific behavioral properties namely, Safeness and Soundness are defined in \cite{corradiniClassificationBPMNCollaborations2018}.
-We do not consider structural properties since they can be checked using a standard process modeling tool without execution.
+Soundness is further decomposed into (i) Option to complete: any running process instance must eventually complete, (ii) Proper completion: at the moment of completion, each token of the process instance must be in a different end event, (iii) No dead activities: any activity can be executed in at least one process instance \cite{corradiniClassificationBPMNCollaborations2018}.
+We do not consider structural properties since they can be checked using a standard process modeling tool without implementing execution semantics.
+As an example we will now describe how to implement the Safeness and Option to complete properties using graph transformations.
+
 % Safe
 A BPMN process model is \emph{safe}, if during its execution at most one token occurs along the same sequence flow \cite{corradiniClassificationBPMNCollaborations2018}.
-\emph{Safeness} is checked in our implementation using the following LTL property.
+\emph{Safeness} is checked in our implementation using the LTL property defined in \eqref{eq:safeness}.
+The atomic property \textsf{Unsafe} is true if and only if two tokens of one process snapshot have the same position\footnote{An implementation of the atomic property \textsf{Unsafe} in groove is contained in the artifacts of this paper \cite{ArtifactsTERMGRAPH2022}.}.
 
 \begin{align}
     \square (\neg \,\text{Unsafe}) \label{eq:safeness}
 \end{align}
 
-The atomic property \textsf{Unsafe} is true if and only if two tokens of one process snapshot have the same position\footnote{An implementation of the atomic property \textsf{Unsafe} in groove is contained in the artifacts of this paper \cite{ArtifactsTERMGRAPH2022}.}.
-
-% Soundness (do it similar to houhou)
-A BPMN process model is \emph{sound}, if it can complete its execution without leaving active elements and all the model elements can be activated in at least one of the execution traces \cite{corradiniClassificationBPMNCollaborations2018}.
-\emph{Soundness} is checked in our implementation using the following LTL property.
+% Option to complete
+\emph{Option to complete} is checked in our implementation using the LTL property defined in \eqref{eq:optionToComplete}.
+The atomic property \textsf{AllTerminated} is true if and only if there exists no process snapshot in the state running, i.e., all process snapshots are terminated\footnote{An implementation of the atomic property \textsf{AllTerminated} in groove is contained in the artifacts of this paper \cite{ArtifactsTERMGRAPH2022}.}.
 
 \begin{align}
-    \lozenge (\square(\text{AllTerminated})) \label{eq:soundness}
+    \lozenge (\square(\text{AllTerminated})) \label{eq:optionToComplete}
 \end{align}
 
-The atomic property \textsf{AllTerminated} is true if and only if there exists no process snapshot in the state running, i.e., all process snapshots are terminated\footnote{An implementation of the atomic property \textsf{AllTerminated} in groove is contained in the artifacts of this paper \cite{ArtifactsTERMGRAPH2022}.}.
-% TODO: This must not guarantee the activation of everything I think! Instantiate event based gateways for example!.
-
 Both properties can be checked using our implementation \cite{ArtifactsTERMGRAPH2022}.
+To fully check Soundness, the proper completion and no dead activities properties have to be checked.
+The information needed to check these properties is present in the generated state space, such that checking these properties is possible manually and can be automatized in the future.
 \subsection{Custom properties}
 % Custom LTL properties
 
