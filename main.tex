@@ -51,67 +51,38 @@ TBD abstract
 \end{abstract}
 
 \section{Introduction}
-\begin{itemize}
-    \item State goals: Semantics formalization and reference implementation (more/other features supported than recent approaches)
-    \item Easy BPMN model checking (definition of propositions using BPMN syntax!)
-    \item New generative approach to the semantics formalization
-    \item Prototypical tool support?
-\end{itemize}
-
-\section{Semantics formalization}
 % \begin{itemize}
-%     \item General approach: Model transformation from any BPMN file to a graph grammar. Rules are generated specifically for each file.
-%     \item Go through the BPMN spec and explain the formalization similar to the structure in \cite{vangorpVisualTokenbasedFormalization2013}.
-%     \item Talk about best practices that help explain why some elements have not been formalized yet (Problems with the inclusive gateway, complex gateway, etc.).
+%     \item State goals: Semantics formalization and reference implementation (more/other features supported than recent approaches)
+%     \item Easy BPMN model checking (definition of propositions using BPMN syntax!)
+%     \item New generative approach to the semantics formalization
+%     \item Prototypical tool support?
 % \end{itemize}
-% General approach
+% Short Motivation: Formalization of the natural language semantics and model checking
+
+% Our new approach
 We have developed a novel approach to cover as many of the \gls*{bpmn} features as possible.
 Our approach is summarized as a \gls*{bpmn} process model in \cref{fig:approach}.
 It is based on a model transformation from \gls*{bpmn} process models to graph grammars.
 Thus, our approach is \textit{generative}, i.e., it constructs a new graph grammar including rules and a start graph for each \gls*{bpmn} process model.
 This is a major difference compared to other approaches such as \cite{corradiniFormalApproachAnalysis2021, vangorpVisualTokenbasedFormalization2013} where only the \gls*{bpmn} process model is transformed but the rewrite rules are fixed.
+
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{images/approach-first-part.pdf}
-    \caption{Semantics generation by model transformation}
+    \includegraphics[width=0.7\textwidth]{images/full-approach.pdf}
+    \caption{Overview of the proposed approach}
     \label{fig:approach}
 \end{figure}
 
-We will now shortly introduce graph grammars before we explain the \gls*{bpmn} execution semantics formalization in detail following a similar structure as the \gls*{bpmn} specification \cite[Chapter 13]{objectmanagementgroupBusinessProcessModel2013}.
+% Paper outline
+The remainder of this paper is structured as follows.
+First, we describe the semantics formalization using graph grammars in detail (\cref{sec:formalization}) before explaining how this can be utilized for model checking BPMN specific and custom properties (\cref{sec:modelChecking}).
+Second, we shortly present the implementation of our approach resulting in a web-based tool.
+Finally, we discuss related work regarding BPMN feature coverage in \cref{sec:relatedWork} and conclude in \cref{sec:conclusion}.
 
-\subsection{Graph grammars}
-% Shortly introduce graph grammars.
-% TODO: Self plagiarism!
-
-% Graph grammar definition
-\begin{definition}[Graph grammar] \label{def:graphGrammar}
-A graph grammar $GG=(S, P)$ consists of a start graph $S$ and a set of production rules $P$ \cite{ehrigFundamentalsAlgebraicGraph2006}. 
-\end{definition}
-
-The idea of a graph grammar is to begin with a start graph and then continuously apply all possible production rules.
-Thus, one obtains a state space where each state is a graph, and each transition is a rule application.
-Rules can be applied using different approaches, such as double-pushout (DPO) \cite{ehrigFundamentalsAlgebraicGraph2006} or single-pushout (SPO) \cite{loweAlgebraicApproachSinglepushout1993}.
-Production rules for DPO are defined in \autoref{def:productionRule}.
-Informally speaking, elements in $R$ but not in $L$ are added by a rule, while elements in $L$ and $R$ are preserved, and a rule deletes elements that are in $L$ but not in $R$.
-
-% Rule definition
-\begin{definition}[Production rule] \label{def:productionRule}
-A production rule $P= L \overset{l}{\leftarrow} K \overset{r}{\to} R$ consists of graphs L, K, R, and graph morphisms $l: K \to L$ and $r: K \to R$ \cite{ehrigFundamentalsAlgebraicGraph2006}.
-\end{definition}
-
-% Rule application definition
-
-
-% What about nested rules and NACS?
-
-% Formalization
-\subsection{Formalization}
+\section{Semantics formalization} \label{sec:formalization}
 
 \Cref{fig:bpmnfeaturesOverview} depicts the \gls*{bpmn} features supported by our approach.
 It shows which events, gateways, activities and edges are included in the formalization.
-
-% Describe which events are supported/ not supported. Not finalized yet
-% Describe boundary events. Not finalized yet.
 
 \begin{figure}[h]
     \centering
@@ -135,8 +106,10 @@ Event sub processes can be started by message or signal start events either inte
 All gateways are supported besides the complex gateway.
 However, the complex gateway is not used often \cite{freundRealLifeBPMNUsing2019} and not also not supported by other recent approaches \cite{corradiniFormalApproachAnalysis2021, houhouFirstOrderLogicVerification2022, vangorpVisualTokenbasedFormalization2013}.
 % Describe edges. --> Default and conditional flows?
+% Describe which events are supported/ not supported. Not finalized yet
+% Describe boundary events. Not finalized yet.
 
-\subsubsection{Type graph}
+\subsection{Type graph}
 
 \begin{figure}[h]
     \centering
@@ -145,17 +118,92 @@ However, the complex gateway is not used often \cite{freundRealLifeBPMNUsing2019
     \label{fig:typeGraph}
 \end{figure}
 
-\subsubsection{Process instantiation and termination}
+\subsection{Process instantiation and termination}
 
-\subsubsection{Activities}
-\subsubsection{Gateways}
+\subsection{Activities}
+\subsection{Gateways}
 % Exclusive gateway, parallel gateway, inclusive gateway, exclusive event based gateway
-\subsubsection{Events}
+\subsection{Events}
 
 % In the spec, this is below events
-\subsubsection{Event Sub-Processes}
+\subsection{Event Sub-Processes}
+\section{Model checking BPMN} \label{sec:modelChecking}
 
-\section{Related work}
+Model-checking a \gls*{bpmn} process model is straightforward after a graph grammar describing its execution semantics has been generated.
+\Cref{fig:approach} depicts the inputs and outputs of model checking.
+
+Besides a graph grammar, a set of temporal properties to be checked and the atomic propositions used in the properties must be supplied.
+Atomic propositions are formalized as graph conditions that can be matched to a state in the state space.
+An atomic proposition holds in a state if and only if the graph associated with the atomic proposition is a subgraph of the graph associated with the state. % Cite groove/Rensink here.
+This enables model checking of temporal properties using the defined atomic propositions.
+
+Similar to other work we differentiate between \emph{BPMN specific properties} which are defined generally for all BPMN process models and \emph{custom properties} tailored towards a particular BPMN process model.
+We will now give an example of two predefined BPMN specific properties and how they can be checked using graph grammars.
+Then, we describe how custom properties can be constructed and checked.
+
+\subsection{BPMN specific properties}
+Two BPMN specific behavioral properties namely, Safeness and Soundness are defined in \cite{corradiniClassificationBPMNCollaborations2018}.
+Soundness is further decomposed into (i) Option to complete: any running process instance must eventually complete, (ii) Proper completion: at the moment of completion, each token of the process instance must be in a different end event, (iii) No dead activities: any activity can be executed in at least one process instance \cite{corradiniClassificationBPMNCollaborations2018}.
+We do not consider structural properties since they can be checked using a standard process modeling tool without implementing execution semantics.
+As an example we will now describe how to implement the Safeness and Option to complete properties using graph transformations.
+
+% Safe
+A BPMN process model is \emph{safe}, if during its execution at most one token occurs along the same sequence flow \cite{corradiniClassificationBPMNCollaborations2018}.
+\emph{Safeness} is checked in our implementation using the LTL property defined in \eqref{eq:safeness}.
+The atomic property \textsf{Unsafe} is true if and only if two tokens of one process snapshot have the same position\footnote{An implementation of the atomic property \textsf{Unsafe} in groove is contained in the artifacts of this paper \cite{ArtifactsTERMGRAPH2022}.}.
+
+\begin{align}
+    & \square (\neg \,\text{Unsafe}) \label{eq:safeness} \\
+    \lozenge (& \square(\text{AllTerminated})) \label{eq:optionToComplete}
+\end{align}
+
+% Option to complete
+\emph{Option to complete} is checked in our implementation using the LTL property defined in \eqref{eq:optionToComplete}.
+The atomic property \textsf{AllTerminated} is true if and only if there exists no process snapshot in the state running, i.e., all process snapshots are terminated\footnote{An implementation of the atomic property \textsf{AllTerminated} in groove is contained in the artifacts of this paper \cite{ArtifactsTERMGRAPH2022}.}.
+
+Both properties can be checked using our implementation \cite{ArtifactsTERMGRAPH2022}.
+To fully check Soundness, the proper completion and no dead activities properties have to be checked.
+The information needed to check these properties is present in the generated state space, such that checking these properties is possible manually and can be automatized in the future.
+\subsection{Custom properties}
+% Custom LTL properties
+
+% Defining atomic propositions in BPMN is a novelty.
+To make model checking user friendly, we let users define atomic propositions in the \gls*{bpmn} syntax.
+\gls*{bpmn} is usually explained and formalized using tokens, which flow through the process model.
+Thus, to define an atomic proposition, we let the user attach tokens to his \gls*{bpmn} process model, which we can automatically convert to a graph condition.
+
+For example, the token distribution shown in \cref{fig:atomicProposition} defines two running process instances with a token in the task A.
+Differently colored tokens define different process instances.
+Thus, a user must not be aware of the graph transformation semantics used for execution.
+This leads to a significant advantage compared to currently implemented approaches, which can be adapted even when not using graph transformations.
+% TODO: Implement this
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{images/bpmn_semantics-atomicProp.pdf}
+    \caption{Token distribution defining an atomic proposition.}
+    \label{fig:atomicProposition}
+\end{figure}
+
+The token visualization was significantly inspired by the excellent bpmn-js-token-simulation\footnote{\url{https://github.com/bpmn-io/bpmn-js-token-simulation}}.
+\section{Implementation} \label{sec:impl}
+% Tool
+\Cref{fig:implScreenshot} depicts a screenshot of the implemented tool.
+The tool is open-source, publicly available and does not require any installation \cite{ArtifactsTERMGRAPH2022}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/impl.png}
+    \caption{Screenshot of the web interface of the tool}
+    \label{fig:implScreenshot}
+\end{figure}
+
+The tool implements the approach depicted in \cref{fig:approach}.
+We are using the graph transformation tool Groove\footnote{\url{https://groove.ewi.utwente.nl/about}} in our implementation \cite{ghamarianModellingAnalysisUsing2012, rensinkGROOVESimulatorTool2004}, since it supports all the theoretical constructs that we need.
+
+% Evaluation
+To evaluate the correctness of our implementation we created a comprehensive test suite, which verifies correct rule generation for the implemented BPMN features \cite{ArtifactsTERMGRAPH2022}.
+\section{Related work} \label{sec:relatedWork}
 % Van gorp
 A \gls*{bpmn} formalization based on in-place graph transformation rules is given in \cite{vangorpVisualTokenbasedFormalization2013}.
 The formalization covers a substantial part of the \gls*{bpmn} specification, including complex concepts such as inclusive gateway merge and compensation.
@@ -260,92 +308,7 @@ Their event support remains limited compared to other approaches.
 Besides semantics, our approach is also unique since it not only transforms a \gls*{bpmn} process model into a different representation but also generates graph-transformation rules for this specific model.
 Other approaches, for example, rely on a fixed generic set of rules \cite{vangorpVisualTokenbasedFormalization2013} or Maude implementation \cite{corradiniFormalApproachAnalysis2021}.
 % What about Houhou?
-\section{Model checking BPMN}
-
-Model-checking a \gls*{bpmn} process model is straightforward after a graph grammar describing its execution semantics has been generated.
-\Cref{fig:modelChecking} depicts the inputs and outputs of model checking.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.4\textwidth]{images/approach-second-part.pdf}
-    \caption{Model checking using graph grammars}
-    \label{fig:modelChecking}
-\end{figure}
-
-Besides a graph grammar, a set of temporal properties to be checked and the atomic propositions used in the properties are supplied.
-Atomic propositions must be formalized as graphs that can be matched to each state in the state space.
-An atomic proposition holds in a state if and only if the graph associated with the atomic proposition is a subgraph of the graph associated with the state. % Cite groove/Rensink here.
-This enables model checking of temporal properties using the defined atomic propositions.
-
-Similar to other work we differentiate between \emph{BPMN specific properties} which are defined generally for all BPMN process models and \emph{custom properties} tailored towards a particular BPMN process model.
-We will now give an example of two predefined BPMN specific properties and how they can be checked using graph grammars.
-Then, we describe how custom properties can be constructed and checked.
-
-\subsection{BPMN specific properties}
-Two BPMN specific behavioral properties namely, Safeness and Soundness are defined in \cite{corradiniClassificationBPMNCollaborations2018}.
-Soundness is further decomposed into (i) Option to complete: any running process instance must eventually complete, (ii) Proper completion: at the moment of completion, each token of the process instance must be in a different end event, (iii) No dead activities: any activity can be executed in at least one process instance \cite{corradiniClassificationBPMNCollaborations2018}.
-We do not consider structural properties since they can be checked using a standard process modeling tool without implementing execution semantics.
-As an example we will now describe how to implement the Safeness and Option to complete properties using graph transformations.
-
-% Safe
-A BPMN process model is \emph{safe}, if during its execution at most one token occurs along the same sequence flow \cite{corradiniClassificationBPMNCollaborations2018}.
-\emph{Safeness} is checked in our implementation using the LTL property defined in \eqref{eq:safeness}.
-The atomic property \textsf{Unsafe} is true if and only if two tokens of one process snapshot have the same position\footnote{An implementation of the atomic property \textsf{Unsafe} in groove is contained in the artifacts of this paper \cite{ArtifactsTERMGRAPH2022}.}.
-
-\begin{align}
-    & \square (\neg \,\text{Unsafe}) \label{eq:safeness} \\
-    \lozenge (& \square(\text{AllTerminated})) \label{eq:optionToComplete}
-\end{align}
-
-% Option to complete
-\emph{Option to complete} is checked in our implementation using the LTL property defined in \eqref{eq:optionToComplete}.
-The atomic property \textsf{AllTerminated} is true if and only if there exists no process snapshot in the state running, i.e., all process snapshots are terminated\footnote{An implementation of the atomic property \textsf{AllTerminated} in groove is contained in the artifacts of this paper \cite{ArtifactsTERMGRAPH2022}.}.
-
-Both properties can be checked using our implementation \cite{ArtifactsTERMGRAPH2022}.
-To fully check Soundness, the proper completion and no dead activities properties have to be checked.
-The information needed to check these properties is present in the generated state space, such that checking these properties is possible manually and can be automatized in the future.
-\subsection{Custom properties}
-% Custom LTL properties
-
-% Defining atomic propositions in BPMN is a novelty.
-To make model checking user friendly, we let users define atomic propositions in the \gls*{bpmn} syntax.
-\gls*{bpmn} is usually explained and formalized using tokens, which flow through the process model.
-Thus, to define an atomic proposition, we let the user attach tokens to his \gls*{bpmn} process model, which we can automatically convert to a graph condition.
-
-For example, the token distribution shown in \cref{fig:atomicProposition} defines two running process instances with a token in the task A.
-Differently colored tokens define different process instances.
-Thus, a user must not be aware of the graph transformation semantics used for execution.
-This leads to a significant advantage compared to currently implemented approaches, which can be adapted even when not using graph transformations.
-% TODO: Implement this
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.3\textwidth]{images/bpmn_semantics-atomicProp.pdf}
-    \caption{Token distribution defining an atomic proposition.}
-    \label{fig:atomicProposition}
-\end{figure}
-
-The token visualization was significantly inspired by the excellent bpmn-js-token-simulation\footnote{\url{https://github.com/bpmn-io/bpmn-js-token-simulation}}.
-
-\section{Implementation}
-% Tool
-\Cref{fig:implScreenshot} depicts a screenshot of the implemented tool.
-The tool is open-source, publicly available and does not require any installation \cite{ArtifactsTERMGRAPH2022}.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.6\textwidth]{images/impl.png}
-    \caption{Screenshot of the web interface of the tool}
-    \label{fig:implScreenshot}
-\end{figure}
-
-The tool implements the approach depicted in \cref{fig:approach}.
-We are using the graph transformation tool Groove\footnote{\url{https://groove.ewi.utwente.nl/about}} in our implementation \cite{ghamarianModellingAnalysisUsing2012, rensinkGROOVESimulatorTool2004}, since it supports all the theoretical constructs that we need.
-
-% Evaluation
-To evaluate the correctness of our implementation we created a comprehensive test suite, which verifies correct rule generation for the implemented BPMN features \cite{ArtifactsTERMGRAPH2022}.
-
-\section{Conclusion}
+\section{Conclusion} \label{sec:conclusion}
 % Summary
 
 % Future work
