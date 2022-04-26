@@ -100,7 +100,7 @@ Other tasks such as service, user, script, business rule, manual and undefined t
 Furthermore, we support two types of sub processes.
 First, is the occurrence of expanded sub processes in the sequence flow.
 Second, is the occurrence of event sub processes in pools.
-Event sub processes can be started by message or signal start events either interrupting or non-interrupting.
+Event sub processes can be started by message or signal start events (interrupting or non-interrupting).
 
 % Describe gateways.
 All gateways are supported besides the complex gateway.
@@ -150,7 +150,7 @@ As an example we will now describe how to implement the Safeness and Option to c
 % Safe
 A BPMN process model is \emph{safe}, if during its execution at most one token occurs along the same sequence flow \cite{corradiniClassificationBPMNCollaborations2018}.
 \emph{Safeness} is checked in our implementation using the LTL property defined in \eqref{eq:safeness}.
-The atomic property \textsf{Unsafe} is true if and only if two tokens of one process snapshot have the same position\footnote{An implementation of the atomic property \textsf{Unsafe} in groove is contained in the artifacts of this paper \cite{ArtifactsTERMGRAPH2022}.}.
+The atomic property \textsf{Unsafe} is true if and only if two tokens of one process snapshot have the same position\footnote{An implementation of the atomic property \textsf{Unsafe} in groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
 
 \begin{align}
     & \square (\neg \,\text{Unsafe}) \label{eq:safeness} \\
@@ -159,9 +159,9 @@ The atomic property \textsf{Unsafe} is true if and only if two tokens of one pro
 
 % Option to complete
 \emph{Option to complete} is checked in our implementation using the LTL property defined in \eqref{eq:optionToComplete}.
-The atomic property \textsf{AllTerminated} is true if and only if there exists no process snapshot in the state running, i.e., all process snapshots are terminated\footnote{An implementation of the atomic property \textsf{AllTerminated} in groove is contained in the artifacts of this paper \cite{ArtifactsTERMGRAPH2022}.}.
+The atomic property \textsf{AllTerminated} is true if and only if there exists no process snapshot in the state running, i.e., all process snapshots are terminated\footnote{An implementation of the atomic property \textsf{AllTerminated} in groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
 
-Both properties can be checked using our implementation \cite{ArtifactsTERMGRAPH2022}.
+Both properties can be checked using our implementation \cite{timkrauterArtifactsTERMGRAPH2022}.
 To fully check Soundness, the proper completion and no dead activities properties have to be checked.
 The information needed to check these properties is present in the generated state space, such that checking these properties is possible manually and can be automatized in the future.
 \subsection{Custom properties}
@@ -189,7 +189,7 @@ The token visualization was significantly inspired by the excellent bpmn-js-toke
 \section{Implementation} \label{sec:impl}
 % Tool
 \Cref{fig:implScreenshot} depicts a screenshot of the implemented tool.
-The tool is open-source, publicly available and does not require any installation \cite{ArtifactsTERMGRAPH2022}.
+The tool is open-source, publicly available and does not require any installation \cite{timkrauterArtifactsTERMGRAPH2022}.
 
 \begin{figure}[h]
     \centering
@@ -202,7 +202,7 @@ The tool implements the approach depicted in \cref{fig:approach}.
 We are using the graph transformation tool Groove\footnote{\url{https://groove.ewi.utwente.nl/about}} in our implementation \cite{ghamarianModellingAnalysisUsing2012, rensinkGROOVESimulatorTool2004}, since it supports all the theoretical constructs that we need.
 
 % Evaluation
-To evaluate the correctness of our implementation we created a comprehensive test suite, which verifies correct rule generation for the implemented BPMN features \cite{ArtifactsTERMGRAPH2022}.
+To evaluate the correctness of our implementation we created a comprehensive test suite, which verifies correct rule generation for the implemented BPMN features \cite{timkrauterArtifactsTERMGRAPH2022}.
 \section{Related work} \label{sec:relatedWork}
 % Van gorp
 A \gls*{bpmn} formalization based on in-place graph transformation rules is given in \cite{vangorpVisualTokenbasedFormalization2013}.
