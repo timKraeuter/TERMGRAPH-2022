@@ -294,16 +294,13 @@ A BPMN process model is \emph{safe}, if during its execution at most one token o
 The atomic property \textsf{Unsafe} is true if and only if two tokens of one process snapshot have the same position\footnote{An implementation of the atomic property \textsf{Unsafe} in groove is contained in the artifacts of this paper \cite{ArtifactsTERMGRAPH2022}.}.
 
 \begin{align}
-    \square (\neg \,\text{Unsafe}) \label{eq:safeness}
+    & \square (\neg \,\text{Unsafe}) \label{eq:safeness} \\
+    \lozenge (& \square(\text{AllTerminated})) \label{eq:optionToComplete}
 \end{align}
 
 % Option to complete
 \emph{Option to complete} is checked in our implementation using the LTL property defined in \eqref{eq:optionToComplete}.
 The atomic property \textsf{AllTerminated} is true if and only if there exists no process snapshot in the state running, i.e., all process snapshots are terminated\footnote{An implementation of the atomic property \textsf{AllTerminated} in groove is contained in the artifacts of this paper \cite{ArtifactsTERMGRAPH2022}.}.
-
-\begin{align}
-    \lozenge (\square(\text{AllTerminated})) \label{eq:optionToComplete}
-\end{align}
 
 Both properties can be checked using our implementation \cite{ArtifactsTERMGRAPH2022}.
 To fully check Soundness, the proper completion and no dead activities properties have to be checked.
@@ -312,26 +309,30 @@ The information needed to check these properties is present in the generated sta
 % Custom LTL properties
 
 % Defining atomic propositions in BPMN is a novelty.
-Since we want to hide as much complexity as possible from a user who is model checking his \gls*{bpmn} process model, we let them define atomic propositions using the familiar \gls*{bpmn} syntax.
+To make model checking user friendly, we let users define atomic propositions in the \gls*{bpmn} syntax.
 \gls*{bpmn} is usually explained and formalized using tokens, which flow through the process model.
 Thus, to define an atomic proposition, we let the user attach tokens to his \gls*{bpmn} process model, which we can automatically convert to a graph condition.
 
-For example, the token distribution shown in \cref{fig:atomicProposition} defines two running process instances with a token in task A/B.
-Differently colored tokens belong to different process instances.
-This visualization was significantly inspired by the excellent bpmn-js-token-simulation\footnote{\url{https://github.com/bpmn-io/bpmn-js-token-simulation}}.
+For example, the token distribution shown in \cref{fig:atomicProposition} defines two running process instances with a token in the task A.
+Differently colored tokens define different process instances.
+Thus, a user must not be aware of the graph transformation semantics used for execution.
+This leads to a significant advantage compared to currently implemented approaches, which can be adapted even when not using graph transformations.
 % TODO: Implement this
 
-% TODO: Change the picture to svg once implemented etc.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.6\textwidth]{images/atomicProposition.png}
-    \caption{Token distribution defining an atomic proposition}
+    \includegraphics[width=0.3\textwidth]{images/bpmn_semantics-atomicProp.pdf}
+    \caption{Token distribution defining an atomic proposition.}
     \label{fig:atomicProposition}
 \end{figure}
 
-% TODO: We might look at some soundness things as in s3 and Bprove. Can we check them easily, and how?
+The token visualization was significantly inspired by the excellent bpmn-js-token-simulation\footnote{\url{https://github.com/bpmn-io/bpmn-js-token-simulation}}.
 
 \section{Implementation}
+First, we will describe the tool we developed to implement our approach.
+We are using the graph transformation tool Groove\footnote{\url{https://groove.ewi.utwente.nl/about}} in our implementation \cite{ghamarianModellingAnalysisUsing2012, rensinkGROOVESimulatorTool2004}, since it supports all the theoretical constructs that we need.
+
+Second, we will describe how we used a comprehensive test suite to evaluate that our approach covers the presented features of the BPMN semantics.
 % \begin{itemize}
 %     \item Talk about the tool implementation.
 %     \item No installation should be needed.
@@ -344,9 +345,9 @@ This visualization was significantly inspired by the excellent bpmn-js-token-sim
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{images/impl.png}
-    \caption{Implementation}
-    \label{fig:impl}
+    \includegraphics[width=0.8\textwidth]{images/impl.png}
+    \caption{Screenshot of the web interface of the tool}
+    \label{fig:implScreenshot}
 \end{figure}
 
 \subsection{Evaluation}
