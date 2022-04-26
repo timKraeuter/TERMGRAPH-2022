@@ -20,4 +20,9 @@ The property matches whenever there is no process snapshot in the state running.
 # Implementation
 TODO: Link tool repo and tool website
 
-TODO: Add table for the testsuite here.
+| BPMN feature  | Test class           | Test case |
+| ------------- | -------------        | -----           |
+| Task          | BPMNToGrooveTaskTest | Sequential Tasks|
+| col 2 is      | centered             |       |
+| zebra stripes | are neat             |      |
+
