@@ -146,9 +146,9 @@ Then, we describe how custom properties can be constructed and checked.
 
 \subsection{BPMN-specific properties}
 Two BPMN-specific behavioral properties, namely, Safeness and Soundness, are defined in \cite{corradiniClassificationBPMNCollaborations2018}.
-Soundness is further decomposed into (i) Option to complete: any running process instance must eventually complete, (ii) Proper completion: at the moment of completion, each token of the process instance must be in a different end event, (iii) No dead activities: any activity can be executed in at least one process instance \cite{corradiniClassificationBPMNCollaborations2018}.
+Soundness is further decomposed into (i) \emph{Option to complete}: any running process instance must eventually complete, (ii) \emph{Proper completion}: at the moment of completion, each token of the process instance must be in a different end event, (iii) \emph{No dead activities}: any activity can be executed in at least one process instance \cite{corradiniClassificationBPMNCollaborations2018}.
 We do not consider structural properties since they can be checked using a standard process modeling tool without implementing execution semantics.
-As an example, we will now describe how to implement the Safeness and Option to complete properties using graph transformations.
+As an example, we will now describe how to implement the \emph{Safeness} and \emph{Option to complete} properties using graph transformations.
 
 % Safe
 A BPMN process model is \emph{safe} if during its execution at most one token occurs along the same sequence flow \cite{corradiniClassificationBPMNCollaborations2018}.
@@ -297,7 +297,7 @@ Nevertheless, the same behavior can be achieved using message events.
 % Limited subprocess support?
 
 % Explain Houhou in detail
-Houhou et al. only support message, timer, and terminate events.
+Houhou et al. \cite{houhouFirstOrderLogicVerification2022} only support message, timer, and terminate events.
 However, they support message and timer events as both interrupting and non-interrupting boundary events.
 Their event support remains limited compared to other approaches.
 
@@ -311,15 +311,23 @@ Their event support remains limited compared to other approaches.
 Besides semantics, our approach is also unique since it not only transforms a BPMN process model into a different representation but also generates graph-transformation rules for this specific model.
 Other approaches, for example, rely on a fixed generic set of rules \cite{vangorpVisualTokenbasedFormalization2013} or Maude implementation \cite{corradiniFormalApproachAnalysis2021}.
 % What about Houhou?
-\section{Conclusion} \label{sec:conclusion}
+\section{Conclusion \& future work} \label{sec:conclusion}
 % Summary
 
 % Future work
-% Performance evaluation compared to other approaches and these repositories cited in the other papers
+We aim to improve and extend our formalization and resulting tool in multiple ways in the future.
 % More semantics
+First, we intend to extend our formalization to support even more BPMN constructs for example error, cancel and compensation events.
+% Proper evaluation
+Second, we plan to evaluate our approach on syntactical models and on models from open repositories such as the "BPM Academic Initiative Model Collection" \cite{weskeModelCollectionBusiness2020} and "Camunda BPMN for
+Research"\footnote{\url{https://github.com/camunda/bpmn-for-research}}.
 % Implementing the atomic proposition definition
+Third, we want to extend the features of our tool.
+One should be able to define atomic propositions for model checking in the tool directly, as described in \cref{sec:modelChecking}.
 % Counterexample simulation similar to Houhou
+Furthermore, counterexamples found during model checking should be visualized directly in the tool, similar to the implementation in \cite{houhouFirstOrderLogicVerification2022}, such that users must not be aware of the underlying implementation in Groove.
 % Automatize more BPMN-specific properties
+Finally, we aim to directly integrate \emph{Soundness} as an BPMN specific property together with its sub-properties \emph{Proper completion} and \emph{No dead activities} into the tool \cite{corradiniClassificationBPMNCollaborations2018}.
 \bibliographystyle{eptcs}
 \bibliography{bib} % TODO: Should be bib.
 \end{document}
