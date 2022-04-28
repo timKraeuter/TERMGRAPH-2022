@@ -26,7 +26,9 @@ Adding this feature is planned for the full version of the paper due to the curr
 # Implementation
 
 ## Tool
-TODO: Link tool repo and tool website
+The tool is available online [here](https://bpmn-analyzer.herokuapp.com/).
+Instructions how to run it locally on your machine can be found here.
+TODO: Link tool repo and upload tool jars/docker image.
 
 
 ## Test suite
