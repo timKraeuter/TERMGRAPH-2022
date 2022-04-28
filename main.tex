@@ -49,7 +49,7 @@ Yngve Lamo\Mark{*}\orcidlink{0000-0001-9196-1779}
 \begin{abstract}
 The BPMN is a widely used standard notation to define intra- and inter-organizational workflows to improve the communication between domain experts and software developers.
 However, the informal textual description of the BPMN execution semantics hinders BPMN from reaching its full potential since BPMN constructs are interpreted differently, and behavioral properties cannot be checked.
-Consequently, we propose a new unique formalization of the BPMN execution semantics based on graph grammars, which is one of the most complete regarding supported BPMN constructs and enables model checking of BPMN specific and custom properties.
+Consequently, we propose a new unique formalization of the BPMN execution semantics based on graph grammars, which is one of the most complete regarding supported BPMN constructs and enables model checking of BPMN-specific and custom properties.
 In addition, we implemented our formalization and made the resulting open-source tool freely accessible on the web.
 \end{abstract}
 
@@ -62,7 +62,7 @@ In addition, we implemented our formalization and made the resulting open-source
 The \gls*{bpmn} is a widely used standard notation to define intra- and inter-organizational workflows to improve the communication between domain experts and software developers.
 However, the informal textual description of the BPMN execution semantics hinders its full adoption \cite{objectmanagementgroupBusinessProcessModel2013, corradiniFormalApproachAnalysis2021}.
 Consequently, to develop BPMN's full potential, we propose a new approach to formalize the BPMN execution semantics based on graph grammars.
-The formalization in our approach is one of the most complete regarding supported BPMN constructs and enables model checking of BPMN specific and custom properties.
+The formalization in our approach is one of the most complete regarding supported BPMN constructs and enables model checking of BPMN-specific and custom properties.
 
 The approach is summarized as a BPMN process model in \cref{fig:approach}.
 It is based on a model transformation from BPMN process models to graph grammars.
@@ -84,8 +84,10 @@ Finally, we discuss related work regarding BPMN feature coverage in \cref{sec:re
 
 \section{Semantics formalization} \label{sec:formalization}
 
+Since our approach is a model transformation from BPMN to graph grammars it will generate a \emph{start graph} and \emph{production rules} for a given BPMN process model.
+However, we do not support all possible BPMN models.
 \Cref{fig:bpmnConstructsOverview} depicts the BPMN constructs supported by our approach.
-It shows which events, gateways, activities, and edges are included in the formalization.
+We compare the extent of our formalization to other approaches later in this paper.
 
 \begin{figure}[h]
     \centering
@@ -94,33 +96,31 @@ It shows which events, gateways, activities, and edges are included in the forma
     \label{fig:bpmnConstructsOverview}
 \end{figure}
 
-% Describe which tasks are supported and which other tasks are meant by AT.
-We support receive and send tasks that can be connected to each other or message events using message flows across different pools in a BPMN process model.
-Receive tasks can instantiate a process instance if they do not have any incoming sequence flows and the \textsf{instantiating} property is set.
-Other tasks such as service, user, script, business rule, manual and undefined tasks are handled uniformly.
+Our graph-transformation semantics are token-based as in the informal description of the BPMN specification \cite{objectmanagementgroupBusinessProcessModel2013}.
+Thus, to describe processes holding tokens during execution we use the type graph shown in \cref{fig:typeGraph}.
+The type graph is depicted using a UML class diagram-like syntax.
 
-% Describe supported sub-processes.
-Furthermore, we support two types of sub-processes.
-First is the occurrence of expanded sub-processes in the sequence flow.
-Second is the occurrence of event sub-processes in pools.
-Event sub-processes can be started by message or signal start events (interrupting or non-interrupting).
-
-% Describe gateways.
-All gateways are supported besides the complex gateway.
-However, the complex gateway is not used often \cite{freundRealLifeBPMNUsing2019} and is also not supported by other recent approaches \cite{corradiniFormalApproachAnalysis2021, houhouFirstOrderLogicVerification2022, vangorpVisualTokenbasedFormalization2013}.
-% Describe edges. --> Default and conditional flows?
-% Describe which events are supported/ not supported. Not finalized yet
-% Describe boundary events. Not finalized yet.
-
-\subsection{Type graph}
-% TODO: write chapter
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{images/bpmn_semantics-typegraph.pdf}
-    \caption{BPMN execution type graph} % TODO: Cite my ecmfa paper?
+    \caption{BPMN execution type graph}
     \label{fig:typeGraph}
 \end{figure}
 
+We use \textsf{ProcessSnapshot} to denote a running BPMN process with a certain token distribution since it describes one state in the history of process states during the execution.
+Every \textsf{ProcessSnapshot} has a set of \textsf{tokens} and \textsf{subprocesses}.
+A \textsf{ProcessSnapshot} has the state \textsf{Terminated} if it has no \textsf{tokens} or \textsf{subprocesses}, else it has the state \textsf{Running}.
+Using this type graph we can now define how the start graph and graph-transformation rules for the different BPMN constructs are created.
+% TODO: Describe that we just work on tokens.
+% TODO: Describe what the token position is.
+
+% How is a start graph generated?
+The generation of the start graph for a BPMN model is straightforward.
+For each pool in the BPMN model we generate a process snapshot, if the pool contains a none start event (NSE).
+A BPMN pool is depicted as a vertical lane with a name on the left and contains BPMN elements.
+For each NSE we add a token to the respective process snapshot.
+
+% How are the rules generated?
 \subsection{Process instantiation and termination}
 
 \subsection{Activities}
@@ -206,6 +206,7 @@ We are using the graph transformation tool Groove\footnote{\url{https://groove.e
 
 % Evaluation
 To evaluate the correctness of our implementation, we created a comprehensive test suite, which verifies correct rule generation for the implemented BPMN constructs \cite{timkrauterArtifactsTERMGRAPH2022}.
+
 \section{Related work} \label{sec:relatedWork}
 % Van gorp
 A BPMN formalization based on in-place graph transformation rules is given in \cite{vangorpVisualTokenbasedFormalization2013}.
@@ -213,24 +214,26 @@ The formalization covers a substantial part of the BPMN specification, including
 In addition, graph transformation rules are visual and thus can easily be matched to the informal description of the execution semantics in the specification \cite{objectmanagementgroupBusinessProcessModel2013}.
 The graph transformation rules were implemented in a prototype using GrGen.NET.
 Unfortunately, the implementation is not publicly accessible anymore.
+Moreover, they do not support model checking since their goal is formalization.
 
 % BProve/Corradini
 The tool BProVe\footnote{\url{http://pros.unicam.it/bprove/}} is based on formal BPMN semantics given in rewriting logic and implemented in the Maude system.
 Using these semantics, BProVe enables the verification of custom temporal properties for process models.
-Furthermore, the tool is easily accessible online and includes multiple predefined properties, such as checking for dead activities and process completion \cite{corradiniBProVeToolSupport2017, corradiniFormalApproachAnalysis2021}.
+Furthermore, the tool is easily accessible online and includes checking of BPMN-specific properties, such as safeness and soundness \cite{corradiniBProVeToolSupport2017, corradiniFormalApproachAnalysis2021}.
+They also support checking custom LTL properties.
 
-% Houhou
+% fbpmn/Houhou
 The verification framework \textsf{fbpmn} uses first-order logic to formalize and check BPMN process models \cite{houhouFirstOrderLogicSemantics2019, houhouFirstOrderLogicVerification2022}.
 This formalization is then realized in the TLA\textsuperscript{+} formal language and can be model-checked using TLC.
 Their framework and related information is open source and freely available online\footnote{\url{https://github.com/pascalpoizat/fbpmn}}.
-Similar to BProVe, \textsf{fbpmn} multiple beneficial predefined properties to be checked for process models.
+Similar to BProVe, \textsf{fbpmn} allows checking BPMN-specific properties, such as safeness and soundness.
 However, they do not allow a user to define custom temporal properties.
 
 Besides these three approaches, there are many more BPMN formalizations, for example, based on Petri Nets \cite{dijkmanSemanticsAnalysisBusiness2008} or process algebras \cite{wongProcessSemanticsBPMN2008}.
 We looked in detail at these three approaches since they support a significant subset of the BPMN constructs, have easily accessible and well-documented tool support, and are pretty recent.
 
 Nevertheless, different approaches support a different subset of the BPMN constructs, which impacts their usefulness in practical scenarios.
-\Cref{tab:supportedconstructs} depicts which constructs of the BPMN execution semantics are supported by the different approaches and our approach.
+\Cref{tab:supportedconstructs} depicts which BPMN constructs are supported by the different approaches compared to our approach.
 
 \begin{table}[htbp]
     \caption{Constructs supported by different BPMN formalizations (overview based on \cite{vangorpVisualTokenbasedFormalization2013}).}
@@ -250,7 +253,7 @@ Nevertheless, different approaches support a different subset of the BPMN constr
       Activity & X & X & X & X\\
       Subprocess & X & X* & X & X\\
       Ad-hoc subprocesses & & & &\\
-      Loop activity & X & & & ?\\
+      Loop activity & X & & &\\
       Multiple instance activity & & & & \\
       \textit{Gateways} & & & &\\
       Parallel gateway & X & X & X & X\\
@@ -260,7 +263,7 @@ Nevertheless, different approaches support a different subset of the BPMN constr
       Event-based gateway &  & X\footnote{Does not support receive tasks after event-based gateways.} & X & X\\ % No timer and conditional events after event based gateway supported.
       Complex gateway & & & &\\
       \textit{Events} & & & & \\
-      None Events & X & & & X\\
+      None Events & X & X & X & X\\
       Message events & X & X & X & X\\
       Timer Events & & & X & \\
       Escalation Events & & & & \\
@@ -275,11 +278,8 @@ Nevertheless, different approaches support a different subset of the BPMN constr
       Terminate Events & X & X & X & X\\
      Boundary Events & X\footnote{Only supports interrupting boundary events on tasks.} & & X\footnote{Only supports message and timer events.} & X\\ % To the same extent as the event support
       \textit{Event subprocess} &  &  &  & \\
-      Message Start Event &  & & & X\\
-      Message Start Event (non-interrupting) & & & & X\\
-      Signal Start Event &  & & & X\\
-      Signal Start Event (non-interrupting) &  & & & X\\
-      Other Start Events &  & & & \\ % Conditional and Escalation.
+      Start Events &  & & & X\footnote{\label{footnote:startEventRestriction}We support signal and message start events.}\\
+      Start Events (non-interrupting) & & & & X\cref{footnote:startEventRestriction}\\
     \end{tabular}
 \end{table}
 
@@ -292,14 +292,12 @@ Especially, Event-based gateways are often used and supported by every other app
 % Explain Corradini in detail
 Corradini et al. \cite{corradiniFormalApproachAnalysis2021} does only support message and terminate events.
 However, many other types of events exist and are used in practice.
-In addition, they do not support the occurrence of receive tasks after Event-based gateways.
+Moreover, they do not support the occurrence of receive tasks after Event-based gateways.
 Nevertheless, the same behavior can be achieved using message events.
 % Limited subprocess support?
-
 % Explain Houhou in detail
-Houhou et al. \cite{houhouFirstOrderLogicVerification2022} only support message, timer, and terminate events.
-However, they support message and timer events as both interrupting and non-interrupting boundary events.
-Their event support remains limited compared to other approaches.
+In addition to \cite{corradiniFormalApproachAnalysis2021}, Houhou et al. \cite{houhouFirstOrderLogicVerification2022} support timer and the use of message and timer events as both interrupting and non-interrupting boundary events.
+However, the support of different event types remains limited compared to \cite{vangorpVisualTokenbasedFormalization2013}.
 
 % Explain our approach in more detail. What are we lacking?
 
@@ -331,7 +329,7 @@ One should be able to define atomic propositions for model checking in the tool 
 % Counterexample simulation similar to Houhou
 Furthermore, counterexamples found during model checking should be visualized directly in the tool, similar to the implementation in \cite{houhouFirstOrderLogicVerification2022}, such that users must not be aware of the underlying implementation in Groove.
 % Automatize more BPMN-specific properties
-Finally, we aim to directly integrate \emph{Soundness} as an BPMN specific property together with its sub-properties \emph{Proper completion} and \emph{No dead activities} into the tool \cite{corradiniClassificationBPMNCollaborations2018}.
+Finally, we aim to directly integrate \emph{Soundness} as an BPMN-specific property together with its sub-properties \emph{Proper completion} and \emph{No dead activities} into the tool \cite{corradiniClassificationBPMNCollaborations2018}.
 \bibliographystyle{eptcs}
 \bibliography{bib} % TODO: Should be bib.
 \end{document}
