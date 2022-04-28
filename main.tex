@@ -227,7 +227,7 @@ Similar to BProVe, \textsf{fbpmn} multiple beneficial predefined properties to b
 However, they do not allow a user to define custom temporal properties.
 
 Besides these three approaches, there are many more BPMN formalizations, for example, based on Petri Nets \cite{dijkmanSemanticsAnalysisBusiness2008} or process algebras \cite{wongProcessSemanticsBPMN2008}.
-We picked them since they support a significant subset of the BPMN constructs, have easily accessible and well-documented tool support, and are pretty recent.
+We looked in detail at these three approaches since they support a significant subset of the BPMN constructs, have easily accessible and well-documented tool support, and are pretty recent.
 
 Nevertheless, different approaches support a different subset of the BPMN constructs, which impacts their usefulness in practical scenarios.
 \Cref{tab:supportedconstructs} depicts which constructs of the BPMN execution semantics are supported by the different approaches and our approach.
@@ -262,7 +262,7 @@ Nevertheless, different approaches support a different subset of the BPMN constr
       \textit{Events} & & & & \\
       None Events & X & & & X\\
       Message events & X & X & X & X\\
-      Timer Events & & & X & X*\\
+      Timer Events & & & X & \\
       Escalation Events & & & & \\
       Error Events (catch) & X & & & \color{yellow}X\\ % Yellow means I want to support this but not implemented yet.
       Error Events (throw) & X & & & \color{yellow}X\\
@@ -314,8 +314,12 @@ Other approaches, for example, rely on a fixed generic set of rules \cite{vangor
 \section{Conclusion \& future work} \label{sec:conclusion}
 % Summary
 
+% Formalization
+% Model checking
+% Tool
+
 % Future work
-We aim to improve and extend our formalization and resulting tool in multiple ways in the future.
+We aim to improve our formalization and resulting tool in multiple ways in the future.
 % More semantics
 First, we intend to extend our formalization to support even more BPMN constructs for example error, cancel and compensation events.
 % Proper evaluation
