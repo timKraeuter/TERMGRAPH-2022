@@ -27,11 +27,15 @@ Adding this feature is planned for the full version of the paper due to the curr
 
 ## Tool
 The tool is available online [here](https://bpmn-analyzer.herokuapp.com/).
-Instructions how to run it locally on your machine can be found here.
-TODO: Link tool repo and upload tool jars/docker image.
+
+[![Atomic property Unsafe implemented in Groove.](../images/impl.png)](https://bpmn-analyzer.herokuapp.com/)
+
+The sourcecode of the tool is available [here](https://github.com/timKraeuter/Groove_Rule_Generation) and instructions how to run it locally on your machine can be found [here](https://github.com/timKraeuter/Groove_Rule_Generation/blob/master/server/README.md).
 
 
 ## Test suite
+The test classes of the testsuite can be found in the subproject **generator** [here](https://github.com/timKraeuter/Groove_Rule_Generation).
+
 | BPMN feature                                | Test class                      | Test case                                                                                                                |
 |---------------------------------------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------|
 | Exclusive event-based gateway instantiation | BPMNToGrooveGatewayTest         | [Exclusive Event Based Gateway - Instantiate](https://cawemo.com/share/6db8059f-911b-4d2b-a8b3-83efb99ceed2)             |
