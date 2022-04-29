@@ -22,6 +22,7 @@ BPMN-specific properties currently have to be checked in Groove due to an unreso
 ```
 java -jar artifacts\groove-5_8_1\bin\Simulator.jar
 ```
+- Load a graph grammar. You can generate one using the tool below and unzip it on your local machine.
 - Run LTL verification by copying one of the desired properties (listed below) and right-clicking in the LTS-Simulation tab. Select ```Verify < Check LTL property (full state space)``` and paste the copied LTL property.
 
 ![check ltl property](./artifacts/check_ltl.png)
