@@ -111,9 +111,10 @@ The type graph is depicted using a UML class diagram-like syntax.
 We use \textsf{ProcessSnapshot} to denote a running BPMN process with a certain token distribution since it describes one state in the history of process states during the execution.
 Every \textsf{ProcessSnapshot} has a set of \textsf{tokens} and \textsf{subprocesses}.
 A \textsf{ProcessSnapshot} has the state \textsf{Terminated} if it has no \textsf{tokens} or \textsf{subprocesses}, else it has the state \textsf{Running}.
+A \textsf{Token} has a fixed \textsf{position}, which is the name (or id in case of identical names) of either a BPMN activity or sequence flow.
+To depict graphs conforming to the type graph concisely, we introduce concrete syntax in the clouds attached to the elements in the type graph.
+Tokens are represented as circles and will match the color of the circle representing the process snapshot holding the token.
 Using this type graph we can now define how the start graph and graph-transformation rules for the different BPMN constructs are created.
-% TODO: Describe that we just work on tokens.
-% TODO: Describe what the token position is.
 
 % How is a start graph generated?
 The generation of the start graph for a BPMN model is straightforward.
@@ -128,7 +129,7 @@ We will now describe the rule generation for some selected elements to give a br
 % TODO: Describe this and draw parallels to gateways
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{images/bpmn_semantics-task-rules.pdf}
+    \includegraphics[width=0.6\textwidth]{images/bpmn_semantics-task-rules.pdf}
     \caption{Rules for a task with two incoming and outgoing sequence flows.}
     \label{fig:taskRules}
 \end{figure}
