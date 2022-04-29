@@ -120,10 +120,12 @@ The generation of the start graph for a BPMN model is straightforward.
 For each pool in the BPMN model we generate a process snapshot, if the pool contains a none start event (NSE).
 A BPMN pool is depicted as a vertical lane with a name on the left and contains BPMN elements.
 For each NSE we add a token to the respective process snapshot.
+Furthermore, we consider to allow the user to define a start graph similar to how he could define atomic propositions for custom properties (see \cref{subsec:customProperties}).
 
-We will now describe the rule generation for some selected elements.
-\subsection{Activities \& Gateways}
+We will now describe the rule generation for some selected elements to give a brief overview how the model transformation to graph grammars works.
+\subsection{Activities}
 % Task with implicit exclusive and parallel gateways.
+% TODO: Describe this and draw parallels to gateways
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{images/bpmn_semantics-task-rules.pdf}
@@ -132,12 +134,12 @@ We will now describe the rule generation for some selected elements.
 \end{figure}
 
 \subsection{Events}
-% Message Events?
+% TODO: Describe message Events and maybe draw parallels to other events.
 
 \subsection{Process termination}
 Process termination is implemented using a general rule, applicable to all process snapshots.
 The rule is automatically generated once during the model transformation to graph grammars and is used to terminate processes, sub processes and event sub processes.
-It uses non-application conditions to forbid tokens and sub processes for a process snapshot and then change its state from running to terminated\footnote{An implementation of the terminate rule in Groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
+It uses non-application conditions to forbid tokens and sub processes for a process snapshot and then change its state from running to terminated\footnote{The terminate rule implemented in Groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
 
 \section{Model checking BPMN} \label{sec:modelChecking}
 
@@ -162,7 +164,7 @@ As an example, we will now describe how to implement the \emph{Safeness} and \em
 % Safe
 A BPMN process model is \emph{safe} if during its execution at most one token occurs along the same sequence flow \cite{corradiniClassificationBPMNCollaborations2018}.
 \emph{Safeness} is checked in our implementation using the LTL property defined in \eqref{eq:safeness}.
-The atomic property \textsf{Unsafe} is true if and only if two tokens of one process snapshot have the same position\footnote{An implementation of the atomic property \textsf{Unsafe} in Groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
+The atomic property \textsf{Unsafe} is true if and only if two tokens of one process snapshot have the same position\footnote{\label{footnote:atomicProps}Groove rules for the atomic properties \textsf{Unsafe} and \textsf{AllTerminated} are contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
 
 \begin{align}
     & \square (\neg \,\text{Unsafe}) \label{eq:safeness} \\
@@ -171,12 +173,12 @@ The atomic property \textsf{Unsafe} is true if and only if two tokens of one pro
 
 % Option to complete
 \emph{Option to complete} is checked in our implementation using the LTL property defined in \eqref{eq:optionToComplete}.
-The atomic property \textsf{AllTerminated} is true if and only if there exists no process snapshot in the state running, i.e., all process snapshots are terminated\footnote{An implementation of the atomic property \textsf{AllTerminated} in Groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
+The atomic property \textsf{AllTerminated} is true if and only if there exists no process snapshot in the state running, i.e., all process snapshots are terminated\cref{footnote:atomicProps}.
 
 Both properties can be checked using our implementation \cite{timkrauterArtifactsTERMGRAPH2022}.
 To fully check Soundness, the proper completion and no dead activities properties must be checked.
 The information needed to check these properties is present in the generated state space, such that checking these properties is possible manually and can be automatized in the future.
-\subsection{Custom properties}
+\subsection{Custom properties} \label{subsec:customProperties}
 % Custom LTL properties
 
 % Defining atomic propositions in BPMN is a novelty.
