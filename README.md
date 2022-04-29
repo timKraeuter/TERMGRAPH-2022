@@ -13,7 +13,18 @@ The dashed red borders mark parts of non-application conditions, grey parts rema
 
 ## Model Checking BPMN
 
-### BPMN specific properties
+### BPMN-specific properties
+BPMN-specific properties currently have to be checked in Groove due to an unresolved [bug](https://sourceforge.net/p/groove/bugs/499/) and unfinished implementation.
+
+- Make sure Java is installed on your machine to run Groove (tested with Java version 1.8.0_301)
+- Clone/download this repository.
+- Start Groove by running the following command in **this directory**:
+```
+java -jar artifacts\groove-5_8_1\bin\Simulator.jar
+```
+- Run LTL verification by copying one of the desired properties (listed below) and right-clicking in the LTS-Simulation tab. Select ```Verify < Check LTL property (full state space)``` and paste the copied LTL property.
+
+![check ltl property](./artifacts/check_ltl.png)
 
 #### Safeness
 
@@ -93,3 +104,10 @@ The test classes of the testsuite can be found in the subproject **generator** [
 |                                             |                                 | [Task - Non-Interrupting Boundary Events](https://cawemo.com/share/8a322a8a-95ff-4773-aeb7-fba9635eefbb)                 |
 | Event Sub Process                           | BPMNToGrooveEventSubProcessTest | [Event sub process - Interrupting](https://cawemo.com/share/ebb4b70a-f16a-4716-963e-2e6cda16550f)                        |
 |                                             |                                 | [Event sub process - Non-interrupting](https://cawemo.com/share/fcd16a64-f192-49f6-ac34-e42af8d246f7)                    |
+
+## Further Groove resources:
+- Groove Demo: [Basic functionality](https://www.youtube.com/watch?v=R2beaSQ9-NM).
+- Groove Demo: [Editing Graphs and Rules](https://www.youtube.com/watch?v=R2beaSQ9-NM).
+- Groove Demo: [Type Graphs](https://www.youtube.com/watch?v=LTGRS3AYSSM).
+
+Feel free to contact me for further information.
