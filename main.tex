@@ -136,8 +136,8 @@ We will now describe the rule generation for some selected elements.
 
 \subsection{Process termination}
 Process termination is implemented using a general rule, applicable to all process snapshots.
-
-% Termination? Similar to gorp?
+The rule is automatically generated once during the model transformation to graph grammars and is used to terminate processes, sub processes and event sub processes.
+It uses non-application conditions to forbid tokens and sub processes for a process snapshot and then change its state from running to terminated\footnote{An implementation of the terminate rule in Groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
 
 \section{Model checking BPMN} \label{sec:modelChecking}
 
