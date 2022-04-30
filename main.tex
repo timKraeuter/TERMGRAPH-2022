@@ -1,4 +1,4 @@
-\documentclass[adraft, copyright, creativecommons]{eptcs} % TODO: Change to submission at the end
+\documentclass[submission, copyright, creativecommons]{eptcs}
 \providecommand{\event}{TERMGRAPH 2022} % Name of the event you are submitting to
 % \usepackage{breakurl}             % Not needed if you use pdflatex only.
 \usepackage{underscore}           % Only needed if you use pdflatex.
@@ -40,11 +40,7 @@ Yngve Lamo\Mark{*}\orcidlink{0000-0001-9196-1779}
 \begin{document}
 \maketitle
 
-% Maximum 8 pages for the first extended abstract!
-% At the end, 15 pages for the proceedings.
-
-% TODO: Semantics vs. execution semantics?
-% process snapshot vs. process instance
+% Maximum 8 pages for the first extended abstract(including references)!
 
 \begin{abstract}
 The BPMN is a widely used standard notation to define intra- and inter-organizational workflows to improve the communication between domain experts and software developers.
@@ -198,8 +194,8 @@ To make model checking user-friendly, we let users define atomic propositions in
 BPMN is usually explained and formalized using tokens, which flow through the process model.
 Thus, to define an atomic proposition, we let the user attach tokens to his BPMN process model, which we can automatically convert to a graph condition.
 
-For example, the token distribution shown in \cref{fig:atomicProposition} defines two running process instances with a token in task A.
-Differently colored tokens define different process instances.
+For example, the token distribution shown in \cref{fig:atomicProposition} defines two running process snapshots with a token in task A.
+Differently colored tokens define different process snapshots.
 Thus, a user must not be aware of the graph transformation semantics used for execution, which is a significant advantage compared to other approaches.
 
 \begin{figure}[h]
@@ -337,5 +333,5 @@ Furthermore, counterexamples found during model checking should be visualized di
 % Automatize more BPMN-specific properties
 Finally, we aim to directly integrate \emph{Soundness} as an BPMN-specific property together with its sub-properties \emph{Proper completion} and \emph{No dead activities} into the tool \cite{corradiniClassificationBPMNCollaborations2018}.
 \bibliographystyle{eptcs}
-\bibliography{bib} % TODO: Should be bib.
+\bibliography{bib}
 \end{document}
