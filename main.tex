@@ -69,10 +69,12 @@ The approach is summarized as a BPMN process model in \cref{fig:approach}.
 It is based on a model transformation from BPMN process models to graph grammars.
 Thus, our approach is \textit{generative}, i.e., it constructs a new graph grammar including rules and a start graph for each BPMN process model.
 This is a major difference compared to other approaches such as \cite{corradiniFormalApproachAnalysis2021, vangorpVisualTokenbasedFormalization2013}, where only the BPMN process model is parsed, but the rewrite rules are fixed.
+Generating specific rules for each model leads to possibly more but generally simpler transformation rules that are easier to match.
+Essentially, complexity is shifted from the transformation rules to their generation.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.55\textwidth]{images/full-approach.pdf}
+    \includegraphics[width=0.6\textwidth]{images/full-approach.pdf}
     \caption{Overview of the proposed approach}
     \label{fig:approach}
 \end{figure}
@@ -85,10 +87,9 @@ Finally, we discuss related work regarding BPMN feature coverage in \cref{sec:re
 
 \section{Semantics formalization} \label{sec:formalization}
 
-Since our approach is a model transformation from BPMN to graph grammars it will generate a \emph{start graph} and \emph{production rules} for a given BPMN process model.
+Since our approach is a model transformation from BPMN to graph grammars it will generate a \emph{start graph} and \emph{graph transformation rules} for a given BPMN process model.
 However, we do not support all possible BPMN models.
 \Cref{fig:bpmnConstructsOverview} depicts the BPMN constructs supported by our approach.
-We compare the extent of our formalization to other approaches later in this paper.
 
 \begin{figure}[h]
     \centering
@@ -109,24 +110,25 @@ The type graph is depicted using a UML class diagram-like syntax.
 \end{figure}
 
 We use \textsf{ProcessSnapshot} to denote a running BPMN process with a certain token distribution since it describes one state in the history of process states during the execution.
-Every \textsf{ProcessSnapshot} has a set of \textsf{tokens} and \textsf{subprocesses}.
+Every \textsf{ProcessSnapshot} has a set of \textsf{tokens}, incoming \textsf{messages} and \textsf{subprocesses}.
 A \textsf{ProcessSnapshot} has the state \textsf{Terminated} if it has no \textsf{tokens} or \textsf{subprocesses}, else it has the state \textsf{Running}.
-A \textsf{Token} has a fixed \textsf{position}, which is the name (or id in case of identical names) of either a BPMN activity or sequence flow.
-To depict graphs conforming to the type graph concisely, we introduce concrete syntax in the clouds attached to the elements in the type graph.
-Tokens are represented as circles and will match the color of the circle representing the process snapshot holding the token.
+A \textsf{Token} has a \textsf{position}, which is the name (or id in case of identical names) of either a BPMN activity or sequence flow.
+A \textsf{Message} has a \textsf{position}, pointing to a message flow.
+To depict graphs conforming to the type graph concisely, we introduce a concrete syntax in the clouds attached to the elements in the type graph.
+Tokens are represented as colored circles and are drawn at their specified position in a model.
+Their color will match the color of the circle representing the process snapshot holding the token, which is located at the top left of the corresponding BPMN pool.
+A BPMN pool is depicted as a vertical lane with a name on the left and contains BPMN elements.
 Using this type graph we can now define how the start graph and graph-transformation rules for the different BPMN constructs are created.
 
 % How is a start graph generated?
 The generation of the start graph for a BPMN model is straightforward.
 For each pool in the BPMN model we generate a process snapshot, if the pool contains a none start event (NSE).
-A BPMN pool is depicted as a vertical lane with a name on the left and contains BPMN elements.
 For each NSE we add a token to the respective process snapshot.
 Furthermore, we consider to allow the user to define a start graph similar to how he could define atomic propositions for custom properties (see \cref{subsec:customProperties}).
 
-We will now describe the rule generation for some selected elements to give a brief overview how the model transformation to graph grammars works.
-\subsection{Activities}
-% Task with implicit exclusive and parallel gateways.
-% TODO: Describe this and draw parallels to gateways
+We will now describe the rule generation for tasks and message events to give a brief overview how our model transformation works.
+\Cref{fig:taskRules} depicts the rules generated for a task with two incoming and outgoing sequence flows.
+We depict rules with two graphs and a white arrow between them, where the left graph is the prerequisite of the rule application and the right graph is the result of the rule application.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.6\textwidth]{images/bpmn_semantics-task-rules.pdf}
@@ -134,8 +136,11 @@ We will now describe the rule generation for some selected elements to give a br
     \label{fig:taskRules}
 \end{figure}
 
-\subsection{Events}
+The upper rule in \cref{fig:taskRules} represents the start of the task, which will move one token from any incoming sequence flow and to the task itself.
+The lower rule depicts the execution of the task, resulting in one token on each outgoing sequence flow.
+
 % TODO: Describe message Events and maybe draw parallels to other events.
+% TODO: Add existential quantification to the receiver.
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{images/bpmn_semantics-message-events.pdf}
@@ -143,17 +148,14 @@ We will now describe the rule generation for some selected elements to give a br
     \label{fig:messageEventRules}
 \end{figure}
 
-\subsection{Process termination}
 Process termination is implemented using a general rule, applicable to all process snapshots.
 The rule is automatically generated once during the model transformation to graph grammars and is used to terminate processes, sub processes and event sub processes.
 It uses non-application conditions to forbid tokens and sub processes for a process snapshot and then change its state from running to terminated\footnote{The terminate rule implemented in Groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
 
 \section{Model checking BPMN} \label{sec:modelChecking}
 
-Model-checking a BPMN process model is straightforward after a graph grammar describing its execution semantics has been generated.
-\Cref{fig:approach} depicts the inputs and outputs of model checking.
-
-Besides a graph grammar, a set of temporal properties to be checked and the atomic propositions used in the properties must be supplied.
+Model-checking a BPMN process model is straightforward after a graph grammar has been generated.
+Besides a graph grammar, a set of temporal properties to be checked and the atomic propositions used in the properties must be supplied (see \cref{fig:approach}).
 Atomic propositions are formalized as graph conditions that can match a state in the state space.
 An atomic proposition holds in a state if and only if the graph associated with the atomic proposition is a subgraph of the graph associated with the state. % Cite groove/Rensink here.
 This enables model checking of temporal properties using the defined atomic propositions.
@@ -166,11 +168,11 @@ Then, we describe how custom properties can be constructed and checked.
 Two BPMN-specific behavioral properties, namely, Safeness and Soundness, are defined in \cite{corradiniClassificationBPMNCollaborations2018}.
 Soundness is further decomposed into (i) \emph{Option to complete}: any running process instance must eventually complete, (ii) \emph{Proper completion}: at the moment of completion, each token of the process instance must be in a different end event, (iii) \emph{No dead activities}: any activity can be executed in at least one process instance \cite{corradiniClassificationBPMNCollaborations2018}.
 We do not consider structural properties since they can be checked using a standard process modeling tool without implementing execution semantics.
-As an example, we will now describe how to implement the \emph{Safeness} and \emph{Option to complete} properties using graph transformations.
+As an example, we will now describe how to implement the \emph{Safeness} and \emph{Option to complete} properties.
 
 % Safe
 A BPMN process model is \emph{safe} if during its execution at most one token occurs along the same sequence flow \cite{corradiniClassificationBPMNCollaborations2018}.
-\emph{Safeness} is checked in our implementation using the LTL property defined in \eqref{eq:safeness}.
+\emph{Safeness} is checked using the LTL property defined in \eqref{eq:safeness}.
 The atomic property \textsf{Unsafe} is true if and only if two tokens of one process snapshot have the same position\footnote{\label{footnote:atomicProps}Groove rules for the atomic properties \textsf{Unsafe} and \textsf{AllTerminated} are contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
 
 \begin{align}
@@ -179,24 +181,22 @@ The atomic property \textsf{Unsafe} is true if and only if two tokens of one pro
 \end{align}
 
 % Option to complete
-\emph{Option to complete} is checked in our implementation using the LTL property defined in \eqref{eq:optionToComplete}.
+\emph{Option to complete} is checked using the LTL property defined in \eqref{eq:optionToComplete}.
 The atomic property \textsf{AllTerminated} is true if and only if there exists no process snapshot in the state running, i.e., all process snapshots are terminated\cref{footnote:atomicProps}.
 
 Both properties can be checked using our implementation \cite{timkrauterArtifactsTERMGRAPH2022}.
 To fully check Soundness, the proper completion and no dead activities properties must be checked.
-The information needed to check these properties is present in the generated state space, such that checking these properties is possible manually and can be automatized in the future.
-\subsection{Custom properties} \label{subsec:customProperties}
-% Custom LTL properties
+However, the information to check these properties is contained in the state spaces generated from our generated graph grammars.
 
+\subsection{Custom properties} \label{subsec:customProperties}
 % Defining atomic propositions in BPMN is a novelty.
-To make model checking user-friendly, we let users define atomic propositions in the BPMN syntax.
+To make model checking user-friendly, we let users define atomic propositions in the BPMN syntax, i.e., the concrete syntax introduced earlier.
 BPMN is usually explained and formalized using tokens, which flow through the process model.
 Thus, to define an atomic proposition, we let the user attach tokens to his BPMN process model, which we can automatically convert to a graph condition.
 
 For example, the token distribution shown in \cref{fig:atomicProposition} defines two running process instances with a token in task A.
 Differently colored tokens define different process instances.
-Thus, a user must not be aware of the graph transformation semantics used for execution.
-This leads to a significant advantage compared to currently implemented approaches, which can be adapted even when not using graph transformations.
+Thus, a user must not be aware of the graph transformation semantics used for execution, which is a significant advantage compared to other approaches.
 
 \begin{figure}[h]
     \centering
@@ -220,7 +220,6 @@ The tool is open-source, publicly available, and does not require any installati
 
 The tool implements the approach depicted in \cref{fig:approach}.
 We are using the graph-transformation tool Groove\footnote{\url{https://groove.ewi.utwente.nl/about}} in our implementation \cite{ghamarianModellingAnalysisUsing2012} since it supports all the theoretical constructs that we need.
-
 % Evaluation
 To evaluate the correctness of our implementation, we created a comprehensive test suite, which verifies correct rule generation for the implemented BPMN constructs \cite{timkrauterArtifactsTERMGRAPH2022}.
 
@@ -231,13 +230,12 @@ The formalization covers a substantial part of the BPMN specification, including
 In addition, graph transformation rules are visual and thus can easily be matched to the informal description of the execution semantics in the specification \cite{objectmanagementgroupBusinessProcessModel2013}.
 The graph transformation rules were implemented in a prototype using GrGen.NET.
 Unfortunately, the implementation is not publicly accessible anymore.
-Moreover, they do not support model checking since their goal is formalization.
+Moreover, they do not support model checking since their goal is only formalization.
 
 % BProve/Corradini
 The tool BProVe\footnote{\url{http://pros.unicam.it/bprove/}} is based on formal BPMN semantics given in rewriting logic and implemented in the Maude system.
-Using these semantics, BProVe enables the verification of custom temporal properties for process models.
-Furthermore, the tool is easily accessible online and includes checking of BPMN-specific properties, such as safeness and soundness \cite{corradiniFormalApproachAnalysis2021}.
-They also support checking custom LTL properties.
+Using these semantics, BProVe enables the verification of custom LTL properties and BPMN-specific properties, such as safeness and soundness.
+Furthermore, the tool is accessible online, not requiring any installation \cite{corradiniFormalApproachAnalysis2021}.
 
 % fbpmn/Houhou
 The verification framework \textsf{fbpmn} uses first-order logic to formalize and check BPMN process models \cite{houhouFirstOrderLogicVerification2022}.
@@ -246,10 +244,8 @@ Their framework and related information is open source and freely available onli
 Similar to BProVe, \textsf{fbpmn} allows checking BPMN-specific properties, such as safeness and soundness.
 However, they do not allow a user to define custom temporal properties.
 
-Besides these three approaches, there are many more BPMN formalizations, for example, based on Petri Nets \cite{dijkmanSemanticsAnalysisBusiness2008} or process algebras \cite{wongProcessSemanticsBPMN2008}.
 We looked in detail at these three approaches since they support a significant subset of the BPMN constructs, have easily accessible and well-documented tool support, and are pretty recent.
-
-Nevertheless, different approaches support a different subset of the BPMN constructs, which impacts their usefulness in practical scenarios.
+Nevertheless, they support a different subset of the BPMN constructs, which impacts their usefulness in practice.
 \Cref{tab:supportedconstructs} depicts which BPMN constructs are supported by the different approaches compared to our approach.
 
 \begin{table}[htbp]
@@ -314,16 +310,17 @@ Nevertheless, the same behavior can be achieved using message events.
 In addition to \cite{corradiniFormalApproachAnalysis2021}, Houhou et al. \cite{houhouFirstOrderLogicVerification2022} support timer and the use of message and timer events as both interrupting and non-interrupting boundary events.
 However, the support of different event types remains limited compared to \cite{vangorpVisualTokenbasedFormalization2013}.
 
-% Our semantics is the only one that generates "rules" and not only converts the model to some representation, right?. So we are higher-order?
-Besides semantics, our approach is also unique since it not only transforms a BPMN process model into a different representation but also generates graph-transformation rules for this specific model.
-Other approaches, for example, rely on a fixed generic set of rules \cite{vangorpVisualTokenbasedFormalization2013} or Maude implementation \cite{corradiniFormalApproachAnalysis2021}.
-% What about Houhou?
+Looking at \cref{tab:supportedconstructs} we conclude that our formalization is comprehensive but still lacks support for some of the more advanced event types.
+An implementation of the missing even types is feasible, as shown in \cite{vangorpVisualTokenbasedFormalization2013}.
+
 \section{Conclusion \& future work} \label{sec:conclusion}
 % Summary
-
-% Formalization
-% Model checking
+We presented a formalization of the BPMN execution semantics based on a model transformation to graph grammars.
+The approach to base our formalization on a model transformation and not general graph transformation rules shifts complexity from the rules to the model transformation, resulting in potentially more but simpler rules.
+% Formalization & model checking
+Our resulting BPMN formalization is comprehensive and model checking of two BPMN-specific properties is already supported.
 % Tool
+In addition, we already implemented most of the presented concepts in a web-based tool to make our ideas easily accessible to other researchers and potentially practitioners in the future.
 
 % Future work
 We aim to improve our formalization and resulting tool in multiple ways in the future.
