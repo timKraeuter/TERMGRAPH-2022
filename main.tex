@@ -57,7 +57,7 @@ Moreover, we implemented our approach and made the resulting tool accessible on 
 
 % Short Motivation: Formalization of the natural language semantics and model checking
 The \gls*{bpmn} is a widely used standard notation to define intra- and inter-organizational workflows to improve the communication between domain experts and software developers.
-However, the informal textual description of the BPMN execution semantics hinders its full adoption \cite{objectmanagementgroupBusinessProcessModel2013, corradiniFormalApproachAnalysis2021}.
+However, the informal textual description of the BPMN execution semantics hinders its full adoption \cite{corradiniFormalApproachAnalysis2021, objectmanagementgroupBusinessProcessModel2013}.
 Consequently, to develop BPMN's full potential, we propose a new approach to formalize the BPMN execution semantics based on graph grammars.
 The formalization in our approach is one of the most complete regarding supported BPMN constructs and enables model checking of BPMN-specific and custom properties.
 
@@ -77,8 +77,8 @@ Essentially, complexity is shifted from the transformation rules to their genera
 
 % Paper outline
 The remainder of this paper is structured as follows.
-First, we describe the semantics formalization using graph grammars in detail (\cref{sec:formalization}) before explaining how this can be utilized for model checking BPMN-specific and custom properties (\cref{sec:modelChecking}).
-Second, we shortly present the implementation of our approach resulting in a web-based tool.
+First, we describe the semantics formalization using graph grammars (\cref{sec:formalization}) before explaining how this can be utilized for model checking BPMN-specific and custom properties (\cref{sec:modelChecking}).
+Then, we shortly present the implementation of our approach resulting in a web-based tool.
 Finally, we discuss related work regarding BPMN feature coverage in \cref{sec:relatedWork} and conclude in \cref{sec:conclusion}.
 
 \section{Semantics formalization} \label{sec:formalization}
@@ -100,7 +100,7 @@ The type graph is depicted using a UML class diagram-like syntax.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{images/bpmn_semantics-typegraph.pdf}
+    \includegraphics[width=0.6\textwidth]{images/bpmn_semantics-typegraph.pdf}
     \caption{BPMN execution type graph}
     \label{fig:typeGraph}
 \end{figure}
@@ -111,7 +111,7 @@ A \textsf{ProcessSnapshot} has the state \textsf{Terminated} if it has no \texts
 Otherwise, it has the state \textsf{Running}.
 A \textsf{Token} has a \textsf{position}, the name (or id in case of identical names) of either a BPMN activity or sequence flow.
 A \textsf{Message} has a \textsf{position}, pointing to a message flow.
-To depict graphs conforming to the type graph concisely, we introduce a concrete syntax in the clouds attached to the elements in the type graph.
+To depict graphs conforming to the type graph concisely, we introduce a concrete syntax in the clouds attached to the elements.
 Tokens are represented as colored circles and are drawn at their specified position in a model.
 Their color will match the color of the circle representing the process snapshot holding the token, which is located at the top left of the corresponding BPMN pool.
 A BPMN pool is depicted as a vertical lane with a name on the left and contains BPMN elements.
@@ -121,24 +121,24 @@ Using this type graph, we can now define how the start graph and graph-transform
 The generation of the start graph for a BPMN model is straightforward.
 For each pool in the BPMN model, we generate a process snapshot if the pool contains a none start event (NSE).
 Then, for each NSE, we add a token to the respective process snapshot.
-Furthermore, we consider allowing the user to define a start graph similar to how he could define atomic propositions for custom properties (see \cref{subsec:customProperties}).
+Furthermore, we consider allowing the user to define a start graph similar to how he can define atomic propositions for custom properties (see \cref{subsec:customProperties}).
 
 We will now describe the rule generation for tasks and message events to overview how our model transformation works.
 \Cref{fig:taskRules} depicts the rules generated for a task with two incoming and outgoing sequence flows.
 We depict rules with two graphs and a white arrow between them, where the left graph is the prerequisite of the rule application, and the right graph is the result of the rule application.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.55\textwidth]{images/bpmn_semantics-task-rules.pdf}
+    \includegraphics[width=0.65\textwidth]{images/bpmn_semantics-task-rules.pdf}
     \caption{Rules for a task with two incoming and outgoing sequence flows.}
     \label{fig:taskRules}
 \end{figure}
 
-The upper rule in \cref{fig:taskRules} represents the start of the task, which will move one token from any incoming sequence flow and to the task itself.
+The upper rule in \cref{fig:taskRules} represents the start of the task, which will move one token from any incoming sequence flow to the task itself.
 The lower rule depicts the execution of the task, resulting in one token on each outgoing sequence flow.
 
 The left rule in \cref{fig:messageEventRules} realizes a message throw event, and the right rule implements a message catch event.
 The message catch event rule is straightforward, consuming a token and a message and creating an outgoing token.
-The message throw event rule moves the token through the event and sends a message to a waiting process snapshot, which has a token waiting at the corresponding message receive event.
+The message throw event rule moves the token through the event and sends a message to a waiting process snapshot, which must have a token waiting at the corresponding message receive event.
 However, sending this message to a different process snapshot is optional.
 This can be implemented using nested quantification \cite{rensinkNestedQuantificationGraph2006}.
 \begin{figure}[h]
@@ -150,14 +150,14 @@ This can be implemented using nested quantification \cite{rensinkNestedQuantific
 
 Process termination is implemented using a general rule applicable to all process snapshots.
 The rule is automatically generated once during the model transformation to graph grammars and is used to terminate processes, sub processes, and event sub processes.
-It uses non-application conditions to forbid tokens and sub processes for a process snapshot and then change its state from running to terminated\footnote{The terminate rule implemented in Groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
+It uses non-application conditions to forbid tokens and sub processes for a process snapshot and then changes its state from running to terminated\footnote{The terminate rule implemented in Groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
 
 \section{Model checking BPMN} \label{sec:modelChecking}
 
 Model checking a BPMN process model is straightforward after a graph grammar has been generated.
 Besides a graph grammar, a set of temporal properties to be checked and the atomic propositions used in the properties must be supplied (see \cref{fig:approach}).
 Atomic propositions are formalized as graph conditions that can match a state in the state space.
-An atomic proposition holds in a state if and only if the graph associated with the atomic proposition is a subgraph of the graph associated with the state. % Cite groove/Rensink here.
+An atomic proposition holds in a state if the graph associated with the atomic proposition is a subgraph of the graph associated with the state. % Cite groove/Rensink here.
 This enables model checking of temporal properties using the defined atomic propositions.
 
 Like other work, we differentiate between \emph{BPMN-specific properties} defined generally for all BPMN process models and \emph{custom properties} tailored towards a particular BPMN process model.
@@ -182,11 +182,11 @@ The atomic property \textsf{Unsafe} is true if two tokens of one process snapsho
 
 % Option to complete
 \emph{Option to complete} is checked using the LTL property defined in \eqref{eq:optionToComplete}.
-The atomic property \textsf{AllTerminated} is true if and only if there exists no process snapshot in the state running, i.e., all process snapshots are terminated\cref{footnote:atomicProps}.
+The atomic property \textsf{AllTerminated} is true if there exists no process snapshot in the state running, i.e., all process snapshots are terminated\cref{footnote:atomicProps}.
 
 Both properties can be checked using our implementation \cite{timkrauterArtifactsTERMGRAPH2022}.
 To fully check Soundness, the proper completion and no dead activities properties must be checked.
-However, the information to check these properties is contained in the state spaces generated from our generated graph grammars.
+However, the information to check these properties is contained in the state spaces of the generated graph grammars.
 
 \subsection{Custom properties} \label{subsec:customProperties}
 % Defining atomic propositions in BPMN is a novelty.
@@ -200,7 +200,7 @@ Thus, a user must not be aware of the graph transformation semantics used for ex
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.3\textwidth]{images/bpmn_semantics-atomicProp.pdf}
+    \includegraphics[width=0.35\textwidth]{images/bpmn_semantics-atomicProp.pdf}
     \caption{Token distribution defining an atomic proposition.}
     \label{fig:atomicProposition}
 \end{figure}
@@ -264,7 +264,7 @@ Nevertheless, they support a different subset of the BPMN constructs, impacting 
       Normal process completion & X & X & X & X\\
       \textit{Activities} & & & &\\
       Activity & X & X & X & X\\
-      Subprocess & X & X* & X & X\\
+      Subprocess & X & X & X & X\\
       Ad-hoc subprocesses & & & &\\
       Loop activity & X & & &\\
       Multiple instance activity & & & & \\
