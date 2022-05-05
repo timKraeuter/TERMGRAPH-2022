@@ -45,29 +45,25 @@ Yngve Lamo\Mark{*}\orcidlink{0000-0001-9196-1779}
 
 \begin{abstract}
 The BPMN is a widely used standard notation for defining intra- and inter-organizational workflows to improve the communication between domain experts and software developers.
-However, the informal textual description of the BPMN execution semantics hinders BPMN from reaching its full potential since BPMN constructs are interpreted differently, and behavioral properties cannot be checked.
+However, the informal description of the BPMN execution semantics hinders BPMN from reaching its full potential since BPMN constructs are interpreted differently, and behavioral properties cannot be checked.
 Consequently, we propose formalizing the BPMN execution semantics based on a model transformation to graph grammars.
-Our formalization is one of the most complete regarding supported BPMN constructs and enables model checking of BPMN-specific and custom properties.
-Moreover, we implemented our approach and made the resulting tool accessible on the web.
+Our formalization is one of the most advanced regarding supported BPMN constructs and enables model checking of BPMN-specific and custom properties.
+Moreover, we implemented our approach in an open-source web-based tool.
 \end{abstract}
 
 \section{Introduction}
-% \begin{itemize}
-%     \item State goals: Semantics formalization and reference implementation (more/other constructs supported than recent approaches)
-% \end{itemize}
-
 % Short Motivation: Formalization of the natural language semantics and model checking
 The \gls*{bpmn} is a widely used standard notation to define intra- and inter-organizational workflows to improve the communication between domain experts and software developers.
-However, the informal textual description of the BPMN execution semantics hinders its full adoption \cite{corradiniFormalApproachAnalysis2021, objectmanagementgroupBusinessProcessModel2013}.
+However, the informal description of the BPMN execution semantics hinders its full adoption \cite{corradiniFormalApproachAnalysis2021, objectmanagementgroupBusinessProcessModel2013}.
 Consequently, we propose a new approach to formalize the BPMN execution semantics based on graph grammars.
-Our formalization is one of the most complete regarding supported BPMN constructs and enables model checking of BPMN-specific and custom properties.
+Our formalization is one of the most advanced regarding supported BPMN constructs and enables model checking of BPMN-specific and custom properties.
 
 The approach is summarized as a BPMN process model in \cref{fig:approach}.
 It is based on a model transformation from BPMN process models to graph grammars.
 Thus, our approach is \textit{generative}, i.e., it constructs a new graph grammar including rules and a start graph for each BPMN process model.
 This is a significant difference compared to other approaches such as \cite{corradiniFormalApproachAnalysis2021, vangorpVisualTokenbasedFormalization2013}, where only the BPMN process model is parsed, but the rewrite rules are fixed.
-Generating specific rules for each model leads to possibly more but generally simpler transformation rules that are easier to match.
-Essentially, complexity is shifted from the transformation rules to their generation.
+Generating specific rules for each model leads to possibly more but simpler transformation rules that can be matched faster.
+Essentially, complexity is partly shifted from the transformation rules to their generation.
 
 \begin{figure}[h]
     \centering
@@ -84,7 +80,7 @@ Finally, we discuss related work regarding BPMN feature coverage in \cref{sec:re
 
 \section{Semantics formalization} \label{sec:formalization}
 
-Since our approach is a model transformation from BPMN to graph grammars, it will generate a \emph{start graph} and \emph{graph transformation rules} for a given BPMN process model.
+Since our approach is a model transformation from BPMN to graph grammars, it will generate a \emph{start graph} and \emph{graph transformation rules} for a given BPMN process model (see \cref{fig:bpmnMetamodel}).
 However, we only support the BPMN constructs depicted in \cref{fig:bpmnConstructsOverview}.
 
 \begin{figure}[h]
@@ -168,8 +164,8 @@ It uses negative-application conditions to forbid tokens and sub processes for a
 
 Model checking a BPMN process model is straightforward after a graph grammar has been generated.
 Besides a graph grammar, a set of temporal properties to be checked and the atomic propositions used in the properties must be supplied (see \cref{fig:approach}).
-Atomic propositions are formalized as graph conditions that can match a state in the state space.
-An atomic proposition holds in a state if the graph associated with the atomic proposition is a subgraph of the graph associated with the state. % Cite groove/Rensink here.
+Atomic propositions are formalized as graphs that can match a state in the state space.
+An atomic proposition holds in a state if its graph is a subgraph of the graph representing the state.
 This enables model checking of temporal properties using the defined atomic propositions.
 
 Like other work, we differentiate between \emph{BPMN-specific properties} defined generally for all BPMN process models and \emph{custom properties} tailored towards a particular BPMN process model.
@@ -226,7 +222,7 @@ The tool implements the approach depicted in \cref{fig:approach}.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.6\textwidth]{images/impl.png}
-    \caption{Screenshot of the web interface of the tool}
+    \caption{Screenshot of the web-based tool}
     \label{fig:implScreenshot}
 \end{figure}
 
@@ -324,9 +320,9 @@ An implementation of the missing event types is feasible, as shown in \cite{vang
 \section{Conclusion \& future work} \label{sec:conclusion}
 % Summary
 We presented a formalization of the BPMN execution semantics based on a model transformation to graph grammars.
-The approach to base our formalization on a model transformation and not general graph transformation rules shifts complexity from the rules to the model transformation.
+Thus, complexity shifts from the graph transformation rules to the model transformation when compared to fixed graph transformation rules.
 % Formalization & model checking
-Our resulting BPMN formalization is comprehensive, and model checking of two BPMN-specific properties is already supported.
+Our resulting BPMN formalization is comprehensive and supports model checking.
 % Tool
 In addition, we started implemented our approach in a web-based tool to make our ideas easily accessible to other researchers and potentially practitioners in the future.
 
@@ -341,7 +337,7 @@ Research"\footnote{\url{https://github.com/camunda/bpmn-for-research}}.
 Third, we want to extend the features of our tool.
 One should be able to define atomic propositions for model checking in the tool directly, as described in \cref{sec:modelChecking}.
 % Counterexample simulation like Houhou
-Furthermore, counterexamples found during model checking should be visualized directly in the tool, like the implementation in \cite{houhouFirstOrderLogicVerification2022}, such that users must not be aware of the underlying implementation in Groove.
+Furthermore, counterexamples found during model checking should be visualized directly in the tool, like the implementation in \cite{houhouFirstOrderLogicVerification2022}, such that users must not understand the underlying implementation in Groove.
 \bibliographystyle{eptcs}
 \bibliography{bib}
 \end{document}
