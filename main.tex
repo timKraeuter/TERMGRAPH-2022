@@ -13,6 +13,7 @@
 \usepackage{footnote}
 \usepackage{csquotes} % enquote command
 \usepackage{glossaries} % Glossary
+\usepackage{threeparttable}
 \makesavenoteenv{tabular}
 \makesavenoteenv{table}
 \usepackage[nameinlink]{cleveref} % Reference footnotes.
@@ -298,6 +299,7 @@ Nevertheless, they support a different subset of the BPMN constructs, impacting 
 \begin{table}[htbp]
     \caption{Constructs supported by different BPMN formalizations (overview based on \cite{vangorpVisualTokenbasedFormalization2013}).}
     \label{tab:supportedconstructs}
+    \begin{threeparttable}
     \begin{tabular}{l l l l l}
     \hline
       Feature & Van Gorp &  Corradini & Houhou & This\\
@@ -320,7 +322,7 @@ Nevertheless, they support a different subset of the BPMN constructs, impacting 
       Exclusive gateway & X & X & X & X\\
       Inclusive gateway (split) & X & X & X & X\\
       Inclusive gateway (merge) & X & & X & X\\
-      Event-based gateway &  & X\footnote{Does not support receive tasks after event-based gateways.} & X & X\\ % No timer and conditional events after event based gateway supported.
+      Event-based gateway &  & X\tnote{1} & X & X\\ % No timer and conditional events after event based gateway supported.
       Complex gateway & & & &\\
       \textit{Events} & & & & \\
       None Events & X & X & X & X\\
@@ -336,9 +338,15 @@ Nevertheless, they support a different subset of the BPMN constructs, impacting 
       Signal Events & X & & & X\\
       Multiple Events &  & & & \\
       Terminate Events & X & X & X & X\\
-     Boundary Events & X\footnote{Only supports interrupting boundary events on tasks.} & & X\footnote{Only supports message and timer events.} & X\\ % To the same extent as the event support
+     Boundary Events & X\tnote{2} & & X\tnote{3} & X\\ % To the same extent as the event support
       Event subprocess &  &  &  & X\\
     \end{tabular}
+    \begin{tablenotes}
+        \item[1] Does not support receive tasks after event-based gateways.
+        \item[2] Only supports interrupting boundary events on tasks.
+        \item[3] Only supports message and timer events.
+    \end{tablenotes}
+    \end{threeparttable}
 \end{table}
 
 % Summarize the findings and explain them in more detail
