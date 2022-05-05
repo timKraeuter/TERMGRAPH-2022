@@ -62,7 +62,7 @@ Our formalization is one of the most advanced regarding supported BPMN construct
 
 The approach is summarized as a BPMN process model in \cref{fig:approach}.
 It is based on a model transformation from BPMN process models to graph grammars.
-Thus, our approach constructs a new graph grammar including rules and a start graph for each BPMN process model.
+Thus, our approach constructs a new graph grammar, including rules and a start graph for each BPMN process model.
 This is a significant difference compared to other approaches such as \cite{corradiniFormalApproachAnalysis2021, vangorpVisualTokenbasedFormalization2013}, where only the BPMN process model is parsed, but the rewrite rules are fixed.
 Generating specific rules for each model leads to possibly more but simpler transformation rules that can be matched faster.
 Essentially, complexity is partly shifted from the transformation rules to their generation.
@@ -123,14 +123,13 @@ A \textsf{Message} has an \textsf{elementID}, pointing to a message flow.
 To depict graphs conforming to the type graph concisely, we introduce a concrete syntax in the clouds attached to the elements.
 Tokens are represented as colored circles and are drawn at their specified position in a model.
 Their color will match the color of the circle representing the process snapshot holding the token, which is located at the top left of the corresponding BPMN process.
-A BPMN pool is depicted as a vertical lane with a name on the left and contains BPMN elements.
 Using this type graph, we can now define how the start graph and graph-transformation rules for the different BPMN constructs are created.
 
 % How is a start graph generated?
 The generation of the start graph for a BPMN model is straightforward.
 For each process in the BPMN model, we generate a process snapshot if the process contains a none start event (NSE).
 Then, for each NSE, we add a token to the respective process snapshot.
-An example of a start graph is shown \cref{fig:startGraph} using abstract syntax (\cref{fig:startGraphAbstract} and concrete snytax (\cref{fig:startGraphConcrete}).
+An example of a start graph is shown in \cref{fig:startGraph} using abstract syntax (\cref{fig:startGraphAbstract} and concrete syntax (\cref{fig:startGraphConcrete}).
 Furthermore, we consider allowing the user to define a start graph similar to how he can define atomic propositions for custom properties (see \cref{subsec:customProperties}).
 
 \begin{figure}
@@ -151,7 +150,7 @@ Furthermore, we consider allowing the user to define a start graph similar to ho
 \label{fig:startGraph}
 \end{figure}
 
-We will now describe the rule generation for NSE's, tasks and message events to overview how our model transformation works.
+We will now describe the rule generation for NSE's, tasks, and message events to overview how our model transformation works.
 \Cref{fig:gtRule} depicts an example graph transformation rule for a NSE in abstract and concrete syntax.
 The rule is straightforward and moves a token from the start event to its outgoing sequence flow.
 
@@ -173,7 +172,7 @@ The rule is straightforward and moves a token from the start event to its outgoi
 \label{fig:gtRule}
 \end{figure}
 
-The rule in \cref{fig:taskRules} represents the start of the task, which will move one token from any incoming sequence flow to the task itself.
+The rule in \cref{fig:taskRules} represents the start of the task, which will move one token from the incoming sequence flow to the task itself.
 
 \begin{figure}[h]
     \centering
@@ -230,7 +229,7 @@ The atomic property \textsf{Unsafe} is true if two tokens of one process snapsho
 
 % Option to complete
 \emph{Option to complete} is checked using the LTL property defined in \eqref{eq:optionToComplete}.
-The atomic property \textsf{AllTerminated} is true if there exists no process snapshot in the state running, i.e., all process snapshots are terminated\cref{footnote:atomicProps}.
+The atomic property \textsf{AllTerminated} is true if there exists no process snapshot in the state \textsf{Running}, i.e., all process snapshots are \textsf{Terminated}\cref{footnote:atomicProps}.
 
 Both properties can be checked using our implementation \cite{timkrauterArtifactsTERMGRAPH2022}.
 To fully check Soundness, the proper completion and no dead activities properties must be checked.
@@ -238,7 +237,7 @@ However, the information to check these properties is contained in the state spa
 
 \subsection{Custom properties} \label{subsec:customProperties}
 % Defining atomic propositions in BPMN is a novelty.
-To make model checking user-friendly, we envision users to define atomic propositions in the BPMN syntax, i.e., the concrete syntax introduced earlier.
+To make model checking user-friendly, we envision users defining atomic propositions in the BPMN syntax, i.e., the concrete syntax introduced earlier.
 Thus, to define an atomic proposition, we let the user attach tokens to his BPMN process model, which we can automatically convert to a graph condition.
 
 For example, the token distribution shown in \cref{fig:atomicProposition} defines two running process snapshots with a token in task A.
