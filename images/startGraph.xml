@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<od:definitions xmlns:od="http://tk/schema/od" xmlns:odDi="http://tk/schema/odDi" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC">
+  <od:odBoard id="Board_debug">
+    <od:object name="1:ProcessSnapshot" id="Object_1j4ij8b" attributeValues="name=&#34;P1&#34;">
+      <od:links>Link_13ddqpm</od:links>
+      <od:links>Link_008wy3y</od:links>
+    </od:object>
+    <od:object name="1:ProcessState" id="Object_1u57j0e" attributeValues="[Running]" />
+    <od:link name="state" id="Link_13ddqpm" sourceRef="Object_1j4ij8b" targetRef="Object_1u57j0e" />
+    <od:object name="1:Token" id="Object_159y2ve" attributeValues="elementID=&#34;start&#34;" />
+    <od:link name="tokens" id="Link_008wy3y" sourceRef="Object_1j4ij8b" targetRef="Object_159y2ve" />
+  </od:odBoard>
+  <odDi:odRootBoard id="RootBoard_debug">
+    <odDi:odPlane id="Plane_debug" boardElement="Board_debug">
+      <odDi:link id="Link_13ddqpm_di" boardElement="Link_13ddqpm">
+        <odDi:waypoint x="590" y="270" />
+        <odDi:waypoint x="680" y="270" />
+        <odDi:odLabel>
+          <dc:Bounds x="642" y="247" width="34" height="18" />
+        </odDi:odLabel>
+      </odDi:link>
+      <odDi:link id="Link_008wy3y_di" boardElement="Link_008wy3y">
+        <odDi:waypoint x="515" y="300" />
+        <odDi:waypoint x="515" y="353" />
+        <odDi:waypoint x="680" y="353" />
+        <odDi:odLabel>
+          <dc:Bounds x="620" y="324" width="46" height="18" />
+        </odDi:odLabel>
+      </odDi:link>
+      <odDi:odShape id="Object_1j4ij8b_di" boardElement="Object_1j4ij8b">
+        <dc:Bounds x="440" y="240" width="150" height="60" />
+      </odDi:odShape>
+      <odDi:odShape id="Object_1u57j0e_di" boardElement="Object_1u57j0e">
+        <dc:Bounds x="680" y="237" width="150" height="65" />
+      </odDi:odShape>
+      <odDi:odShape id="Object_159y2ve_di" boardElement="Object_159y2ve">
+        <dc:Bounds x="680" y="320" width="150" height="65" />
+      </odDi:odShape>
+    </odDi:odPlane>
+  </odDi:odRootBoard>
+</od:definitions>

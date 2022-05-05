@@ -11,6 +11,7 @@
 \usepackage{amssymb} % \square command
 % Footnotes inside tables
 \usepackage{footnote}
+\usepackage{csquotes} % enquote command
 \usepackage{glossaries} % Glossary
 \makesavenoteenv{tabular}
 \makesavenoteenv{table}
@@ -109,15 +110,15 @@ The type graph is depicted using a UML class diagram-like syntax.
   \label{fig:typeGraph}
 \end{subfigure}
 \caption{BPMN models}
-\label{fig:test}
+\label{fig:bpmnModels}
 \end{figure}
 
 We use \textsf{ProcessSnapshot} to denote a running BPMN process with a specific token distribution since it describes one state in the history of process states during the execution.
 Every \textsf{ProcessSnapshot} has a set of \textsf{tokens}, incoming \textsf{messages}, and \textsf{subprocesses}.
 A \textsf{ProcessSnapshot} has the state \textsf{Terminated} if it has no \textsf{tokens} or \textsf{subprocesses}.
 Otherwise, it has the state \textsf{Running}.
-A \textsf{Token} has a \textsf{position}, the name (or id in case of identical names) of either a BPMN activity or sequence flow.
-A \textsf{Message} has a \textsf{position}, pointing to a message flow.
+A \textsf{Token} has an \textsf{elementID}, the id of either a BPMN activity or sequence flow it is located at.
+A \textsf{Message} has an \textsf{elementID}, pointing to a message flow.
 To depict graphs conforming to the type graph concisely, we introduce a concrete syntax in the clouds attached to the elements.
 Tokens are represented as colored circles and are drawn at their specified position in a model.
 Their color will match the color of the circle representing the process snapshot holding the token, which is located at the top left of the corresponding BPMN process.
@@ -128,27 +129,64 @@ Using this type graph, we can now define how the start graph and graph-transform
 The generation of the start graph for a BPMN model is straightforward.
 For each process in the BPMN model, we generate a process snapshot if the process contains a none start event (NSE).
 Then, for each NSE, we add a token to the respective process snapshot.
+An example of a start graph is shown \cref{fig:startGraph} using abstract syntax (\cref{fig:startGraphAbstract} and concrete snytax (\cref{fig:startGraphConcrete}).
 Furthermore, we consider allowing the user to define a start graph similar to how he can define atomic propositions for custom properties (see \cref{subsec:customProperties}).
 
-We will now describe the rule generation for tasks and message events to overview how our model transformation works.
-\Cref{fig:taskRules} depicts the rules generated for a task with two incoming and outgoing sequence flows.
-We depict rules with two graphs and a white arrow between them, where the left graph is the prerequisite of the rule application, and the right graph is the result of the rule application.
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.65\textwidth]{images/bpmn_semantics-task-rules.pdf}
-    \caption{Rules for a task with two incoming and outgoing sequence flows.}
-    \label{fig:taskRules}
+\begin{figure}
+\centering
+\begin{subfigure}{.35\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{images/startGraph_abstract.pdf}
+  \caption{Abstract syntax}
+  \label{fig:startGraphAbstract}
+\end{subfigure}%
+\begin{subfigure}{.35\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{images/startGraph_concrete.pdf}
+  \caption{Concrete syntax}
+  \label{fig:startGraphConcrete}
+\end{subfigure}
+\caption{Example start graph}
+\label{fig:startGraph}
 \end{figure}
 
-The upper rule in \cref{fig:taskRules} represents the start of the task, which will move one token from any incoming sequence flow to the task itself.
-The lower rule depicts the execution of the task, resulting in one token on each outgoing sequence flow.
-Each graph uses the concrete syntax introduced in \cref{fig:typeGraph}.
+We will now describe the rule generation for NSE's, tasks and message events to overview how our model transformation works.
+\Cref{fig:gtRule} depicts an example graph transformation rule for a NSE in abstract and concrete syntax.
+The rule is straightforward and moves a token from the start event to its outgoing sequence flow.
+
+\begin{figure}
+\centering
+\begin{subfigure}{.3\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{images/rule_abstract.pdf}
+  \caption{Abstract syntax}
+  \label{fig:gtRuleAbstract}
+\end{subfigure}%
+\begin{subfigure}{.6\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{images/rule_concrete.pdf}
+  \caption{Concrete syntax}
+  \label{fig:gtRUleConcrete}
+\end{subfigure}
+\caption{Example graph transformation rule for a NSE}
+\label{fig:gtRule}
+\end{figure}
+
+The rule in \cref{fig:taskRules} represents the start of the task, which will move one token from any incoming sequence flow to the task itself.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/bpmn_semantics-rules.pdf}
+    \caption{Example graph transformation rule to start a task}
+    \label{fig:taskRules}
+\end{figure}
 
 The left rule in \cref{fig:messageEventRules} realizes a message throw event, and the right rule implements a message catch event.
 The message catch event rule is straightforward, consuming a token and a message and creating an outgoing token.
 The message throw event rule moves the token through the event and sends a message to a waiting process snapshot, which must have a token waiting at the corresponding message receive event.
 However, sending this message to a different process snapshot is optional.
 This can be implemented using nested quantification \cite{rensinkNestedQuantificationGraph2006}.
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{images/bpmn_semantics-message-events.pdf}
@@ -156,7 +194,8 @@ This can be implemented using nested quantification \cite{rensinkNestedQuantific
     \label{fig:messageEventRules}
 \end{figure}
 
-Process termination is implemented using a general rule applicable to all process snapshots.
+End events consume but do not produce tokens.
+Thus, process termination can be implemented using a general rule applicable to all process snapshots.
 The rule is automatically generated once during the model transformation to graph grammars and is used to terminate processes, sub processes, and event sub processes.
 It uses negative-application conditions to forbid tokens and sub processes for a process snapshot and then changes its state from running to terminated\footnote{The terminate rule implemented in Groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
 
@@ -207,7 +246,7 @@ Thus, a user must not be aware of the graph transformation semantics used for ex
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.35\textwidth]{images/bpmn_semantics-atomicProp.pdf}
+    \includegraphics[width=0.35\textwidth]{images/bpmn_semantics-atomic-proposition.pdf}
     \caption{Token distribution defining an atomic proposition.}
     \label{fig:atomicProposition}
 \end{figure}
@@ -217,17 +256,17 @@ The token visualization was significantly inspired by the excellent bpmn-js-toke
 % Tool
 \Cref{fig:implScreenshot} depicts a screenshot of the implemented tool.
 The tool is open-source, publicly available, and does not require any installation \cite{timkrauterArtifactsTERMGRAPH2022}.
-The tool implements the approach depicted in \cref{fig:approach}.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.6\textwidth]{images/impl.png}
-    \caption{Screenshot of the web-based tool}
+    \includegraphics[width=0.5\textwidth]{images/impl.png}
+    \caption{Screenshot of the tool}
     \label{fig:implScreenshot}
 \end{figure}
 
-Reading and transforming BPMN models to graph grammars is implemented in Java.
-Then we use the graph-transformation tool Groove\footnote{\url{https://groove.ewi.utwente.nl/about}} for state space generation and model checking.
+The first two steps of our approach, i.e., reading and transforming BPMN models to graph grammars, are implemented and usable through the web-based tool.
+Then one can use the graph-transformation tool Groove\footnote{\url{https://groove.ewi.utwente.nl/about}} for state space generation and model checking locally.
+We are currently working on extending our tool such that model-checking can be done without installing Groove locally.
 % Evaluation
 To evaluate the correctness of our implementation, we created a comprehensive test suite, which demonstrates correct rule generation for the implemented BPMN constructs \cite{timkrauterArtifactsTERMGRAPH2022}.
 
@@ -331,8 +370,8 @@ We aim to improve our formalization and resulting tool in multiple ways in the f
 % More semantics
 First, we intend to extend our formalization to support even more BPMN constructs for example error, cancel and compensation events.
 % Proper evaluation
-Second, we plan to evaluate our approach on syntactical models and on models from open repositories such as the "BPM Academic Initiative Model Collection" \cite{weskeModelCollectionBusiness2020} and "Camunda BPMN for
-Research"\footnote{\url{https://github.com/camunda/bpmn-for-research}}.
+Second, we plan to evaluate our approach on syntactical models and on models from open repositories such as the \enquote{BPM Academic Initiative Model Collection} \cite{weskeModelCollectionBusiness2020} and  \enquote{Camunda BPMN for
+Research}\footnote{\url{https://github.com/camunda/bpmn-for-research}}.
 % Implementing the atomic proposition definition
 Third, we want to extend the features of our tool.
 One should be able to define atomic propositions for model checking in the tool directly, as described in \cref{sec:modelChecking}.
