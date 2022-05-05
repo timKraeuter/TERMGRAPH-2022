@@ -62,7 +62,7 @@ Our formalization is one of the most advanced regarding supported BPMN construct
 
 The approach is summarized as a BPMN process model in \cref{fig:approach}.
 It is based on a model transformation from BPMN process models to graph grammars.
-Thus, our approach is \textit{generative}, i.e., it constructs a new graph grammar including rules and a start graph for each BPMN process model.
+Thus, our approach constructs a new graph grammar including rules and a start graph for each BPMN process model.
 This is a significant difference compared to other approaches such as \cite{corradiniFormalApproachAnalysis2021, vangorpVisualTokenbasedFormalization2013}, where only the BPMN process model is parsed, but the rewrite rules are fixed.
 Generating specific rules for each model leads to possibly more but simpler transformation rules that can be matched faster.
 Essentially, complexity is partly shifted from the transformation rules to their generation.
@@ -82,7 +82,7 @@ Finally, we discuss related work regarding BPMN feature coverage in \cref{sec:re
 
 \section{Semantics formalization} \label{sec:formalization}
 
-Since our approach is a model transformation from BPMN to graph grammars, it will generate a \emph{start graph} and \emph{graph transformation rules} for a given BPMN process model (see \cref{fig:bpmnMetamodel}).
+Since our approach is based on a model transformation from BPMN to graph grammars, it generates a \emph{start graph} and \emph{graph transformation rules} for a given BPMN process model (see \cref{fig:bpmnMetamodel}).
 However, we only support the BPMN constructs depicted in \cref{fig:bpmnConstructsOverview}.
 
 \begin{figure}[h]
