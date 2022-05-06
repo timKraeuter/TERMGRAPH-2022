@@ -13,7 +13,7 @@
 \usepackage{footnote}
 \usepackage{csquotes} % enquote command
 \usepackage{glossaries} % Glossary
-\usepackage{threeparttable}
+\usepackage{threeparttable} % Tables with notes
 \makesavenoteenv{tabular}
 \makesavenoteenv{table}
 \usepackage[nameinlink]{cleveref} % Reference footnotes.
@@ -222,14 +222,21 @@ A BPMN process model is \emph{safe} if, during its execution, at most one token 
 \emph{Safeness} is checked using the LTL property defined in \eqref{eq:safeness}.
 The atomic property \textsf{Unsafe} is true if two tokens of one process snapshot have the same position\footnote{\label{footnote:atomicProps}Groove rules for the atomic properties \textsf{Unsafe} and \textsf{AllTerminated} are contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
 
-\begin{align}
-    & \square (\neg \,\text{Unsafe}) \label{eq:safeness} \\
-    \lozenge (& \square(\text{AllTerminated})) \label{eq:optionToComplete}
-\end{align}
-
 % Option to complete
 \emph{Option to complete} is checked using the LTL property defined in \eqref{eq:optionToComplete}.
 The atomic property \textsf{AllTerminated} is true if there exists no process snapshot in the state \textsf{Running}, i.e., all process snapshots are \textsf{Terminated}\cref{footnote:atomicProps}.
+
+\noindent\begin{minipage}{.5\linewidth}
+\begin{equation} \label{eq:safeness}
+  \square (\neg \,\text{Unsafe})
+\end{equation}
+\end{minipage}%
+\begin{minipage}{.5\linewidth}
+\begin{equation} \label{eq:optionToComplete}
+  \lozenge ( \square(\text{AllTerminated})) 
+\end{equation}
+\end{minipage}
+\vskip.3\baselineskip
 
 Both properties can be checked using our implementation \cite{timkrauterArtifactsTERMGRAPH2022}.
 To fully check Soundness, the proper completion and no dead activities properties must be checked.
