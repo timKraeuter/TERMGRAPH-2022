@@ -62,7 +62,7 @@ Our formalization is one of the most advanced regarding supported BPMN construct
 
 The approach is summarized as a BPMN process model in \cref{fig:approach}.
 It is based on a model transformation from BPMN process models to graph grammars.
-Thus, our approach constructs a new graph grammar, including rules and a start graph for each BPMN process model.
+Thus, our approach constructs a new graph grammar, i.e., graph transformation rules and a start graph for each BPMN process model.
 This is a significant difference compared to other approaches such as \cite{corradiniFormalApproachAnalysis2021, vangorpVisualTokenbasedFormalization2013}, where only the BPMN process model is parsed, but the rewrite rules are fixed.
 Generating specific rules for each model leads to possibly more but simpler transformation rules that can be matched faster.
 Essentially, complexity is partly shifted from the transformation rules to their generation.
@@ -87,7 +87,7 @@ However, we only support the BPMN constructs depicted in \cref{fig:bpmnConstruct
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/bpmn_semantics-feature_overview.pdf}
+    \includegraphics[width=0.69\textwidth]{images/bpmn_semantics-feature_overview.pdf}
     \caption{Overview of the supported BPMN constructs (structure adapted from \cite{houhouFirstOrderLogicVerification2022})}
     \label{fig:bpmnConstructsOverview}
 \end{figure}
@@ -129,7 +129,7 @@ Using this type graph, we can now define how the start graph and graph-transform
 The generation of the start graph for a BPMN model is straightforward.
 For each process in the BPMN model, we generate a process snapshot if the process contains a none start event (NSE).
 Then, for each NSE, we add a token to the respective process snapshot.
-An example of a start graph is shown in \cref{fig:startGraph} using abstract syntax (\cref{fig:startGraphAbstract} and concrete syntax (\cref{fig:startGraphConcrete}).
+An example of a start graph is shown in \cref{fig:startGraph} using abstract syntax (\cref{fig:startGraphAbstract}) and concrete syntax (\cref{fig:startGraphConcrete}).
 Furthermore, we consider allowing the user to define a start graph similar to how he can define atomic propositions for custom properties (see \cref{subsec:customProperties}).
 
 \begin{figure}
@@ -150,7 +150,7 @@ Furthermore, we consider allowing the user to define a start graph similar to ho
 \label{fig:startGraph}
 \end{figure}
 
-We will now describe the rule generation for NSE's, tasks, and message events to overview how our model transformation works.
+We will now describe the rule generation for NSE's, tasks, and message events to give an overview how our model transformation works.
 \Cref{fig:gtRule} depicts an example graph transformation rule for a NSE in abstract and concrete syntax.
 The rule is straightforward and moves a token from the start event to its outgoing sequence flow.
 
@@ -203,8 +203,7 @@ It uses negative-application conditions to forbid tokens and sub processes for a
 
 Model checking a BPMN process model is straightforward after a graph grammar has been generated.
 Besides a graph grammar, a set of temporal properties to be checked and the atomic propositions used in the properties must be supplied (see \cref{fig:approach}).
-Atomic propositions are formalized as graphs that can match a state in the state space.
-An atomic proposition holds in a state if its graph is a subgraph of the graph representing the state.
+An atomic proposition can be formalized as a graph and holds in a given state if it is a subgraph of the graph representing the state.
 This enables model checking of temporal properties using the defined atomic propositions.
 
 Like other work, we differentiate between \emph{BPMN-specific properties} defined generally for all BPMN process models and \emph{custom properties} tailored towards a particular BPMN process model.
@@ -298,8 +297,9 @@ Their framework and related information is open source and freely available onli
 Similar to BProVe, \textsf{fbpmn} allows checking BPMN-specific properties, such as Safeness and Soundness.
 However, they do not allow a user to define custom temporal properties.
 
-We looked in detail at these three approaches since they support a significant subset of the BPMN constructs, have easily accessible and well-documented tool support, and are pretty recent.
-Nevertheless, they support a different subset of the BPMN constructs, impacting their usefulness in practice.
+We looked in detail at these three approaches since they support a significant subset of the BPMN constructs and have accessible and well-documented tools.
+Nevertheless, each approach supports a different subset of the BPMN constructs.
+The coverage of BPMN constructs greatly impacts how useful each approach is in practice.
 \Cref{tab:supportedconstructs} depicts which BPMN constructs are supported by the different approaches compared to our approach.
 
 \begin{table}[htbp]
@@ -359,18 +359,17 @@ Nevertheless, they support a different subset of the BPMN constructs, impacting 
 % Explain Van Gorp in detail
 Van Gorp et al. \cite{vangorpVisualTokenbasedFormalization2013} cover a large part of the BPMN semantics.
 However, they do not support Event-based gateways and event subprocesses, while their support for boundary events is minimal.
-Especially, Event-based gateways are often used and supported by every other approach.
+Especially, Event-based gateways are often used in practice.
 % Explain Corradini in detail
-Corradini et al. \cite{corradiniFormalApproachAnalysis2021} does only support message and terminate events.
-However, many other types of events exist and are used in practice.
+Corradini et al. \cite{corradiniFormalApproachAnalysis2021} support message and terminate events.
 % Explain Houhou in detail
 In addition to \cite{corradiniFormalApproachAnalysis2021}, Houhou et al. \cite{houhouFirstOrderLogicVerification2022} support timer and the use of message and timer events as both interrupting and non-interrupting boundary events.
-However, the support of different event types remains limited compared to \cite{vangorpVisualTokenbasedFormalization2013}.
+However, many other event types exist and are used in practice.
 
 Referring to \cref{tab:supportedconstructs}, we conclude that our formalization is comprehensive but still lacks support for some of the more advanced event types.
 An implementation of the missing event types is feasible, as shown in \cite{vangorpVisualTokenbasedFormalization2013}.
 
-\section{Conclusion \& future work} \label{sec:conclusion}
+\section{Conclusion \& Future work} \label{sec:conclusion}
 % Summary
 We presented a formalization of the BPMN execution semantics based on a model transformation to graph grammars.
 Thus, complexity shifts from the graph transformation rules to the model transformation when compared to fixed graph transformation rules.
