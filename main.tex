@@ -104,7 +104,7 @@ The type graph is depicted using a UML class diagram-like syntax.
   \caption{BPMN execution type graph}
   \label{fig:typeGraph}
 \end{subfigure}%
-\begin{subfigure}{.50\textwidth}
+\begin{subfigure}{.5\textwidth}
   \centering
   \includegraphics[width=1\linewidth]{images/bpmn_semantics-bpmn-metamodel.pdf}
   \caption{Simplified BPMN metamodel \cite{objectmanagementgroupBusinessProcessModel2013}}
@@ -121,33 +121,24 @@ Otherwise, it has the state \textsf{Running}.
 A \textsf{Token} has an \textsf{elementID}, the BPMN activity or sequence flow at which it is located.
 A \textsf{Message} has an \textsf{elementID}, pointing to a \textsf{MessageFlow}.
 To depict graphs conforming to the type graph concisely, we introduce a concrete syntax in the clouds attached to the elements.
+It extends the BPMN syntax by adding tokens.
 Tokens are represented as colored circles and are drawn at their specified position in a model.
 Their color will match the color of the circle representing the process snapshot holding the token, which is located at the top left of the corresponding BPMN process.
+The concrete syntax was significantly inspired by the excellent bpmn-js-token-simulation\footnote{\url{https://github.com/bpmn-io/bpmn-js-token-simulation}}.
 Using this type graph, we can now define how the start graph and graph-transformation rules for the different BPMN constructs are created.
 
 % How is a start graph generated?
 The generation of the start graph for a BPMN model is straightforward.
 For each process in the BPMN model, we generate a process snapshot if the process contains a none start event (NSE).
 Then, for each NSE, we add a token to the respective process snapshot.
-An example of a start graph is shown in \cref{fig:startGraph} using abstract syntax (\cref{fig:startGraphAbstract}) and concrete syntax (\cref{fig:startGraphConcrete}).
+An example of a start graph is shown in \cref{fig:startGraph} using abstract and concrete syntax.
 Furthermore, we consider allowing the user to define a start graph similar to how he can define atomic propositions for custom properties (see \cref{subsec:customProperties}).
 
-\begin{figure}
-\centering
-\begin{subfigure}{.35\textwidth}
-  \centering
-  \includegraphics[width=1\linewidth]{images/startGraph_abstract.pdf}
-  \caption{Abstract syntax}
-  \label{fig:startGraphAbstract}
-\end{subfigure}%
-\begin{subfigure}{.35\textwidth}
-  \centering
-  \includegraphics[width=1\linewidth]{images/startGraph_concrete.pdf}
-  \caption{Concrete syntax}
-  \label{fig:startGraphConcrete}
-\end{subfigure}
-\caption{Example start graph}
-\label{fig:startGraph}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/startGraph.pdf}
+    \caption{Example start graph in abstract and concrete syntax}
+    \label{fig:startGraph}
 \end{figure}
 
 We will now describe the rule generation for NSE's, tasks, and message events to give an overview of how our model transformation works.
@@ -182,7 +173,7 @@ The rule in \cref{fig:taskRules} represents the start of the task, which will mo
 \end{figure}
 
 The left rule in \cref{fig:messageEventRules} realizes a message throw event, and the right rule implements a message catch event.
-The message catch event rule is straightforward, consuming a token and a message and creating an outgoing token.
+The message catch event rule consumes a token and a message and creates an outgoing token.
 The message throw event rule moves the token through the event and sends a message to a waiting process snapshot, which must have a token waiting at the corresponding message receive event.
 However, sending this message to a different process snapshot is optional.
 This can be implemented using nested quantification \cite{rensinkNestedQuantificationGraph2006}.
@@ -201,26 +192,25 @@ It uses negative-application conditions to forbid tokens and sub processes for a
 
 \section{Model checking BPMN} \label{sec:modelChecking}
 
-Model checking a BPMN process model is straightforward after a graph grammar has been generated.
+Model checking a BPMN process model is possible using the generated graph grammar.
 Besides a graph grammar, a set of temporal properties to be checked and the atomic propositions used in the properties must be supplied (see \cref{fig:approach}).
 An atomic proposition can be formalized as a graph and holds in a given state if it is a subgraph of the graph representing the state.
-This enables model checking of temporal properties using the defined atomic propositions.
+This enables model checking of temporal properties, for example, LTL properties, using the defined atomic propositions.
 
 Like other work, we differentiate between \emph{BPMN-specific properties} defined generally for all BPMN process models and \emph{custom properties} tailored towards a particular BPMN process model.
+We do not consider structural properties since they can be checked using a standard process modeling tool without implementing execution semantics.
 We will now give an example of two predefined BPMN-specific properties and how they can be checked using our approach.
 Then, we describe how custom properties can be constructed and checked.
 
 \subsection{BPMN-specific properties}
 Two BPMN-specific behavioral properties, namely, Safeness and Soundness, are defined in \cite{corradiniClassificationBPMNCollaborations2018}.
+A BPMN process model is \emph{safe} if, during its execution, at most one token occurs along the same sequence flow \cite{corradiniClassificationBPMNCollaborations2018}.
 Soundness is further decomposed into (i) \emph{Option to complete}: any running process instance must eventually complete, (ii) \emph{Proper completion}: at the moment of completion, each token of the process instance must be in a different end event, (iii) \emph{No dead activities}: any activity can be executed in at least one process instance \cite{corradiniClassificationBPMNCollaborations2018}.
-We do not consider structural properties since they can be checked using a standard process modeling tool without implementing execution semantics.
 As an example, we will now describe how to implement the \emph{Safeness} and \emph{Option to complete} properties.
 
-% Safe
-A BPMN process model is \emph{safe} if, during its execution, at most one token occurs along the same sequence flow \cite{corradiniClassificationBPMNCollaborations2018}.
+% Safeness
 \emph{Safeness} is checked using the LTL property defined in \eqref{eq:safeness}.
 The atomic property \textsf{Unsafe} is true if two tokens of one process snapshot have the same position\footnote{\label{footnote:atomicProps}Groove rules for the atomic properties \textsf{Unsafe} and \textsf{AllTerminated} are contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
-
 % Option to complete
 \emph{Option to complete} is checked using the LTL property defined in \eqref{eq:optionToComplete}.
 The atomic property \textsf{AllTerminated} is true if there exists no process snapshot in the state \textsf{Running}, i.e., all process snapshots are \textsf{Terminated}\cref{footnote:atomicProps}.
@@ -238,26 +228,26 @@ The atomic property \textsf{AllTerminated} is true if there exists no process sn
 \vskip.3\baselineskip
 
 Both properties can be checked using our implementation \cite{timkrauterArtifactsTERMGRAPH2022}.
-To fully check Soundness, the proper completion and no dead activities properties must be checked.
-However, the information to check these properties is contained in the state spaces of the generated graph grammars.
+To fully check Soundness, we need to check \textit{Proper Completion} and \textit{No Dead Activities}.
+The information needed to check these properties is present in the generated state space.
 
 \subsection{Custom properties} \label{subsec:customProperties}
 % Defining atomic propositions in BPMN is a novelty.
-To make model checking user-friendly, we envision users defining atomic propositions in the BPMN syntax, i.e., the concrete syntax introduced earlier.
-Thus, to define an atomic proposition, we let the user attach tokens to his BPMN process model, which we can automatically convert to a graph condition.
+To make model checking user-friendly, we envision users defining atomic propositions in the extended BPMN syntax, i.e., the concrete syntax introduced earlier.
+Thus, to define an atomic proposition, we let the user attach tokens to a BPMN process model, which we can automatically convert to a graph representing an atomic proposition.
 
 For example, the token distribution shown in \cref{fig:atomicProposition} defines two running process snapshots with a token in task A.
 Differently colored tokens define different process snapshots.
+A user could use this property, for example, to check if, eventually, two processes are executing task A simultaneously.
 Thus, a user must not be aware of the graph transformation semantics used for execution, which is a significant advantage compared to other approaches.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.35\textwidth]{images/bpmn_semantics-atomic-proposition.pdf}
+    \includegraphics[width=0.38\textwidth]{images/bpmn_semantics-atomic-proposition.pdf}
     \caption{Token distribution defining an atomic proposition.}
     \label{fig:atomicProposition}
 \end{figure}
 
-The token visualization was significantly inspired by the excellent bpmn-js-token-simulation\footnote{\url{https://github.com/bpmn-io/bpmn-js-token-simulation}}.
 \section{Implementation} \label{sec:impl}
 % Tool
 \Cref{fig:implScreenshot} depicts a screenshot of the implemented tool.
@@ -371,23 +361,24 @@ An implementation of the missing event types is feasible, as shown in \cite{vang
 
 \section{Conclusion \& Future work} \label{sec:conclusion}
 % Summary
-We presented a formalization of the BPMN execution semantics based on a model transformation to graph grammars.
-Thus, complexity shifts from the graph transformation rules to the model transformation when compared to fixed graph transformation rules.
+The approach presented in this paper utilizes a model transformation from BPMN models to graph grammars. 
+For each BPMN model, we automatically generate a start graph and a set of graph transformation rules.
+In this way, the graph transformation rules get simpler while the complexity is shifted to the model transformation from BPMN to graph grammars.
 % Formalization & model checking
 Our resulting BPMN formalization is comprehensive and supports model checking.
 % Tool
-In addition, we started implementing our approach in a web-based tool to make our ideas easily accessible to other researchers and potentially practitioners in the future.
+In addition, we provide a prototype implementation in a web-based tool to make our ideas easily accessible to other researchers and potentially practitioners in the future.
 
 % Future work
 We aim to improve our formalization and resulting tool in multiple ways in the future.
 % More semantics
-First, we intend to extend our formalization to support even more BPMN constructs for example error, cancel and compensation events.
+First, we intend to extend our formalization to support even more BPMN constructs, for example, error, cancel, and compensation events.
 % Proper evaluation
-Second, we plan to evaluate our approach on syntactical models and on models from open repositories such as the \enquote{BPM Academic Initiative Model Collection} \cite{weskeModelCollectionBusiness2020} and  \enquote{Camunda BPMN for
+Second, we plan to evaluate our approach on models from open repositories such as the \enquote{BPM Academic Initiative Model Collection} \cite{weskeModelCollectionBusiness2020} and  \enquote{Camunda BPMN for
 Research}\footnote{\url{https://github.com/camunda/bpmn-for-research}}.
 % Implementing the atomic proposition definition
-Third, we want to extend the features of our tool.
-One should be able to define atomic propositions for model checking in the tool directly, as described in \cref{sec:modelChecking}.
+Third, we want to extend the features of our tool;
+one should be able to define atomic propositions for model checking in the tool directly, as described in \cref{sec:modelChecking}.
 % Counterexample simulation like Houhou
 Furthermore, counterexamples found during model checking should be visualized directly in the tool, like the implementation in \cite{houhouFirstOrderLogicVerification2022}, such that users must not understand the underlying implementation in Groove.
 \bibliographystyle{eptcs}
