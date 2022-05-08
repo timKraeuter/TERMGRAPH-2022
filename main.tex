@@ -46,21 +46,21 @@ Yngve Lamo\Mark{*}\orcidlink{0000-0001-9196-1779}
 % Maximum 8 pages for the first extended abstract(including references)!
 
 \begin{abstract}
-The BPMN is a widely used standard notation for defining intra- and inter-organizational workflows to improve the communication between domain experts and software developers.
-However, the informal description of the BPMN execution semantics hinders BPMN from reaching its full potential since BPMN constructs are interpreted differently, and behavioral properties cannot be checked.
-Consequently, we propose formalizing the BPMN execution semantics based on a model transformation to graph grammars.
-Our formalization is one of the most advanced regarding supported BPMN constructs and enables model checking of BPMN-specific and custom properties.
-Moreover, we implemented our approach in an open-source web-based tool.
+The BPMN is a widely used standard notation for defining intra- and inter-organizational workflows.
+However, the informal description of the BPMN execution semantics leads to different interpretations of BPMN constructs and difficulties in checking behavioral properties.
+Other approaches to formalizing BPMN’s execution semantics only partially cover BPMN.
+To this end, we propose a formalization that, compared to other approaches, covers most of the BPMN constructs.
+Our approach is based on a model transformation from BPMN models to graph grammars. 
+As a proof of concept, we have implemented our approach in an open-source web-based tool.
 \end{abstract}
 
 \section{Introduction}
 % Short Motivation: Formalization of the natural language semantics and model checking
-The \gls*{bpmn} is a widely used standard notation to define intra- and inter-organizational workflows to improve the communication between domain experts and software developers.
-However, the informal description of the BPMN execution semantics hinders its full adoption \cite{corradiniFormalApproachAnalysis2021, objectmanagementgroupBusinessProcessModel2013}.
-Consequently, we propose a new approach to formalize the BPMN execution semantics based on graph grammars.
-Our formalization is one of the most advanced regarding supported BPMN constructs and enables model checking of BPMN-specific and custom properties.
+\gls*{bpmn} is a widely used standard notation to define intra- and inter-organizational workflows.
+However, the informal description of the BPMN execution semantics leads to different interpretations of BPMN constructs and difficulties in checking behavioral properties \cite{corradiniFormalApproachAnalysis2021, objectmanagementgroupBusinessProcessModel2013}.
+To this end, we propose a formalization that, compared to other approaches, covers most of the BPMN constructs.
 
-The approach is depicted as a BPMN process model in \cref{fig:approach}.
+Our approach is depicted as a BPMN process model in \cref{fig:approach}.
 It is based on a model transformation from BPMN process models to graph grammars.
 Thus, our approach constructs a new graph grammar, i.e., graph transformation rules and a start graph for each BPMN process model.
 This is a significant difference compared to other approaches such as \cite{corradiniFormalApproachAnalysis2021, vangorpVisualTokenbasedFormalization2013}, where only the BPMN process model is parsed, but the rewrite rules are fixed.
@@ -69,7 +69,7 @@ Essentially, complexity is partly shifted from the transformation rules to their
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.6\textwidth]{images/full-approach.pdf}
+    \includegraphics[width=0.7\textwidth]{images/full-approach.pdf}
     \caption{Overview of the proposed approach}
     \label{fig:approach}
 \end{figure}
@@ -77,13 +77,13 @@ Essentially, complexity is partly shifted from the transformation rules to their
 % Paper outline
 The remainder of this paper is structured as follows.
 First, we describe the semantics formalization using graph grammars (\cref{sec:formalization}) before explaining how this can be utilized for model checking BPMN-specific and custom properties (\cref{sec:modelChecking}).
-Then, we shortly present the implementation of our approach resulting in a web-based tool.
-Finally, we discuss related work regarding BPMN feature coverage in \cref{sec:relatedWork} and conclude in \cref{sec:conclusion}.
+Then, we shortly present the web-based tool implementing our approach.
+Finally, we discuss related work regarding BPMN construct coverage in \cref{sec:relatedWork} and conclude in \cref{sec:conclusion}.
 
 \section{Semantics formalization} \label{sec:formalization}
 
-Since our approach is based on a model transformation from BPMN to graph grammars, it generates a \emph{start graph} and \emph{graph transformation rules} for a given BPMN process model (see \cref{fig:bpmnMetamodel}).
-However, we only support the BPMN constructs depicted in \cref{fig:bpmnConstructsOverview}.
+Since our approach is based on a model transformation from BPMN to graph grammars, we generate a \emph{start graph} and \emph{graph transformation rules} for a given BPMN process model (see \cref{fig:bpmnMetamodel}).
+The approach supports the BPMN constructs depicted in \cref{fig:bpmnConstructsOverview}.
 
 \begin{figure}[h]
     \centering
@@ -92,7 +92,7 @@ However, we only support the BPMN constructs depicted in \cref{fig:bpmnConstruct
     \label{fig:bpmnConstructsOverview}
 \end{figure}
 
-Our graph-transformation semantics is token-based, as in the informal description of the BPMN specification \cite{objectmanagementgroupBusinessProcessModel2013}.
+Our formalization of BPMN is token-based, as in the informal description of the BPMN specification \cite{objectmanagementgroupBusinessProcessModel2013}.
 Thus, to describe processes holding tokens during execution, we use the type graph shown in \cref{fig:typeGraph}.
 The type graph is depicted using a UML class diagram-like syntax.
 
@@ -100,26 +100,26 @@ The type graph is depicted using a UML class diagram-like syntax.
 \centering
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=1\linewidth]{images/bpmn_semantics-bpmn-metamodel.pdf}
-  \caption{Simplified BPMN metamodel \cite{objectmanagementgroupBusinessProcessModel2013}}
-  \label{fig:bpmnMetamodel}
-\end{subfigure}%
-\begin{subfigure}{.50\textwidth}
-  \centering
   \includegraphics[width=1\linewidth]{images/bpmn_semantics-typegraph.pdf}
   \caption{BPMN execution type graph}
   \label{fig:typeGraph}
+\end{subfigure}%
+\begin{subfigure}{.50\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{images/bpmn_semantics-bpmn-metamodel.pdf}
+  \caption{Simplified BPMN metamodel \cite{objectmanagementgroupBusinessProcessModel2013}}
+  \label{fig:bpmnMetamodel}
 \end{subfigure}
 \caption{BPMN models}
 \label{fig:bpmnModels}
 \end{figure}
 
-We use \textsf{ProcessSnapshot} to denote a running BPMN process with a specific token distribution since it describes one state in the history of process states during the execution.
+We use \textsf{ProcessSnapshot} to denote a running BPMN process with a specific token distribution which describes one state in the history of process states during the execution.
 Every \textsf{ProcessSnapshot} has a set of \textsf{tokens}, incoming \textsf{messages}, and \textsf{subprocesses}.
 A \textsf{ProcessSnapshot} has the state \textsf{Terminated} if it has no \textsf{tokens} or \textsf{subprocesses}.
 Otherwise, it has the state \textsf{Running}.
-A \textsf{Token} has an \textsf{elementID}, the id of either a BPMN activity or sequence flow it is located at.
-A \textsf{Message} has an \textsf{elementID}, pointing to a message flow.
+A \textsf{Token} has an \textsf{elementID}, the BPMN activity or sequence flow at which it is located.
+A \textsf{Message} has an \textsf{elementID}, pointing to a \textsf{MessageFlow}.
 To depict graphs conforming to the type graph concisely, we introduce a concrete syntax in the clouds attached to the elements.
 Tokens are represented as colored circles and are drawn at their specified position in a model.
 Their color will match the color of the circle representing the process snapshot holding the token, which is located at the top left of the corresponding BPMN process.
