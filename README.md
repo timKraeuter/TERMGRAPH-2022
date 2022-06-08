@@ -69,6 +69,7 @@ The sourcecode of the tool is available [here](https://github.com/timKraeuter/Gr
 
 ### Test suite
 The test classes of the testsuite can be found in the subproject **generator** [here](https://github.com/timKraeuter/Groove_Rule_Generation).
+The BPMN files (see **bpmnModelsSemanticsTest**) and generated graph grammars from the BPMN models can be found [here](https://github.com/timKraeuter/Groove_Rule_Generation/tree/master/generator/src/test/resources/bpmn).
 
 | BPMN feature                                | Test class                      | Test case                                                                                                                |
 |---------------------------------------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------|
