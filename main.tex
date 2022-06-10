@@ -216,7 +216,8 @@ The left rule in \cref{fig:messageEventRules} realizes a message throw event, an
 The message catch event rule consumes a token and a message and creates an outgoing token.
 The message throw event rule moves the token through the event and sends a message to a waiting process snapshot, which must have a token waiting at the corresponding message receive event.
 However, sending this message to a different process snapshot is optional.
-This can be implemented using nested quantification \cite{rensinkNestedQuantificationGraph2006}.
+This can be implemented using the concept of \emph{nested quantification} \cite{rensinkNestedQuantificationGraph2006}.
+Concretely, we use an optional existential quantifier to send a message only if the receiving process is ready to receive it.
 
 \begin{figure}[h]
     \centering
