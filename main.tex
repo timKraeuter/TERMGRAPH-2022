@@ -130,11 +130,10 @@ For further information and a detailed description of typed attributed graphs wi
 
 % Groove uses the single pushout approach with negative application conditions.
 Regarding graph transformation, we utilize the single-pushout (SPO) approach with negative application conditions (NAC) \cite{ehrigALGEBRAICAPPROACHESGRAPH1997}.
-We need NACs to implement some more intricate parts in the BPMN execution semantics such as the termination of processes. 
-Due to SPO rewriting, a graph transformation rule is a graph morphism $L \to R$, while $L$ and $R$ are typed attributed graphs. 
-% We chose the single pushout approach because? Why does it fit us? Dangling condition?
-% What is van gorp using? What are the alternatives? What about DPO?
-% Change the description of figure 5 or even the figure itself.
+The SPO property that dangling edges (if any) are removed automatically during rule application is not exploited in our rules.
+Thus, in the future one could switch to a different approach if needed.
+Moreover, we utilize NACs to implement some more intricate parts in the BPMN execution semantics such as the termination of processes. 
+Due to SPO rewriting, a graph transformation rule in this paper is given by a graph morphism $L \to R$, while $L$ and $R$ are typed attributed graphs. 
 \section{BPMN Semantics formalization} \label{sec:formalization}
 
 Since our approach is based on a model transformation from BPMN to graph transformation systems, we generate a \emph{start graph} and \emph{graph transformation rules} for a given BPMN process model.
@@ -142,7 +141,7 @@ The approach supports the BPMN constructs depicted in \cref{fig:bpmnConstructsOv
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{images/bpmn_semantics-feature-overview.pdf}
+    \includegraphics[width=0.94\textwidth]{images/bpmn_semantics-feature-overview.pdf}
     \caption{Overview of the supported BPMN constructs (structure adapted from \cite{houhouFirstOrderLogicVerification2022})}
     \label{fig:bpmnConstructsOverview}
 \end{figure}
@@ -186,7 +185,7 @@ Furthermore, we consider allowing the user to define a start graph similar to ho
 \end{figure}
 
 We will now describe the rule generation for NSE's, tasks, and message events to give an overview of how our model transformation works.
-\Cref{fig:gtRuleAbstract} depicts an example graph transformation rule for a NSE in abstract syntax. 
+\Cref{fig:gtRuleAbstract} depicts an example graph transformation rule ($L \to R$) for a NSE in abstract syntax.
 The rule is straightforward and moves a token from the start event to its outgoing sequence flow.
 For the rest of the paper, we will depict all rules in the concrete syntax introduced earlier.
 The rule from \cref{fig:gtRuleAbstract} depicted in concrete syntax is shown in \cref{fig:gtRuleConcrete}.
