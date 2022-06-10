@@ -70,7 +70,7 @@ Essentially, complexity is partly shifted from the transformation rules to their
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.7\textwidth]{images/full-approach.pdf}
+    \includegraphics[width=0.75\textwidth]{images/full-approach.pdf}
     \caption{Overview of the proposed approach}
     \label{fig:approach}
 \end{figure}
@@ -82,27 +82,62 @@ Then, we shortly present the web-based tool implementing our approach.
 Finally, we discuss related work regarding BPMN construct coverage in \cref{sec:relatedWork} and conclude in \cref{sec:conclusion}.
 
 \section{Preliminaries}
-% We are doing an application thus we explain the application area and the applied theory.
+% Describe the application are
+In this paper, we apply graph rewriting theory to formalize the execution semantics of BPMN.
+Thus, in this section, we will briefly introduce BPMN and its execution semantics.
+Please refer to \cite{freundRealLifeBPMNUsing2019} or the BPMN specification \cite{objectmanagementgroupBusinessProcessModel2013} for further information about BPMN.
+% Describe the applied theory.
+Furthermore, we describe the theoretical background behind our application of graph rewriting.
 \subsection{BPMN}
-% Introduce BPMN and the BPMN semantics roughly. Especially token distributions.
-% Could move figure 3b here if wanted.
+% Introduce BPMN
+BPMN  is a widely used standard notation to define intra- and inter-organizational workflows.
+\Cref{fig:bpmnMetamodel} depicts the structure of BPMN process models and the corresponding BPMN symbols contained in clouds.
 
-\subsection{Typed attributed graphs and graph transformations}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.55\linewidth]{images/bpmn_semantics-bpmn-metamodel.pdf}
+  \caption{Simplified excerpt of the BPMN metamodel \cite{objectmanagementgroupBusinessProcessModel2013}}
+  \label{fig:bpmnMetamodel}
+\end{figure}
+
+A BPMN process model is represented by a \textsf{Collaboration} that has a set of \textsf{participants} and \textsf{MessageFlows} between \textsf{InteractionNodes} contained by them (see  \cref{fig:bpmnMetamodel}).
+Each participant is a \textsf{Process} containing \textsf{FlowNodes} connected by \textsf{SequenceFlows}.
+A \textsf{FlowNode} is either an \textsf{Activity}, \textsf{Gateway} or \textsf{Event}.
+There exist many types of \textsf{Activities}, \textsf{Gateways} and \textsf{Events} such as start and end events, for example, used in \cref{fig:approach}.
+Activities represent certain tasks to be carried out during a process, while things may happen (events).
+Furthermore, gateways represent conditions or split and merge sequence flows \cite{freundRealLifeBPMNUsing2019}.
+
+% BPMN semantics: Token distribution
+The BPMN execution semantics are described using the concept of \emph{tokens} \cite{objectmanagementgroupBusinessProcessModel2013}.
+BPMN process models are executed by triggering one or more of their start events, leading to the creation of a token at each triggered start event.
+Tokens are transported between flow nodes by sequence flows (arrows)
+\footnote{The visual bpmm-js token simulation available at \url{https://bpmn-io.github.io/bpmn-js-token-simulation/modeler.html} greatly helps to understand BPMN execution semantics.}.
+% Activities
+Activities can start when there is at least one token located on an incoming sequence flow.
+The start of an activity will move the incoming token to the activity.
+When an activity finishes it will create one token for each outgoing sequence flow.
+% Gateways
+Different gateway types exist, for example, for split/merge or XOR/OR distribution of tokens.
+% Events (basic)
+Events consume and create tokens similarly to activities but also have additional semantics depending on their type.
+For example, message events will create or consume messages.
+
+\subsection{Theoretical Background}
 We use typed attributed graphs for the formalization of the BPMN execution semantics.
 Each state, i.e., token distribution during the execution of a BPMN model is represented as an attributed graph typed in the BPMN execution type graph introduced later in \cref{sec:formalization}.
 In addition, we are using inheritance in the type graph.
-For further information and a detailed description of typed attributed graphs with inheritance refer to \cite{heckelGraphTransformationSoftware2020}. % Better reference? There are no formal definitions here.
+For further information and a detailed description of typed attributed graphs with inheritance refer to \cite{heckelGraphTransformationSoftware2020}.
 
 % Groove uses the single pushout approach with negative application conditions.
-Regarding graph transformation, we utilize the single pushout approach with negative application conditions (NAC) \cite{ehrigALGEBRAICAPPROACHESGRAPH1997}.
+Regarding graph transformation, we utilize the single-pushout (SPO) approach with negative application conditions (NAC) \cite{ehrigALGEBRAICAPPROACHESGRAPH1997}.
 We need NACs to implement some more intricate parts in the BPMN execution semantics such as the termination of processes. 
-Thus, a graph transformation rule is a graph morphism $L \to R$, while $L$ and $R$ are typed attributed graphs. 
+Due to SPO rewriting, a graph transformation rule is a graph morphism $L \to R$, while $L$ and $R$ are typed attributed graphs. 
 % We chose the single pushout approach because? Why does it fit us? Dangling condition?
 % What is van gorp using? What are the alternatives? What about DPO?
 % Change the description of figure 5 or even the figure itself.
 \section{BPMN Semantics formalization} \label{sec:formalization}
 
-Since our approach is based on a model transformation from BPMN to graph transformation systems, we generate a \emph{start graph} and \emph{graph transformation rules} for a given BPMN process model (see \cref{fig:bpmnMetamodel}).
+Since our approach is based on a model transformation from BPMN to graph transformation systems, we generate a \emph{start graph} and \emph{graph transformation rules} for a given BPMN process model.
 The approach supports the BPMN constructs depicted in \cref{fig:bpmnConstructsOverview}.
 
 \begin{figure}[h]
@@ -117,21 +152,10 @@ Thus, to describe processes holding tokens during execution, we use the type gra
 The type graph is depicted using a UML class diagram-like syntax.
 
 \begin{figure}
-\centering
-\begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=1\linewidth]{images/bpmn_semantics-typegraph.pdf}
+  \includegraphics[width=0.5\linewidth]{images/bpmn_semantics-typegraph.pdf}
   \caption{BPMN execution type graph}
   \label{fig:typeGraph}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=1\linewidth]{images/bpmn_semantics-bpmn-metamodel.pdf}
-  \caption{Simplified BPMN metamodel \cite{objectmanagementgroupBusinessProcessModel2013}}
-  \label{fig:bpmnMetamodel}
-\end{subfigure}
-\caption{BPMN models}
-\label{fig:bpmnModels}
 \end{figure}
 
 We use \textsf{ProcessSnapshot} to denote a running BPMN process with a specific token distribution which describes one state in the history of process states during the execution.
@@ -156,31 +180,28 @@ Furthermore, we consider allowing the user to define a start graph similar to ho
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.7\textwidth]{images/startGraph.pdf}
-    \caption{Example start graph in abstract and concrete syntax}
+    \includegraphics[width=0.8\textwidth]{images/startGraph.pdf}
+    \caption{Example start graph in abstract (left) and concrete syntax (right)}
     \label{fig:startGraph}
 \end{figure}
 
 We will now describe the rule generation for NSE's, tasks, and message events to give an overview of how our model transformation works.
-\Cref{fig:gtRule} depicts an example graph transformation rule for a NSE in abstract and concrete syntax.
+\Cref{fig:gtRuleAbstract} depicts an example graph transformation rule for a NSE in abstract syntax. 
 The rule is straightforward and moves a token from the start event to its outgoing sequence flow.
+For the rest of the paper, we will depict all rules in the concrete syntax introduced earlier.
+The rule from \cref{fig:gtRuleAbstract} depicted in concrete syntax is shown in \cref{fig:gtRuleConcrete}.
 
-\begin{figure}
-\centering
-\begin{subfigure}{.3\textwidth}
-  \centering
-  \includegraphics[width=1\linewidth]{images/rule_abstract.pdf}
-  \caption{Abstract syntax}
-  \label{fig:gtRuleAbstract}
-\end{subfigure}%
-\begin{subfigure}{.6\textwidth}
-  \centering
-  \includegraphics[width=1\linewidth]{images/rule_concrete.pdf}
-  \caption{Concrete syntax}
-  \label{fig:gtRUleConcrete}
-\end{subfigure}
-\caption{Example graph transformation rule for a NSE}
-\label{fig:gtRule}
+\begin{figure}[h]
+    \centering
+  \includegraphics[width=0.8\textwidth]{images/rule_abstract.pdf}
+  \caption{Example graph transformation rule for a NSE (abstract syntax)}  \label{fig:gtRuleAbstract}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+  \includegraphics[width=0.6\textwidth]{images/rule_concrete.pdf}
+  \caption{Example graph transformation rule for a NSE (concrete syntax)}
+  \label{fig:gtRuleConcrete}
 \end{figure}
 
 The rule in \cref{fig:taskRules} represents the start of the task, which will move one token from the incoming sequence flow to the task itself.
@@ -201,7 +222,7 @@ This can be implemented using nested quantification \cite{rensinkNestedQuantific
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{images/bpmn_semantics-message-events.pdf}
-    \caption{Rules for message intermediate throw/catch events.}
+    \caption{Rules for message intermediate throw events (left) and catch events (right)}
     \label{fig:messageEventRules}
 \end{figure}
 
@@ -263,7 +284,7 @@ Thus, a user need not be aware of the graph transformation semantics used for ex
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.38\textwidth]{images/bpmn_semantics-atomic-proposition.pdf}
+    \includegraphics[width=0.45\textwidth]{images/bpmn_semantics-atomic-proposition.pdf}
     \caption{Token distribution defining an atomic proposition.}
     \label{fig:atomicProposition}
 \end{figure}
@@ -275,7 +296,7 @@ The tool is open-source, publicly available, and does not require any installati
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{images/impl.png}
+    \includegraphics[width=0.6\textwidth]{images/impl.png}
     \caption{Screenshot of the tool}
     \label{fig:implScreenshot}
 \end{figure}
@@ -283,6 +304,7 @@ The tool is open-source, publicly available, and does not require any installati
 The first two steps of our approach, i.e., reading and transforming BPMN models to graph transformation systems, are implemented and usable through the web-based tool.
 Then one can use the graph-transformation tool Groove\footnote{\url{https://groove.ewi.utwente.nl/about}} for state space generation and model checking locally.
 We are currently working on extending our tool such that model-checking can be done without installing Groove locally.
+Groove implements SPO with NACs and thus has all the features we need.
 % Evaluation
 To evaluate the correctness of our implementation, we created a comprehensive test suite, which demonstrates correct rule generation for the implemented BPMN constructs \cite{timkrauterArtifactsTERMGRAPH2022}.
 
