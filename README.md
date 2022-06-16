@@ -1,5 +1,5 @@
 # TERMGRAPH-2022
-This repository contains the sources for the paper submitted to [TERMGRAPH-2022](http://www.termgraph.org.uk/2022/) together with additional information below.
+This repository contains the sources for the ![extended abstract](extendedAbstract.pdf) submitted to [TERMGRAPH-2022](http://www.termgraph.org.uk/2022/) together with additional information below.
 
 ## BPMN Semantics formalization
 
