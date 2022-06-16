@@ -1,7 +1,14 @@
 # TERMGRAPH-2022
 This repository contains the sources for the paper submitted to [TERMGRAPH-2022](http://www.termgraph.org.uk/2022/) together with additional information below.
 
-## Semantics formalization
+## BPMN Semantics formalization
+
+### Model transformation from BPMN to GT-Rules
+
+The following table shows BPMN-FlowNodes on the left and the resulting graph transformation rules on the right.
+It depicts the model transformation from BPMN to GT-Rules outlined in the paper, covering the basic BPMN-FlowNodes: start events, activities, end events, parallel gateways, and exclusive gateways.
+
+![Transformation of the main BPMN FlowNodes to GT-Rules.](./artifacts/mt.png)
 
 ### Process termination
 Process termination is implemented by the following graph transformation rule in Groove:
