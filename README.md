@@ -9,7 +9,7 @@ Process termination is implemented by the following graph transformation rule in
 ![Atomic property AllTerminated implemented in Groove.](./artifacts/Terminate.png)
 
 The rule is called **Terminate** and is automatically added during graph grammar generation.
-The dashed red borders mark parts of non-application conditions, grey parts remain untouched, blue parts are deleted and green parts are added.
+The dashed red borders mark parts of negative application conditions, grey parts remain untouched, blue parts are deleted and green parts are added.
 
 ## Model Checking BPMN
 
