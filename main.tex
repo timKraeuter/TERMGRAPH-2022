@@ -126,15 +126,13 @@ For example, message events will create or consume messages.
 \subsection{Theoretical Background}
 We use typed attributed graphs for the formalization of the BPMN execution semantics.
 Each state, i.e., token distribution during the execution of a BPMN model is represented as an attributed graph typed in the BPMN execution type graph introduced later in \cref{sec:formalization}.
-In addition, we are using inheritance in the type graph.
-For further information and a detailed description of typed attributed graphs with inheritance refer to \cite{heckelGraphTransformationSoftware2020}.
 
 % Groove uses the single pushout approach with negative application conditions.
 Regarding graph transformation, we utilize the single-pushout (SPO) approach with negative application conditions (NAC) \cite{ehrigALGEBRAICAPPROACHESGRAPH1997}.
-The SPO property that dangling edges (if any) are removed automatically during rule application is not exploited in our rules.
-Thus, in the future one could switch to a different approach if needed.
+In addition, we utilize \emph{nested rules} with quantification to make parts of a rule applied repeatedly or optionally \cite{rensinkNestedQuantificationGraph2006,rensinkHowMuchAre2017}.
+SPO is sufficient to formalize the BPMN execution semantics and the automatic removal of dangling edges is not a problem.
 Moreover, we utilize NACs to implement some more intricate parts in the BPMN execution semantics such as the termination of processes. 
-Due to SPO rewriting, a graph transformation rule in this paper is given by a graph morphism $L \to R$, while $L$ and $R$ are typed attributed graphs. 
+In SPO rewriting, a graph transformation rule is defined as a graph morphism $L \to R$, while in our case $L$ and $R$ are typed attributed graphs. 
 \section{BPMN Semantics formalization} \label{sec:formalization}
 
 Since our approach is based on a model transformation from BPMN to graph transformation systems, we generate a \emph{start graph} and \emph{graph transformation rules} for a given BPMN process model.
@@ -142,7 +140,7 @@ The approach supports the BPMN constructs depicted in \cref{fig:bpmnConstructsOv
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.94\textwidth]{images/bpmn_semantics-feature-overview.pdf}
+    \includegraphics[width=0.99\textwidth]{images/bpmn_semantics-feature-overview.pdf}
     \caption{Overview of the supported BPMN constructs (structure adapted from \cite{houhouFirstOrderLogicVerification2022})}
     \label{fig:bpmnConstructsOverview}
 \end{figure}
@@ -185,7 +183,9 @@ Furthermore, we consider allowing the user to define a start graph similar to ho
     \label{fig:startGraph}
 \end{figure}
 
+The model transformation generates one or more graph transformation rules for each \textsf{FlowNode} in a BPMN model.
 We will now describe the rule generation for NSE's, tasks, and message events to give an overview of how our model transformation works.
+A table summarizing how the model transformation works for the main \textsf{FlowNodes} is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.
 \Cref{fig:gtRuleAbstract} depicts an example graph transformation rule ($L \to R$) for a NSE in abstract syntax.
 The rule is straightforward and moves a token from the start event to its outgoing sequence flow.
 For the rest of the paper, we will depict all rules in the concrete syntax introduced earlier.
@@ -216,9 +216,8 @@ The rule in \cref{fig:taskRules} represents the start of the task, which will mo
 The left rule in \cref{fig:messageEventRules} realizes a message throw event, and the right rule implements a message catch event.
 The message catch event rule consumes a token and a message and creates an outgoing token.
 The message throw event rule moves the token through the event and sends a message to a waiting process snapshot, which must have a token waiting at the corresponding message receive event.
-However, sending this message to a different process snapshot is optional.
-This can be implemented using the concept of \emph{nested quantification} \cite{rensinkNestedQuantificationGraph2006}.
-Concretely, we use an optional existential quantifier to send a message only if the receiving process is ready to receive it.
+However, sending this message is optional, which is implemented using a nested rule with quantification.
+Concretely, we use an optional existential quantifier to send a message only if the receiving process is ready to receive it \cite{rensinkNestedQuantificationGraph2006}.
 
 \begin{figure}[h]
     \centering
@@ -297,7 +296,7 @@ The tool is open-source, publicly available, and does not require any installati
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.7\textwidth]{images/impl.png}
+    \includegraphics[width=0.8\textwidth]{images/impl.png}
     \caption{Screenshot of the tool}
     \label{fig:implScreenshot}
 \end{figure}
