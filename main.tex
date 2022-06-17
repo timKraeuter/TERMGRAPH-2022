@@ -123,7 +123,7 @@ Different gateway types exist, for example, for split/merge or XOR/OR distributi
 Events consume and create tokens similarly to activities but also have additional semantics depending on their type.
 For example, message events will create or consume messages.
 
-\subsection{Theoretical Background}
+\subsection{Theoretical background}
 We use typed attributed graphs for the formalization of the BPMN execution semantics.
 Each state, i.e., token distribution during the execution of a BPMN model is represented as an attributed graph typed in the BPMN execution type graph introduced later in \cref{sec:formalization}.
 
@@ -132,8 +132,8 @@ Regarding graph transformation, we utilize the single-pushout (SPO) approach wit
 In addition, we utilize \emph{nested rules} with quantification to make parts of a rule applied repeatedly or optionally \cite{rensinkNestedQuantificationGraph2006,rensinkHowMuchAre2017}.
 SPO is sufficient to formalize the BPMN execution semantics and the automatic removal of dangling edges is not a problem.
 Moreover, we utilize NACs to implement some more intricate parts in the BPMN execution semantics such as the termination of processes. 
-In SPO rewriting, a graph transformation rule is defined as a graph morphism $L \to R$, while in our case $L$ and $R$ are typed attributed graphs. 
-\section{BPMN Semantics formalization} \label{sec:formalization}
+In SPO rewriting, a graph transformation rule is defined as a partial graph morphism $L \to R$, while in our case $L$ and $R$ are typed attributed graphs. 
+\section{BPMN semantics formalization} \label{sec:formalization}
 
 Since our approach is based on a model transformation from BPMN to graph transformation systems, we generate a \emph{start graph} and \emph{graph transformation rules} for a given BPMN process model.
 The approach supports the BPMN constructs depicted in \cref{fig:bpmnConstructsOverview}.
@@ -401,7 +401,7 @@ However, many other event types exist and are used in practice.
 Referring to \cref{tab:supportedconstructs}, we conclude that our formalization is comprehensive but still lacks support for some of the more advanced event types.
 An implementation of the missing event types is feasible, as shown in \cite{vangorpVisualTokenbasedFormalization2013}.
 
-\section{Conclusion \& Future work} \label{sec:conclusion}
+\section{Conclusion \& future work} \label{sec:conclusion}
 % Summary
 The approach presented in this paper utilizes a model transformation from BPMN models to graph transformation systems. 
 For each BPMN model, we automatically generate a start graph and a set of graph transformation rules.
