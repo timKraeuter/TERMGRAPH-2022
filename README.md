@@ -103,9 +103,7 @@ The BPMN files (see **bpmnModelsSemanticsTest**) and generated graph grammars fr
 |                                             |                                 | [Two End Events](https://cawemo.com/share/e1777355-d0cc-45d0-8f01-87d08ba2b5ef)                                          |_
 |                                             |                                 | [Terminate End Event](https://cawemo.com/share/e579995b-65f3-4146-a974-f136f5fd949b)                                     |_
 |                                             |                                 | [Link Event](https://cawemo.com/share/519f49aa-e3ec-4d6d-8425-3933f93f974d)                                              |_
-|                                             |                                 | [Signal Start Events](https://cawemo.com/share/b2db6ccf-1d3b-49c2-8739-0c53c069fd61)                                     |_
-|                                             |                                 | [Signal events](https://cawemo.com/share/13dda53f-c28d-446f-9330-2cf73814c657)                                           |_
-|                                             |                                 | [Signal events - Cross Process](https://cawemo.com/share/350bbe89-8c14-4ec2-a059-999a98ce92ea)                           |_
+|                                             |                                 | [Signal events](https://cawemo.com/share/e13f777e-dca2-45e9-8018-0b9d0c4b34cc)                                           |_
 |                                             |                                 | [Intermediate Throw Event](https://cawemo.com/share/0b3cb831-a6b2-4e7c-b064-0c83e887bf47)                                |_
 | Boundary Events                             | BPMNToGrooveBoundaryEventsTest  | [Subprocess - Interrupting Boundary Events](https://cawemo.com/share/3b55577a-e7ed-4729-a046-4d79fd11c941)               |
 |                                             |                                 | [Subprocess - Non-Interrupting Boundary Events](https://cawemo.com/share/656b7c63-34e3-404f-9399-bbed9e22a8b7)           |
