@@ -104,6 +104,8 @@ The BPMN files (see **bpmnModelsSemanticsTest**) and generated graph grammars fr
 |                                             |                                 | [Terminate End Event](https://cawemo.com/share/e579995b-65f3-4146-a974-f136f5fd949b)                                     |_
 |                                             |                                 | [Link Event](https://cawemo.com/share/519f49aa-e3ec-4d6d-8425-3933f93f974d)                                              |_
 |                                             |                                 | [Signal events](https://cawemo.com/share/e13f777e-dca2-45e9-8018-0b9d0c4b34cc)                                           |_
+|                                             |                                 | [Signal events - Multi Activation](https://cawemo.com/share/6a29e7e5-bf10-4b3e-bb40-2ff8591f7e0c)                        |_
+|                                             |                                 | [Signal events - Multi Activation - Same Process](https://cawemo.com/share/813dee70-ddc2-4a71-a965-1b6a2d28c7fa)         |_
 |                                             |                                 | [Intermediate Throw Event](https://cawemo.com/share/0b3cb831-a6b2-4e7c-b064-0c83e887bf47)                                |_
 | Boundary Events                             | BPMNToGrooveBoundaryEventsTest  | [Subprocess - Interrupting Boundary Events](https://cawemo.com/share/3b55577a-e7ed-4729-a046-4d79fd11c941)               |
 |                                             |                                 | [Subprocess - Non-Interrupting Boundary Events](https://cawemo.com/share/656b7c63-34e3-404f-9399-bbed9e22a8b7)           |
