@@ -71,12 +71,12 @@ The tool is available online [here](https://bpmn-analyzer.herokuapp.com/).
 
 [![Atomic property Unsafe implemented in Groove.](./images/impl.png)](https://bpmn-analyzer.herokuapp.com/)
 
-The sourcecode of the tool is available [here](https://github.com/timKraeuter/Groove_Rule_Generation) and instructions how to run it locally on your machine can be found [here](https://github.com/timKraeuter/Groove_Rule_Generation/blob/master/server/README.md).
+The sourcecode of the tool is available [here](https://github.com/timKraeuter/Rewrite_Rule_Generation) and instructions how to run it locally on your machine can be found [here](https://github.com/timKraeuter/Rewrite_Rule_Generation/blob/master/server/README.md).
 
 
 ### Test suite
-The test classes of the testsuite can be found in the subproject **generator** [here](https://github.com/timKraeuter/Groove_Rule_Generation).
-The BPMN files (see **bpmnModelsSemanticsTest**) and generated graph grammars from the BPMN models can be found [here](https://github.com/timKraeuter/Groove_Rule_Generation/tree/master/generator/src/test/resources/bpmn).
+The test classes of the testsuite can be found in the subproject **generator** [here](https://github.com/timKraeuter/Rewrite_Rule_Generation).
+The BPMN files (see **bpmnModelsSemanticsTest**) and generated graph grammars from the BPMN models can be found [here](https://github.com/timKraeuter/Rewrite_Rule_Generation/tree/master/generator/src/test/resources/bpmn).
 
 | BPMN feature                                | Test class                      | Test case                                                                                                                |
 |---------------------------------------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------|
