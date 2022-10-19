@@ -96,12 +96,12 @@ BPMN  is a widely used standard notation to define intra- and inter-organization
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.55\linewidth]{images/bpmn_semantics-bpmn-metamodel.pdf}
+  \includegraphics[width=0.75\linewidth]{images/bpmn_semantics-bpmn-metamodel.pdf}
   \caption{Simplified excerpt of the BPMN metamodel \cite{objectmanagementgroupBusinessProcessModel2013}}
   \label{fig:bpmnMetamodel}
 \end{figure}
 
-A BPMN process model is represented by a \textsf{Collaboration} that has a set of \textsf{participants} and \textsf{MessageFlows} between \textsf{InteractionNodes} contained by them (see  \cref{fig:bpmnMetamodel}).
+A BPMN process model is represented by a \textsf{Collaboration} that has \textsf{participants} and \textsf{MessageFlows} between \textsf{InteractionNodes} (see  \cref{fig:bpmnMetamodel}).
 Each participant is a \textsf{Process} containing \textsf{FlowNodes} connected by \textsf{SequenceFlows}.
 A \textsf{FlowNode} is either an \textsf{Activity}, \textsf{Gateway} or \textsf{Event}.
 There exist many types of \textsf{Activities}, \textsf{Gateways} and \textsf{Events} such as start and end events, for example, used in \cref{fig:approach}.
@@ -230,6 +230,54 @@ End events consume but do not produce tokens.
 Thus, process termination can be implemented using a general rule applicable to all process snapshots.
 The rule is automatically generated once during the model transformation to graph transformation systems and is used to terminate processes, sub processes, and event sub processes.
 It uses negative-application conditions to forbid tokens and sub processes for a process snapshot and then changes its state from running to terminated\footnote{The terminate rule implemented in Groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
+
+% TODO: make it flow with the part before. Remove the part before since we know explain things in detail?
+% Make the part before highlight we generate a start graph and a set of rules depending on the flow nodes as described now:
+
+\subsection{Process instantiation and termination}
+% Start and End Event + General termination rule. + Refer to start graph.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{images/start_end_template.pdf}
+    \caption{Rule generation templates for start and end events}
+    \label{fig:StartAndEndTemplate}
+\end{figure}
+% Receive tasks instantiation (low priority)
+% Exclusive event based gateway instantiation (low priority)
+\subsection{Activities}
+% Normal activities
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{images/activities_template.pdf}
+    \caption{Rule generation template for activities}
+    \label{fig:ActivityTemplates}
+\end{figure}
+% Send/Receive tasks
+% Sub processes
+\subsection{Gateways}
+% Exclusive --> Exception no incoming flows in sub processes (token taken from gateway directly)
+% Parallel
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{images/gateways_template.pdf}
+    \caption{Rule generation template for gateways}
+    \label{fig:GatewayTemplates}
+\end{figure}
+% Event-based with different event combinations
+% Mention unsupported types?
+\subsection{Events}
+% Message
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{images/event_templates.pdf}
+    \caption{Rule generation template for message events}
+    \label{fig:EventTemplates}
+\end{figure}
+% Signal
+% Link
+% Terminate end
+% Boundary events
+% Event subprocesses?
 
 \section{Model checking BPMN} \label{sec:modelChecking}
 
