@@ -10,7 +10,7 @@ The extended abstract has been published as a [preprint on EasyChair](https://ea
 The following tables depict how graph transformation rules for BPMN-FlowNodes are generated.
 It depicts BPMN-FlowNodes on the left and the corresponding rule generation template on the right.
 
-![Rule generation templates for start and end events](./artifacts/start_and_end.png)
+![Rule generation templates for start and end events](./artifacts/start_and_end.svg)
 ![Rule generation templates for activities](./artifacts/activities.png)
 ![Rule generation templates for gateways](./artifacts/gateways.png)
 ![Rule generation templates for message throw events](./artifacts/throw_events.png)
