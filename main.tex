@@ -312,7 +312,7 @@ However, the resulting rule is simple since it only moves a token from an incomi
 % Message throw with intermediate catch message events
 The upper rule describes how message throw events interact with message intermediate catch events.
 A message throw event consumes an incoming token and adds a token for each outgoing sequence flow.
-In addition, it sends one message to each waiting process, by adding it to the incoming messages of the process.
+In addition, it sends one message to each waiting process by adding it to the incoming messages of the process.
 However, sending each message is optional, meaning that if a process is not ready to consume a message immediately, it is not created.
 This behavior corresponds to the BPMN semantics \cite{objectmanagementgroupBusinessProcessModel2013}.
 We implement optional sending using a nested rule with quantification.
@@ -326,9 +326,9 @@ Concretely, we use an optional existential quantifier to send a message only if 
 \end{figure}
 
 % Message throw with message start events
-The bottom rule show how message intermediate throw events trigger new process instances when interacting with message start events.
-For each receiving message start event a new process snapshot with one token for each outgoing sequence flow is created.
-It is worth to note that a message throw event might interact with message intermediate catch events and message start events \textit{simultaneously}.
+The bottom rule shows how message intermediate throw events trigger new process instances when interacting with message start events.
+For each receiving message start event, a new process snapshot with one token for each outgoing sequence flow is created.
+It is worth noting that a message throw event might interact with message intermediate catch events and message start events \textit{simultaneously}.
 Thus, the rule generation templates in \autoref{fig:ThrowEventTemplates} can be mixed, i.e., messages can be sent and processes instantiated by one message throw event.
 We only separated message throw behavior into two rule templates for presentation purposes.
 
@@ -339,7 +339,7 @@ However, a send task executes the message behavior when ending the task, and bot
 
 % Message catch + Receive Task
 \autoref{fig:CatchMessageTemplates} depicts the rule generation templates for message intermediate catch events and receive tasks.
-To trigger a message intermediate catch event or a receive task only one message at an incoming message flow is needed.
+To trigger a message intermediate catch event or a receive task, only one message at an incoming message flow is needed.
 Thus, one rule is generated for each incoming message flow.
 The upper rule template shows that message intermediate catch events consume one incoming message and token and add a token for each outgoing sequence flow.
 In the lower rule template, one can see that receive tasks rules are similar to the activity rules in \autoref{fig:ActivityTemplates} besides the need to consume a message when a receive task is started.
@@ -361,7 +361,7 @@ In the lower rule template, one can see that receive tasks rules are similar to 
 \section{Model checking BPMN} \label{sec:modelChecking}
 
 Model checking a BPMN process model is possible using the generated graph transformation system.
-Besides a graph transformation system, a set of temporal properties to be checked and the atomic propositions used in the properties must be supplied (see \cref{fig:approach}).
+Besides a graph transformation system, a set of temporal properties to be checked, and the atomic propositions used in the properties must be supplied (see \cref{fig:approach}).
 An atomic proposition can be formalized as a graph and holds in a given state if it is a subgraph of the graph representing the state.
 This enables model checking of temporal properties, for example, LTL properties, using the defined atomic propositions.
 
@@ -446,7 +446,7 @@ Moreover, they do not support model checking since their goal is only formalizat
 
 % BProve/Corradini
 The tool BProVe\footnote{\url{http://pros.unicam.it/bprove/}} is based on formal BPMN semantics given in rewriting logic and implemented in the Maude system.
-Using these semantics, BProVe enables the verification of custom LTL properties and BPMN-specific properties, such as Safeness and Soundness.
+Using these semantics, BProVe can verify custom LTL properties and BPMN-specific properties, such as Safeness and Soundness.
 Furthermore, the tool is accessible online, not requiring any installation \cite{corradiniFormalApproachAnalysis2021}.
 
 % fbpmn/Houhou
@@ -526,7 +526,7 @@ In addition to \cite{corradiniFormalApproachAnalysis2021}, Houhou et al. \cite{h
 However, many other event types exist and are used in practice.
 
 Referring to \cref{tab:supportedconstructs}, we conclude that our formalization is comprehensive but still lacks support for some of the more advanced event types.
-An implementation of the missing event types is feasible, as shown in \cite{vangorpVisualTokenbasedFormalization2013}.
+Implementing the missing event types is feasible, as shown in \cite{vangorpVisualTokenbasedFormalization2013}.
 
 \section{Conclusion \& future work} \label{sec:conclusion}
 % Summary
@@ -536,7 +536,7 @@ In this way, the graph transformation rules get simpler while the complexity is 
 % Formalization & model checking
 Our resulting BPMN formalization is comprehensive and supports model checking.
 % Tool
-In addition, we provide a prototype implementation in a web-based tool to make our ideas easily accessible to other researchers and potentially practitioners in the future.
+In addition, we provide a prototype implementation in a web-based tool to make our ideas easily accessible to other researchers and potential practitioners in the future.
 
 % Future work
 We aim to improve our formalization and resulting tool in multiple ways in the future.
