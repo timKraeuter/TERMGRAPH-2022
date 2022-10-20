@@ -234,14 +234,33 @@ It uses negative-application conditions to forbid tokens and sub processes for a
 % TODO: make it flow with the part before. Remove the part before since we know explain things in detail?
 % Make the part before highlight we generate a start graph and a set of rules depending on the flow nodes as described now:
 
+In the following sections, we will describe how rules are generated for BPMN flow nodes.
+The generation is depicted using rule generation templates which can be applied to generate specific rules for given flow nodes.
+We explain rule generation for process instantiation and termination, activities, gateways and a subset of events.
+
 \subsection{Process instantiation and termination}
-% Start and End Event + General termination rule. + Refer to start graph.
+\autoref{fig:StartAndEndTemplate} depicts the rule generation templates for start and end events.
+All rule generation templates show a BPMN structure defined in the left column and in the right column the applicable rule generation template.
+The structure in the left column is a BPMN flow node and connected sequence and message flows.
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{images/start_end_template.pdf}
     \caption{Rule generation templates for start and end events}
     \label{fig:StartAndEndTemplate}
 \end{figure}
+
+% Start Event + Refer to start graph.
+The start graph of the graph transformation system contains tokens at start events.
+These tokens are consumed by start event rules and one token for each outgoing sequence flow is added.
+If start events have more than one outgoing sequence flow they function as an \textit{implicit parallel gateway}, forking the sequence flow (see parallel gateway in \autoref{fig:GatewayTemplates}).
+
+% End Event + General termination rule.
+The generated end event rules consume tokens one by one for each incoming sequence flow.
+However, they do not terminate processes.
+Process termination is implemented with a general rule applicable to all process snapshots.
+The rule is automatically generated once during the model transformation to graph transformation systems and is used to terminate processes, sub processes, and event sub processes, if they do not contain any tokens directly or in a subprocess.
+It uses negative-application conditions to forbid tokens and sub processes for a process snapshot and then changes its state from running to terminated\footnote{The terminate rule implemented in Groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
+
 % Receive tasks instantiation (low priority)
 % Exclusive event based gateway instantiation (low priority)
 \subsection{Activities}
@@ -266,12 +285,23 @@ It uses negative-application conditions to forbid tokens and sub processes for a
 % Event-based with different event combinations
 % Mention unsupported types?
 \subsection{Events}
-% Message
+% Message throw
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{images/event_templates.pdf}
-    \caption{Rule generation template for message events}
-    \label{fig:EventTemplates}
+    \includegraphics[width=1\textwidth]{images/throw_messages.pdf}
+    \caption{Rule generation template for message throw events}
+    \label{fig:ThrowEventTemplates}
+\end{figure}
+% Explain End events behave exactly the same
+% Explain similarity to send tasks
+% Explain currently only one incoming sequence flow is allowed
+
+% Message catch + Receive Task
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{images/catch_messages.pdf}
+    \caption{Rule generation template for message catch events and receive tasks}
+    \label{fig:CatchMessageTemplates}
 \end{figure}
 % Signal
 % Link
