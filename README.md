@@ -7,10 +7,14 @@ The extended abstract has been published as a [preprint on EasyChair](https://ea
 
 ### Model transformation from BPMN to GT-Rules
 
-The following table shows BPMN-FlowNodes on the left and the resulting graph transformation rules on the right.
-It depicts the model transformation from BPMN to GT-Rules outlined in the paper, covering the basic BPMN-FlowNodes: start events, activities, end events, parallel gateways, and exclusive gateways.
+The following tables depict how graph transformation rules for BPMN-FlowNodes are generated.
+It depicts BPMN-FlowNodes on the left and the corresponding rule generation template on the right.
 
-![Transformation of the main BPMN FlowNodes to GT-Rules.](./artifacts/mt.png)
+![Rule generation templates for start and end events](./artifacts/start_and_end.png)
+![Rule generation templates for activities](./artifacts/activties.png)
+![Rule generation templates for gateways](./artifacts/gateways.png)
+![Rule generation templates for message throw events](./artifacts/throw_events.png)
+![Rule generation templates for message catch events and receive tasks](./artifacts/catch_events.png)
 
 ### Process termination
 Process termination is implemented by the following graph transformation rule in Groove:
