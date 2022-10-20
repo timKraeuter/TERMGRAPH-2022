@@ -308,25 +308,52 @@ However, the resulting rule is simple since it only moves a token from an incomi
 % Mention unsupported types?
 \subsection{Events}
 % Message throw
+\autoref{fig:ThrowEventTemplates} depicts the rule generation templates for message intermediate throw events.
+% Message throw with intermediate catch message events
+The upper rule describes how message throw events interact with message intermediate catch events.
+A message throw event consumes an incoming token and adds a token for each outgoing sequence flow.
+In addition, it sends one message to each waiting process, by adding it to the incoming messages of the process.
+However, sending each message is optional, meaning that if a process is not ready to consume a message immediately, it is not created.
+This behavior corresponds to the BPMN semantics \cite{objectmanagementgroupBusinessProcessModel2013}.
+We implement optional sending using a nested rule with quantification.
+Concretely, we use an optional existential quantifier to send a message only if the receiving process runs and is ready to receive it \cite{rensinkNestedQuantificationGraph2006}.
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{images/throw_messages.pdf}
     \caption{Rule generation template for message throw events}
     \label{fig:ThrowEventTemplates}
 \end{figure}
-% Explain that End events behave the same.
+
+% Message throw with message start events
+The bottom rule show how message intermediate throw events trigger new process instances when interacting with message start events.
+For each receiving message start event a new process snapshot with one token for each outgoing sequence flow is created.
+It is worth to note that a message throw event might interact with message intermediate catch events and message start events \textit{simultaneously}.
+Thus, the rule generation templates in \autoref{fig:ThrowEventTemplates} can be mixed, i.e., messages can be sent and processes instantiated by one message throw event.
+We only separated message throw behavior into two rule templates for presentation purposes.
+
 % Explain the similarity to Send-tasks.
-% Explain currently, only one incoming sequence flow is allowed
+Furthermore, message end events and send tasks behave similarly regarding message creation and process instantiation.
+However, a send task executes the message behavior when ending the task, and both change tokens according to their respective rule templates (see \autoref{fig:StartAndEndTemplate} and \autoref{fig:ActivityTemplates}).
+% Explain currently, only one incoming sequence flow is allowed (not done).
 
 % Message catch + Receive Task
+\autoref{fig:CatchMessageTemplates} depicts the rule generation templates for message intermediate catch events and receive tasks.
+To trigger a message intermediate catch event or a receive task only one message at an incoming message flow is needed.
+Thus, one rule is generated for each incoming message flow.
+The upper rule template shows that message intermediate catch events consume one incoming message and token and add a token for each outgoing sequence flow.
+In the lower rule template, one can see that receive tasks rules are similar to the activity rules in \autoref{fig:ActivityTemplates} besides the need to consume a message when a receive task is started.
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{images/catch_messages.pdf}
     \caption{Rule generation template for message catch events and receive tasks}
     \label{fig:CatchMessageTemplates}
 \end{figure}
+
+% Link (maybe if space)
+
+% Not enough space for:
 % Signal
-% Link
 % Terminate end
 % Boundary events
 % Event subprocesses?
