@@ -252,36 +252,58 @@ The structure in the left column is a BPMN flow node and connected sequence and 
 % Start Event + Refer to start graph.
 The start graph of the graph transformation system contains tokens at start events.
 These tokens are consumed by start event rules and one token for each outgoing sequence flow is added.
-If start events have more than one outgoing sequence flow they function as an \textit{implicit parallel gateway}, forking the sequence flow (see parallel gateway in \autoref{fig:GatewayTemplates}).
+If start events have more than one outgoing sequence flow they function as an \textit{implicit parallel gateway}, forking the sequence flow by creating one token for each of them (see parallel gateway in \autoref{fig:GatewayTemplates}).
 
 % End Event + General termination rule.
 The generated end event rules consume tokens one by one for each incoming sequence flow.
 However, they do not terminate processes.
 Process termination is implemented with a general rule applicable to all process snapshots.
-The rule is automatically generated once during the model transformation to graph transformation systems and is used to terminate processes, sub processes, and event sub processes, if they do not contain any tokens directly or in a subprocess.
-It uses negative-application conditions to forbid tokens and sub processes for a process snapshot and then changes its state from running to terminated\footnote{The terminate rule implemented in Groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
+The rule is automatically generated once during the model transformation to graph transformation systems.
+It is used to terminate processes, sub processes, and event sub processes, if they do not contain any tokens directly or in a subprocess.
+To achieve this, the rule uses negative-application conditions to forbid tokens and sub processes for a process snapshot and then changes its state from running to terminated\footnote{The terminate rule implemented in Groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
 
 % Receive tasks instantiation (low priority)
-% Exclusive event based gateway instantiation (low priority)
+% Exclusive event-based gateway instantiation (low priority)
 \subsection{Activities}
 % Normal activities
+
+\autoref{fig:StartAndEndTemplate} depicts the rule generation templates for activities.
+Activity execution is divided into two steps implemented by two rule templates.
+The upper template generates one rule for each incoming sequence flow to start the activity.
+An activity can be started using a token positioned at any of its incoming sequence flows.
+Thus, multiple incoming sequence flows represent an \textit{implicit exclusive gateway} (see exclusive gateway in \autoref{fig:GatewayTemplates}).
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{images/activities_template.pdf}
     \caption{Rule generation template for activities}
     \label{fig:ActivityTemplates}
 \end{figure}
-% Send/Receive tasks
-% Sub processes
+
+The bottom rule template generates one rule that ends the activity.
+It consumes a token at the activity and creates one token for each outgoing sequence flow.
+Similarly, to start events, this implicitly encodes the same forking behavior as a parallel gateway (see \autoref{fig:GatewayTemplates}). 
+
+% Subprocesses/Call activities
+% Send/Receive tasks (mentioned/shown with message events later)
 \subsection{Gateways}
-% Exclusive --> Exception no incoming flows in sub processes (token taken from gateway directly)
+\autoref{fig:StartAndEndTemplate} depicts the rule generation templates for parallel and exclusive gateways.
 % Parallel
+A parallel gateway can synchronize incoming sequence flows and fork outgoing sequence flow simultaneously.
+Thus, one rule is generated that deletes one token from each incoming sequence flow and adds one token to each outgoing sequence flow.
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{images/gateways_template.pdf}
     \caption{Rule generation template for gateways}
     \label{fig:GatewayTemplates}
 \end{figure}
+
+% Exclusive --> Exception no incoming flows in sub-processes (token taken from gateway directly)
+Exclusive Gateways are triggered by any incoming sequence flow, and only one outgoing sequence flow is triggered.
+Thus, one rule must be generated for every combination of incoming and outgoing sequence flows.
+However, the resulting rule is simple since it only moves a token from an incoming sequence flow to an outgoing sequence flow.
+
 % Event-based with different event combinations
 % Mention unsupported types?
 \subsection{Events}
@@ -292,9 +314,9 @@ It uses negative-application conditions to forbid tokens and sub processes for a
     \caption{Rule generation template for message throw events}
     \label{fig:ThrowEventTemplates}
 \end{figure}
-% Explain End events behave exactly the same
-% Explain similarity to send tasks
-% Explain currently only one incoming sequence flow is allowed
+% Explain that End events behave the same.
+% Explain the similarity to Send-tasks.
+% Explain currently, only one incoming sequence flow is allowed
 
 % Message catch + Receive Task
 \begin{figure}[h]
