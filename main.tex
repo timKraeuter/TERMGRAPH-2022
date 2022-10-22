@@ -238,7 +238,7 @@ In the following sections, we will describe how rules are generated for BPMN flo
 The generation is depicted using rule generation templates which can be applied to generate specific rules for given flow nodes.
 We explain rule generation for process instantiation and termination, activities, gateways, and a subset of events.
 
-\subsection{Process instantiation and termination}
+\subsection{Process instantiation and termination} \label{subsec:instAndTermination}
 \autoref{fig:StartAndEndTemplate} depicts the rule generation templates for start and end events.
 All rule generation templates show a BPMN structure defined in the left column and in the right column the applicable rule generation template.
 The structure in the left column is a BPMN flow node and connected sequence and message flows.
@@ -257,9 +257,9 @@ If start events have more than one outgoing sequence flow, they function as an \
 % End Event + General termination rule.
 The generated end event rules consume tokens one by one for each incoming sequence flow.
 However, they do not terminate processes.
-Process termination is implemented with a general rule applicable to all process snapshots.
+Process termination is implemented with a generic rule applicable to all process snapshots.
 The rule is automatically generated once during the model transformation to graph transformation systems.
-It is used to terminate processes, sub processes, and event sub processes, if they do not contain any tokens directly or in a subprocess.
+It is used to terminate processes, sub processes, and event sub processes, if they do not have any tokens and subprocesses.
 To achieve this, the rule uses negative-application conditions to forbid tokens and sub processes for a process snapshot and then changes its state from running to terminated\footnote{The terminate rule implemented in Groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
 
 % Receive tasks instantiation (low priority)
@@ -288,9 +288,10 @@ Subprocess execution is similar to activity execution.
 The upper template generates one rule for each incoming sequence flow.
 By consuming an incoming token a subprocess with a token at each start event is created.
 To depict the process subprocess relation we chose the same color for the outer ring of the subprocess snapshot and its tokens.
+In the particular case that there is no start event in the subprocess, a token for every activity and gateway without incoming sequence flows is created.
 
 The bottom rule template generates one rule to consume a terminated subprocess and create tokens at each outgoing sequence flow.
-Subprocesses are terminated by a generic rule if they do not have any tokens.
+Subprocesses are terminated by a generic rule if they neither have tokens nor subprocesses (see section \ref{subsec:instAndTermination}).
 
 % Subprocesses/Call activities
 % Send/Receive tasks (mentioned/shown with message events later)
