@@ -116,7 +116,7 @@ Tokens are transported between flow nodes by sequence flows (arrows)
 % Activities
 Activities can start when there is at least one token located on an incoming sequence flow.
 The start of an activity will move the incoming token to the activity.
-When an activity finishes it will create one token for each outgoing sequence flow.
+When an activity finishes it will create one token at each outgoing sequence flow.
 % Gateways
 Different gateway types exist, for example, for split/merge or XOR/OR distribution of tokens.
 % Events (basic)
@@ -231,12 +231,12 @@ Thus, process termination can be implemented using a general rule applicable to 
 The rule is automatically generated once during the model transformation to graph transformation systems and is used to terminate processes, sub processes, and event sub processes.
 It uses negative-application conditions to forbid tokens and sub processes for a process snapshot and then changes its state from running to terminated\footnote{The terminate rule implemented in Groove is contained in the artifacts of this paper \cite{timkrauterArtifactsTERMGRAPH2022}.}.
 
-% TODO: make it flow with the part before. Remove the part before since we know explain things in detail?
-% Make the part before highlight we generate a start graph and a set of rules depending on the flow nodes as described now:
+% TODO: make it flow with the part before. Remove the part before since we know to explain things in detail.
+% Make the part before highlighting how we generate a start graph and a set of rules depending on the flow nodes as described now:
 
 In the following sections, we will describe how rules are generated for BPMN flow nodes.
 The generation is depicted using rule generation templates which can be applied to generate specific rules for given flow nodes.
-We explain rule generation for process instantiation and termination, activities, gateways and a subset of events.
+We explain rule generation for process instantiation and termination, activities, gateways, and a subset of events.
 
 \subsection{Process instantiation and termination}
 \autoref{fig:StartAndEndTemplate} depicts the rule generation templates for start and end events.
@@ -249,10 +249,10 @@ The structure in the left column is a BPMN flow node and connected sequence and 
     \label{fig:StartAndEndTemplate}
 \end{figure}
 
-% Start Event + Refer to start graph.
+% Start Event + Refer to the start graph.
 The start graph of the graph transformation system contains tokens at start events.
-These tokens are consumed by start event rules and one token for each outgoing sequence flow is added.
-If start events have more than one outgoing sequence flow they function as an \textit{implicit parallel gateway}, forking the sequence flow by creating one token for each of them (see parallel gateway in \autoref{fig:GatewayTemplates}).
+These tokens are consumed by start event rules, and one token for each outgoing sequence flow is added.
+If start events have more than one outgoing sequence flow, they function as an \textit{implicit parallel gateway}, forking the sequence flow by creating one token for each of them (see parallel gateway in \autoref{fig:GatewayTemplates}).
 
 % End Event + General termination rule.
 The generated end event rules consume tokens one by one for each incoming sequence flow.
@@ -267,22 +267,30 @@ To achieve this, the rule uses negative-application conditions to forbid tokens 
 \subsection{Activities}
 % Normal activities
 
-\autoref{fig:StartAndEndTemplate} depicts the rule generation templates for activities.
+\autoref{fig:StartAndEndTemplate} depicts the rule generation templates for activities and subprocesses.
 Activity execution is divided into two steps implemented by two rule templates.
 The upper template generates one rule for each incoming sequence flow to start the activity.
 An activity can be started using a token positioned at any of its incoming sequence flows.
 Thus, multiple incoming sequence flows represent an \textit{implicit exclusive gateway} (see exclusive gateway in \autoref{fig:GatewayTemplates}).
 
+The bottom rule template generates one rule that ends the activity.
+It consumes a token at the activity and creates one token at each outgoing sequence flow.
+Similarly, to start events, this implicitly encodes the same forking behavior as a parallel gateway (see \autoref{fig:GatewayTemplates}). 
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{images/activities_template.pdf}
-    \caption{Rule generation template for activities}
+    \caption{Rule generation template for activities and subprocesses}
     \label{fig:ActivityTemplates}
 \end{figure}
 
-The bottom rule template generates one rule that ends the activity.
-It consumes a token at the activity and creates one token for each outgoing sequence flow.
-Similarly, to start events, this implicitly encodes the same forking behavior as a parallel gateway (see \autoref{fig:GatewayTemplates}). 
+Subprocess execution is similar to activity execution.
+The upper template generates one rule for each incoming sequence flow.
+By consuming an incoming token a subprocess with a token at each start event is created.
+To depict the process subprocess relation we chose the same color for the outer ring of the subprocess snapshot and its tokens.
+
+The bottom rule template generates one rule to consume a terminated subprocess and create tokens at each outgoing sequence flow.
+Subprocesses are terminated by a generic rule if they do not have any tokens.
 
 % Subprocesses/Call activities
 % Send/Receive tasks (mentioned/shown with message events later)
@@ -311,7 +319,7 @@ However, the resulting rule is simple since it only moves a token from an incomi
 \autoref{fig:ThrowEventTemplates} depicts the rule generation templates for message intermediate throw events.
 % Message throw with intermediate catch message events
 The upper rule describes how message throw events interact with message intermediate catch events.
-A message throw event consumes an incoming token and adds a token for each outgoing sequence flow.
+A message throw event consumes an incoming token and adds a token at each outgoing sequence flow.
 In addition, it sends one message to each waiting process by adding it to the incoming messages of the process.
 However, sending each message is optional, meaning that if a process is not ready to consume a message immediately, it is not created.
 This behavior corresponds to the BPMN semantics \cite{objectmanagementgroupBusinessProcessModel2013}.
@@ -327,7 +335,7 @@ Concretely, we use an optional existential quantifier to send a message only if 
 
 % Message throw with message start events
 The bottom rule shows how message intermediate throw events trigger new process instances when interacting with message start events.
-For each receiving message start event, a new process snapshot with one token for each outgoing sequence flow is created.
+For each receiving message start event, a new process snapshot with one token at each outgoing sequence flow is created.
 It is worth noting that a message throw event might interact with message intermediate catch events and message start events \textit{simultaneously}.
 Thus, the rule generation templates in \autoref{fig:ThrowEventTemplates} can be mixed, i.e., messages can be sent and processes instantiated by one message throw event.
 We only separated message throw behavior into two rule templates for presentation purposes.
@@ -341,8 +349,9 @@ However, a send task executes the message behavior when ending the task, and bot
 \autoref{fig:CatchMessageTemplates} depicts the rule generation templates for message intermediate catch events and receive tasks.
 To trigger a message intermediate catch event or a receive task, only one message at an incoming message flow is needed.
 Thus, one rule is generated for each incoming message flow.
-The upper rule template shows that message intermediate catch events consume one incoming message and token and add a token for each outgoing sequence flow.
+The upper rule template shows that message intermediate catch events consume one incoming message and token and add a token at each outgoing sequence flow.
 In the lower rule template, one can see that receive tasks rules are similar to the activity rules in \autoref{fig:ActivityTemplates} besides the need to consume a message when a receive task is started.
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{images/catch_messages.pdf}
