@@ -11,7 +11,7 @@ The following tables depict how graph transformation rules for BPMN-FlowNodes ar
 It depicts BPMN-FlowNodes on the left and the corresponding rule generation template on the right.
 
 ![Rule generation templates for start and end events](./artifacts/start_and_end.svg)
-![Rule generation templates for activities](./artifacts/activities.svg)
+![Rule generation templates for activities and subprocesses](./artifacts/activities.svg)
 ![Rule generation templates for gateways](./artifacts/gateways.svg)
 ![Rule generation templates for message throw events](./artifacts/throw_events.svg)
 ![Rule generation templates for message catch events and receive tasks](./artifacts/catch_events.svg)
