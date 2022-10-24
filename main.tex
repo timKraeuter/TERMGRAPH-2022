@@ -52,7 +52,7 @@ However, the informal description of the BPMN execution semantics leads to diffe
 Other approaches to formalizing BPMN’s execution semantics only partially cover BPMN.
 To this end, we propose a formalization that, compared to other approaches, covers most of the BPMN constructs.
 Our approach is based on a model transformation from BPMN models to graph transformation systems. 
-As a proof of concept, we have implemented our approach in an open-source web-based tool.
+As proof of concept, we have implemented our approach in an open-source web-based tool.
 \end{abstract}
 
 \section{Introduction}
@@ -116,7 +116,7 @@ Tokens are transported between flow nodes by sequence flows (arrows)
 % Activities
 Activities can start when there is at least one token located on an incoming sequence flow.
 The start of an activity will move the incoming token to the activity.
-When an activity finishes it will create one token at each outgoing sequence flow.
+When an activity finishes, it will create one token at each outgoing sequence flow.
 % Gateways
 Different gateway types exist, for example, for split/merge or XOR/OR distribution of tokens.
 % Events (basic)
@@ -130,9 +130,9 @@ Each state, i.e., token distribution during the execution of a BPMN model is rep
 % Groove uses the single pushout approach with negative application conditions.
 Regarding graph transformation, we utilize the single-pushout (SPO) approach with negative application conditions (NAC) \cite{ehrigALGEBRAICAPPROACHESGRAPH1997}.
 In addition, we utilize \emph{nested rules} with quantification to make parts of a rule applied repeatedly or optionally \cite{rensinkNestedQuantificationGraph2006,rensinkHowMuchAre2017}.
-SPO is sufficient to formalize the BPMN execution semantics and the automatic removal of dangling edges is not a problem.
-Moreover, we utilize NACs to implement some more intricate parts in the BPMN execution semantics such as the termination of processes. 
-In SPO rewriting, a graph transformation rule is defined as a partial graph morphism $L \to R$, while in our case $L$ and $R$ are typed attributed graphs. 
+SPO is sufficient to formalize the BPMN execution semantics, and the automatic removal of dangling edges is not a problem.
+Moreover, we utilize NACs to implement more intricate parts in the BPMN execution semantics, such as the termination of processes. 
+In SPO rewriting, a graph transformation rule is defined as a partial graph morphism $L \to R$, while in our case, $L$ and $R$ are typed attributed graphs. 
 \section{BPMN semantics formalization} \label{sec:formalization}
 
 Since our approach is based on a model transformation from BPMN to graph transformation systems, we generate a \emph{start graph} and \emph{graph transformation rules} for a given BPMN process model.
@@ -156,7 +156,7 @@ The type graph is depicted using a UML class diagram-like syntax.
   \label{fig:typeGraph}
 \end{figure}
 
-We use \textsf{ProcessSnapshot} to denote a running BPMN process with a specific token distribution which describes one state in the history of process states during the execution.
+We use \textsf{ProcessSnapshot} to denote a running BPMN process with a specific token distribution that describes one state in the history of process states during the execution.
 Every \textsf{ProcessSnapshot} has a set of \textsf{tokens}, incoming \textsf{messages}, and \textsf{subprocesses}.
 A \textsf{ProcessSnapshot} has the state \textsf{Terminated} if it has no \textsf{tokens} or \textsf{subprocesses}.
 Otherwise, it has the state \textsf{Running}.
@@ -164,7 +164,7 @@ A \textsf{Token} has an \textsf{elementID}, the BPMN activity or sequence flow a
 A \textsf{Message} has an \textsf{elementID}, pointing to a \textsf{MessageFlow}.
 To depict graphs conforming to the type graph concisely, we introduce a concrete syntax in the clouds attached to the elements.
 It extends the BPMN syntax by adding tokens.
-Tokens are represented as colored circles and are drawn at their specified position in a model.
+Tokens are represented as colored circles drawn at their specified position in a model.
 Their color will match the color of the circle representing the process snapshot holding the token, which is located at the top left of the corresponding BPMN process.
 The concrete syntax was significantly inspired by the excellent bpmn-js-token-simulation\footnote{\url{https://github.com/bpmn-io/bpmn-js-token-simulation}}.
 Using this type graph, we can now define how the start graph and graph-transformation rules for the different BPMN constructs are created.
@@ -185,7 +185,7 @@ Furthermore, we consider allowing the user to define a start graph similar to ho
 
 The model transformation generates one or more graph transformation rules for each \textsf{FlowNode} in a BPMN model.
 To give an intuition about the model transformation, we will first describe example results, i.e., generated rules for a NSE, a task, and a send/receive message event.
-Afterwards, we will explain how these and more rules are created by our model transformation.
+Afterward, we will explain how these and more rules are created by our model transformation.
 
 \Cref{fig:gtRuleAbstract} depicts an example graph transformation rule ($L \to R$) for a NSE in abstract syntax.
 The rule is straightforward and moves a token from the start event to its outgoing sequence flow.
@@ -218,7 +218,7 @@ This rule is generated by the rule template given in \autoref{fig:activityTempla
 
 The left rule in \cref{fig:messageEventRules} realizes a message throw event, and the right rule implements a message catch event.
 The message catch event rule consumes a token and a message and creates an outgoing token.
-The message throw event rule moves the token through the event and may send a message to a waiting process snapshot, if it has a token waiting at the corresponding message receive event.
+The message throw event rule moves the token through the event and may send a message to a waiting process snapshot if it has a token waiting at the corresponding message receive event.
 An optional existential quantifier is used to send a message only if the receiving process is ready to receive it.
 The message throw(catch) rule generation is realized by the rule generation template given in \autoref{fig:throwEventTemplates}(\autoref{fig:catchMessageTemplates}) later.
 
@@ -229,9 +229,9 @@ The message throw(catch) rule generation is realized by the rule generation temp
     \label{fig:messageEventRules}
 \end{figure}
 
-Now we have described four example rules and introduced a concrete syntax to depict them concisely and understandably.
-In the following subsections, we will use this concrete syntax to describe how these and rules for other flow nodes are generated.
-The generation is depicted using rule generation templates that describe how specific rule are created for varying flow nodes.
+To summarize, we described four example rules and introduced a concrete syntax to depict them concisely and understandably.
+In the following subsections, we use this concrete syntax to describe how these rules and rules for other flow nodes are generated.
+The generation is depicted using rule generation templates that describe how specific rules are created for varying flow nodes.
 We explain rule generation for process instantiation and termination, activities, gateways, and message events.
 
 \subsection{Process instantiation and termination} \label{subsec:instAndTermination}
@@ -256,8 +256,8 @@ However, they do not terminate processes.
 % General termination rule
 Process termination is implemented with a generic rule applicable to all process snapshots.
 The rule is automatically generated once during the model transformation to graph transformation systems.
-It is used to terminate processes, sub processes, and event sub processes, if they do not have any tokens and subprocesses.
-To achieve this, the rule uses negative-application conditions to forbid tokens and sub processes for a process snapshot and then changes its state from running to terminated.
+It is used to terminate processes, subprocesses, and event subprocesses if they do not have any tokens and subprocesses.
+To achieve this, the rule uses negative-application conditions to forbid tokens and subprocesses for a process snapshot and then changes its state from running to terminated.
 The concrete termination rule in Groove is given as an artifact \cite{timkrauterArtifactsTERMGRAPH2022}.
 
 % Receive tasks instantiation (low priority)
@@ -282,16 +282,16 @@ Similarly, to start events, this implicitly encodes the same forking behavior as
     \label{fig:activityTemplates}
 \end{figure}
 
+% Subprocesses/Call activities
 Subprocess execution is similar to activity execution.
 The upper template generates one rule for each incoming sequence flow.
 By consuming an incoming token a subprocess with a token at each start event is created.
-To depict the process subprocess relation we chose the same color for the outer ring of the subprocess snapshot and its tokens.
+To depict the process subprocess relation, we chose the same color for the outer ring of the subprocess snapshot and its tokens.
 In the particular case that there is no start event in the subprocess, a token for every activity and gateway without incoming sequence flows is created.
 
 The bottom rule template generates one rule to consume a terminated subprocess and create tokens at each outgoing sequence flow.
-Subprocesses are terminated by a generic rule if they neither have tokens nor subprocesses (see section \ref{subsec:instAndTermination}).
+A generic rule terminates subprocesses if they neither have tokens nor subprocesses (see section \ref{subsec:instAndTermination}).
 
-% Subprocesses/Call activities
 % Send/Receive tasks (mentioned/shown with message events later)
 \subsection{Gateways}
 \autoref{fig:startAndEndTemplate} depicts the rule generation templates for parallel and exclusive gateways.
@@ -373,7 +373,7 @@ Besides a graph transformation system, a set of temporal properties to be checke
 An atomic proposition can be formalized as a graph and holds in a given state if it is a subgraph of the graph representing the state.
 This enables model checking of temporal properties, for example, LTL properties, using the defined atomic propositions.
 
-Like other work, we differentiate between \emph{BPMN-specific properties} defined generally for all BPMN process models and \emph{custom properties} tailored towards a particular BPMN process model.
+Like other work, we differentiate between \emph{BPMN-specific properties} defined for all BPMN process models and \emph{custom properties} tailored towards a particular BPMN process model.
 We do not consider structural properties since they can be checked using a standard process modeling tool without implementing execution semantics.
 We will now give an example of two predefined BPMN-specific properties and how they can be checked using our approach.
 Then, we describe how custom properties can be constructed and checked.
