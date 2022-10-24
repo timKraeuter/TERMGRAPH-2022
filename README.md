@@ -5,14 +5,16 @@ The extended abstract has been published as a [preprint on EasyChair](https://ea
 
 ## BPMN Semantics formalization
 
-### Model transformation from BPMN to GT-Rules
-
 The following tables depict how graph transformation rules for BPMN-FlowNodes are generated.
 It depicts BPMN-FlowNodes on the left and the corresponding rule generation template on the right.
 
+#### Process instantiation and termination
 ![Rule generation templates for start and end events](./artifacts/start_and_end.svg)
+#### Activities
 ![Rule generation templates for activities and subprocesses](./artifacts/activities.svg)
+#### Gateways
 ![Rule generation templates for gateways](./artifacts/gateways.svg)
+#### Events
 ![Rule generation templates for message throw events](./artifacts/throw_events.svg)
 ![Rule generation templates for message catch events and receive tasks](./artifacts/catch_events.svg)
 
