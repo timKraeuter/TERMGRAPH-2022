@@ -71,7 +71,7 @@ The generated rules are tailored to a given process model and thus are simpler t
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.75\textwidth]{images/full-approach.pdf}
+    \includegraphics[width=0.8\textwidth]{images/full-approach.pdf}
     \caption{Overview of the proposed approach}
     \label{fig:approach}
 \end{figure}
@@ -220,7 +220,7 @@ The left rule in \cref{fig:messageEventRules} realizes a message throw event, an
 The message catch event rule consumes a token and a message and creates an outgoing token.
 The message throw event rule moves the token through the event and may send a message to a waiting process snapshot if it has a token waiting at the corresponding message receive event.
 An optional existential quantifier is used to send a message only if the receiving process is ready to receive it.
-The message throw(catch) rule generation is realized by the rule generation template given in \autoref{fig:throwEventTemplates}(\autoref{fig:catchMessageTemplates}) later.
+The message throw (catch) rule generation is realized by the rule generation template given in \autoref{fig:throwEventTemplates} (\autoref{fig:catchMessageTemplates}) later.
 
 \begin{figure}[h]
     \centering
@@ -232,11 +232,11 @@ The message throw(catch) rule generation is realized by the rule generation temp
 To summarize, we described four example rules and introduced a concrete syntax to depict them concisely and understandably.
 In the following subsections, we use this concrete syntax to describe how these rules and rules for other flow nodes are generated.
 The generation is depicted using rule generation templates that describe how specific rules are created for varying flow nodes.
-We explain rule generation for process instantiation and termination, activities, gateways, and message events.
+We explain rule generation for process instantiation and termination, activities and subprocesses, gateways, and message events.
 
 \subsection{Process instantiation and termination} \label{subsec:instAndTermination}
 \autoref{fig:startAndEndTemplate} depicts the rule generation templates for start and end events.
-All rule generation templates show a BPMN structure defined in the left column and in the right column the applicable rule generation template.
+All rule generation templates show a BPMN structure defined in the left column and the applicable rule generation template in the right column.
 The structure in the left column is a BPMN flow node and connected sequence and message flows.
 \begin{figure}[h]
     \centering
@@ -262,7 +262,7 @@ The concrete termination rule in Groove is given as an artifact \cite{timkrauter
 
 % Receive tasks instantiation (low priority)
 % Exclusive event-based gateway instantiation (low priority)
-\subsection{Activities}
+\subsection{Activities \& Subprocesses}
 % Normal activities
 
 \autoref{fig:startAndEndTemplate} depicts the rule generation templates for activities and subprocesses.
@@ -286,11 +286,11 @@ Similarly, to start events, this implicitly encodes the same forking behavior as
 Subprocess execution is similar to activity execution.
 The upper template generates one rule for each incoming sequence flow.
 By consuming an incoming token, a subprocess with a token at each start event is created.
-To depict the process subprocess relation, we chose the same color for the outer ring of the subprocess snapshot and its tokens.
-In the case of no start event in the subprocess, a token for every activity and gateway without incoming sequence flows is created.
+To depict the process-subprocess relation, we chose the same color for the outer ring of the subprocess snapshot and its tokens.
+If the subprocess has no start events, a token for every activity and gateway without incoming sequence flows is created, as defined in the BPMN specification.
 
 The bottom rule template generates one rule to consume a terminated subprocess and create tokens at each outgoing sequence flow.
-A generic rule terminates subprocesses if they neither have tokens nor subprocesses (see section \ref{subsec:instAndTermination}).
+Subprocesses are terminated by a generic rule if they neither have tokens nor subprocesses (see section \ref{subsec:instAndTermination}).
 
 % Send/Receive tasks (mentioned/shown with message events later)
 \subsection{Gateways}
@@ -349,7 +349,7 @@ However, a send task executes the message behavior when ending the task, and bot
 To trigger a message intermediate catch event or a receive task, only one message at an incoming message flow is needed.
 Thus, one rule is generated for each incoming message flow.
 The upper rule template shows that message intermediate catch events consume one incoming message and token and add a token at each outgoing sequence flow.
-In the lower rule template, one can see that receive tasks rules are similar to the activity rules in \autoref{fig:activityTemplates}, besides the need to consume a message when a receive task is started.
+In the lower rule template, one can see that receive tasks rules are similar to the activity rules in \autoref{fig:activityTemplates}, besides consuming a message when a receive task is started.
 
 \begin{figure}[h]
     \centering
