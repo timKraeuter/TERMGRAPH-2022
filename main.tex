@@ -64,10 +64,10 @@ To this end, we propose a formalization that, compared to other approaches, cove
 Our approach is depicted as a BPMN process model in \cref{fig:approach}.
 It is based on a model transformation from BPMN process models to graph transformation systems.
 Thus, our approach constructs a new graph transformation system, i.e., graph transformation rules and a start graph for each BPMN process model.
-This is a significant difference compared to other approaches such as \cite{corradiniFormalApproachAnalysis2021, vangorpVisualTokenbasedFormalization2013}, where only the BPMN process model is parsed, but the rewrite rules are fixed.
+This is a significant difference compared to other approaches, such as \cite{corradiniFormalApproachAnalysis2021, vangorpVisualTokenbasedFormalization2013}, where only the BPMN process model is parsed, but the rewrite rules are fixed.
 Generating specific rules for each model leads to possibly more but simpler transformation rules that can be matched faster.
 Essentially, complexity is partly shifted from the transformation rules to their generation.
-The generated rules are tailored to a given process model and thus simpler than the general rules in \cite{vangorpVisualTokenbasedFormalization2013}.
+The generated rules are tailored to a given process model and thus are simpler than the general rules in \cite{vangorpVisualTokenbasedFormalization2013}.
 
 \begin{figure}[h]
     \centering
@@ -103,8 +103,8 @@ BPMN  is a widely used standard notation to define intra- and inter-organization
 
 A BPMN process model is represented by a \textsf{Collaboration} that has \textsf{participants} and \textsf{MessageFlows} between \textsf{InteractionNodes} (see  \cref{fig:bpmnMetamodel}).
 Each participant is a \textsf{Process} containing \textsf{FlowNodes} connected by \textsf{SequenceFlows}.
-A \textsf{FlowNode} is either an \textsf{Activity}, \textsf{Gateway} or \textsf{Event}.
-There exist many types of \textsf{Activities}, \textsf{Gateways} and \textsf{Events} such as start and end events, for example, used in \cref{fig:approach}.
+A \textsf{FlowNode} is either an \textsf{Activity}, \textsf{Gateway}, or \textsf{Event}.
+Many types of \textsf{Activities}, \textsf{Gateways}, and \textsf{Events} exist, such as start and end events, for example, used in \cref{fig:approach}.
 Activities represent certain tasks to be carried out during a process, while things may happen (events).
 Furthermore, gateways represent conditions or split and merge sequence flows \cite{freundRealLifeBPMNUsing2019}.
 
@@ -112,20 +112,20 @@ Furthermore, gateways represent conditions or split and merge sequence flows \ci
 The BPMN execution semantics are described using the concept of \emph{tokens} \cite{objectmanagementgroupBusinessProcessModel2013}.
 BPMN process models are executed by triggering one or more of their start events, leading to the creation of a token at each triggered start event.
 Tokens are transported between flow nodes by sequence flows (arrows)
-\footnote{The visual bpmm-js token simulation available at \url{https://bpmn-io.github.io/bpmn-js-token-simulation/modeler.html} greatly helps to understand BPMN execution semantics.}.
+\footnote{The visual bpmn-js token simulation available at \url{https://bpmn-io.github.io/bpmn-js-token-simulation/modeler.html} greatly helps to understand BPMN execution semantics.}.
 % Activities
-Activities can start when there is at least one token located on an incoming sequence flow.
+Activities can start when at least one token is located on an incoming sequence flow.
 The start of an activity will move the incoming token to the activity.
 When an activity finishes, it will create one token at each outgoing sequence flow.
 % Gateways
 Different gateway types exist, for example, for split/merge or XOR/OR distribution of tokens.
 % Events (basic)
-Events consume and create tokens similarly to activities but also have additional semantics depending on their type.
+Events consume and create tokens similar to activities but have additional semantics depending on their type.
 For example, message events will create or consume messages.
 
 \subsection{Theoretical background}
 We use typed attributed graphs for the formalization of the BPMN execution semantics.
-Each state, i.e., token distribution during the execution of a BPMN model is represented as an attributed graph typed in the BPMN execution type graph introduced later in \cref{sec:formalization}.
+Each state, i.e., token distribution during the execution of a BPMN model, is represented as an attributed graph typed in the BPMN execution type graph introduced later in \cref{sec:formalization}.
 
 % Groove uses the single pushout approach with negative application conditions.
 Regarding graph transformation, we utilize the single-pushout (SPO) approach with negative application conditions (NAC) \cite{ehrigALGEBRAICAPPROACHESGRAPH1997}.
@@ -161,8 +161,8 @@ Every \textsf{ProcessSnapshot} has a set of \textsf{tokens}, incoming \textsf{me
 A \textsf{ProcessSnapshot} has the state \textsf{Terminated} if it has no \textsf{tokens} or \textsf{subprocesses}.
 Otherwise, it has the state \textsf{Running}.
 A \textsf{Token} has an \textsf{elementID}, the BPMN activity or sequence flow at which it is located.
-A \textsf{Message} has an \textsf{elementID}, pointing to a \textsf{MessageFlow}.
-To depict graphs conforming to the type graph concisely, we introduce a concrete syntax in the clouds attached to the elements.
+A \textsf{Message} has an \textsf{elementID} pointing to a \textsf{MessageFlow}.
+To concisely depict graphs conforming to the type graph, we introduce a concrete syntax in the clouds attached to the elements.
 It extends the BPMN syntax by adding tokens.
 Tokens are represented as colored circles drawn at their specified position in a model.
 Their color will match the color of the circle representing the process snapshot holding the token, which is located at the top left of the corresponding BPMN process.
@@ -212,7 +212,7 @@ This rule is generated by the rule template given in \autoref{fig:activityTempla
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.6\textwidth]{images/bpmn_semantics-rules.pdf}
-    \caption{Example graph transformation rule to start a task}
+    \caption{Example graph transformation rule to start a task.}
     \label{fig:taskRules}
 \end{figure}
 
@@ -257,7 +257,7 @@ However, they do not terminate processes.
 Process termination is implemented with a generic rule applicable to all process snapshots.
 The rule is automatically generated once during the model transformation to graph transformation systems.
 It is used to terminate processes, subprocesses, and event subprocesses if they do not have any tokens and subprocesses.
-To achieve this, the rule uses negative-application conditions to forbid tokens and subprocesses for a process snapshot and then changes its state from running to terminated.
+The rule uses negative-application conditions to forbid tokens and subprocesses for a process snapshot and then changes its state from running to terminated.
 The concrete termination rule in Groove is given as an artifact \cite{timkrauterArtifactsTERMGRAPH2022}.
 
 % Receive tasks instantiation (low priority)
@@ -285,9 +285,9 @@ Similarly, to start events, this implicitly encodes the same forking behavior as
 % Subprocesses/Call activities
 Subprocess execution is similar to activity execution.
 The upper template generates one rule for each incoming sequence flow.
-By consuming an incoming token a subprocess with a token at each start event is created.
+By consuming an incoming token, a subprocess with a token at each start event is created.
 To depict the process subprocess relation, we chose the same color for the outer ring of the subprocess snapshot and its tokens.
-In the particular case that there is no start event in the subprocess, a token for every activity and gateway without incoming sequence flows is created.
+In the case of no start event in the subprocess, a token for every activity and gateway without incoming sequence flows is created.
 
 The bottom rule template generates one rule to consume a terminated subprocess and create tokens at each outgoing sequence flow.
 A generic rule terminates subprocesses if they neither have tokens nor subprocesses (see section \ref{subsec:instAndTermination}).
@@ -349,7 +349,7 @@ However, a send task executes the message behavior when ending the task, and bot
 To trigger a message intermediate catch event or a receive task, only one message at an incoming message flow is needed.
 Thus, one rule is generated for each incoming message flow.
 The upper rule template shows that message intermediate catch events consume one incoming message and token and add a token at each outgoing sequence flow.
-In the lower rule template, one can see that receive tasks rules are similar to the activity rules in \autoref{fig:activityTemplates} besides the need to consume a message when a receive task is started.
+In the lower rule template, one can see that receive tasks rules are similar to the activity rules in \autoref{fig:activityTemplates}, besides the need to consume a message when a receive task is started.
 
 \begin{figure}[h]
     \centering

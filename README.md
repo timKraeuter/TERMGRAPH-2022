@@ -1,7 +1,7 @@
 # TERMGRAPH-2022
-This repository contains the sources for the ![extended abstract](extendedAbstract.pdf) submitted to [TERMGRAPH-2022](http://www.termgraph.org.uk/2022/) together with additional information below.
+This repository contains the sources for the paper submitted to [TERMGRAPH-2022](http://www.termgraph.org.uk/2022/) together with additional information below.
 
-The extended abstract has been published as a [preprint on EasyChair](https://easychair.org/publications/preprint/KSnQ).
+The extended abstract of this paper has been published as a [preprint on EasyChair](https://easychair.org/publications/preprint/KSnQ).
 
 ## BPMN Semantics formalization
 
