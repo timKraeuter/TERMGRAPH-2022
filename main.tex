@@ -448,6 +448,8 @@ To evaluate the correctness of our implementation, we created a comprehensive te
 A BPMN formalization based on in-place graph transformation rules is given in \cite{vangorpVisualTokenbasedFormalization2013}.
 The formalization covers a substantial part of the BPMN specification, including complex concepts such as inclusive gateway merge and compensation.
 In addition, graph transformation rules are visual and thus can easily be matched to the informal description of the execution semantics in the specification \cite{objectmanagementgroupBusinessProcessModel2013}.
+A key difference is that the rules in \cite{vangorpVisualTokenbasedFormalization2013} are general and can be applied to any BPMN model, while we generate specific rules for every BPMN model based on rule templates.
+Thus, our approach can be seen as a partial evaluation compared to \cite{vangorpVisualTokenbasedFormalization2013} since we process a concrete BPMN model before its execution.
 The graph transformation rules were implemented in a prototype using GrGen.NET.
 Unfortunately, the implementation is not publicly accessible anymore.
 Moreover, they do not support model checking since their goal is only formalization.
@@ -532,7 +534,6 @@ Corradini et al. \cite{corradiniFormalApproachAnalysis2021} support message and 
 % Explain Houhou in detail
 In addition to \cite{corradiniFormalApproachAnalysis2021}, Houhou et al. \cite{houhouFirstOrderLogicVerification2022} support timer and the use of message and timer events as both interrupting and non-interrupting boundary events.
 However, many other event types exist and are used in practice.
-
 Referring to \cref{tab:supportedconstructs}, we conclude that our formalization is comprehensive but still lacks support for some of the more advanced event types.
 Implementing the missing event types is feasible, as shown in \cite{vangorpVisualTokenbasedFormalization2013}.
 
