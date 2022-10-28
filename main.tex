@@ -60,21 +60,12 @@ As proof of concept, we have implemented our approach in an open-source web-base
 However, the informal description of the BPMN execution semantics leads to different interpretations of BPMN constructs and difficulties in checking behavioral properties \cite{corradiniFormalApproachAnalysis2021}.
 To this end, we propose a formalization that, compared to other approaches, covers most of the BPMN constructs.
 
-%Our approach is depicted as a BPMN process model in \cref{fig:approach}.
 Our approach is based on a model transformation from BPMN process models to graph transformation systems using rule generation templates.
 Thus, our approach constructs a new graph transformation system, i.e., graph transformation rules and a start graph for each BPMN process model.
 This is a significant difference compared to other approaches, such as \cite{corradiniFormalApproachAnalysis2021, vangorpVisualTokenbasedFormalization2013}, where only the BPMN process model is parsed, but the rewrite rules are fixed.
 Generating specific rules for each model leads to possibly more but simpler transformation rules that can be matched faster.
 Essentially, complexity is partly shifted from the transformation rules to their generation.
 The generated rules are tailored to a given process model and thus are simpler than the general rules in \cite{vangorpVisualTokenbasedFormalization2013}.
-
-%TODO Move this down to later and explain all ingredients in let us say a discussion or summary or section
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/full-approach.pdf}
-    \caption{Overview of the proposed approach}
-    \label{fig:approach}
-\end{figure}
 
 % Paper outline
 The remainder of this paper is structured as follows.
@@ -436,8 +427,32 @@ Thus, a user does not need to be aware of the graph transformation semantics use
     \label{fig:atomicProposition}
 \end{figure}
 
+
+
+
+
+
 \section{Implementation} \label{sec:impl}
+Our overall approach is summarized in \cref{fig:approach} as a BPMN process model.
+We use our model transformation to generate a graph transformation system for a given BPMN model.
+Finally, we use the graph transformation system to check temporal properties possibly leading to property violations.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/full-approach.pdf}
+    \caption{Overview of the proposed approach}
+    \label{fig:approach}
+\end{figure}
+
 % Tool
+The first step of the approach is implemented in our web-based tool.
+The tool is open-source, publicly available, and does not require any installation \cite{timkrauterArtifactsTERMGRAPH2022}.
+\Cref{fig:implScreenshot} depicts a screenshot of the implemented tool.
+However, model checking, must be run locally in the graph-transformation tool Groove\footnote{\url{https://groove.ewi.utwente.nl/about}}.
+We are currently working on extending our tool such that model-checking can be done without installing Groove locally.
+Groove implements SPO with NACs and thus has all the features we need.
+% Evaluation
+To evaluate the correctness of our implementation, we created a comprehensive test suite, which demonstrates correct rule generation for the implemented BPMN constructs \cite{timkrauterArtifactsTERMGRAPH2022}.
 
 \begin{figure}[h]
     \centering
@@ -445,15 +460,6 @@ Thus, a user does not need to be aware of the graph transformation semantics use
     \caption{Screenshot of the tool}
     \label{fig:implScreenshot}
 \end{figure}
-
-\Cref{fig:implScreenshot} depicts a screenshot of the implemented tool.
-The tool is open-source, publicly available, and does not require any installation \cite{timkrauterArtifactsTERMGRAPH2022}.
-The first two steps of our approach, i.e., reading and transforming BPMN models to graph transformation systems, are implemented and usable through the web-based tool.
-Then one can use the graph-transformation tool Groove\footnote{\url{https://groove.ewi.utwente.nl/about}} for state space generation and model checking locally.
-We are currently working on extending our tool such that model-checking can be done without installing Groove locally.
-Groove implements SPO with NACs and thus has all the features we need.
-% Evaluation
-To evaluate the correctness of our implementation, we created a comprehensive test suite, which demonstrates correct rule generation for the implemented BPMN constructs \cite{timkrauterArtifactsTERMGRAPH2022}.
 
 \section{Related work} \label{sec:relatedWork}
 % Van gorp
