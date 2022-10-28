@@ -107,12 +107,12 @@ Tokens are transported between flow nodes by sequence flows (arrows)
 % Activities
 Activities can start when at least one token is located on an incoming sequence flow.
 The start of an activity will move the incoming token to the activity.
-When an activity finishes, it will create one token at each outgoing sequence flow.
+When an activity finishes, it will add one token at each outgoing sequence flow.
 % Gateways
 Different gateway types exist, for example, for parallelization, synchronization, XOR and OR distribution of tokens.
 % Events (basic)
-Events consume and create tokens similar to activities but have additional semantics depending on their type.
-For example, message events will create or consume messages.
+Events delete and add tokens similar to activities but have additional semantics depending on their type.
+For example, message events will add or delete messages.
 
 \subsection{Theoretical background}
 We use typed attributed graphs for the formalization of the BPMN execution semantics.
@@ -121,7 +121,6 @@ Each state, i.e., token distribution during the execution of a BPMN model, is re
 % Groove uses the single pushout approach with negative application conditions.
 Regarding graph transformation, we utilize the single-pushout (SPO) approach with negative application conditions (NAC) \cite{ehrigALGEBRAICAPPROACHESGRAPH1997}.
 In addition, we utilize \emph{nested rules} with quantification to make parts of a rule applied repeatedly or optionally \cite{rensinkNestedQuantificationGraph2006,rensinkHowMuchAre2017}.
-%SPO is sufficient to formalize the BPMN execution semantics, and the automatic removal of dangling edges is not a problem since .
 Moreover, we utilize NACs to implement more intricate parts in the BPMN execution semantics, such as the termination of processes. 
 In SPO rewriting, a graph transformation rule is defined as a partial graph morphism $L \to R$, where in our case, $L$ and $R$ are typed attributed graphs. 
 
@@ -157,10 +156,11 @@ Otherwise, it has the state \textsf{Running}.
 A \textsf{Token} has an \textsf{elementID}, which points to the BPMN \textsf{Activity} or the \textsf{SequenceFlow} at which it is located.
 A \textsf{Message} has an \textsf{elementID} pointing to a \textsf{MessageFlow}.
 To concisely depict graphs conforming to this type graph, we introduce a concrete syntax in the clouds attached to the elements.
-%It extends the BPMN syntax by adding tokens.
+Our concrete syntax extends the BPMN syntax by adding process snapshots, tokens, and messages.
 Tokens are represented as colored circles drawn at their specified positions in a model.
-In addition, we use colored circles at the top left of the bounding box which represents instances of the BMPN \textsf{Process}; these circles represent process snapshots.
-The color of the token must match the color of the process snapshot holding the token.
+In addition, we use colored circles at the top left of the bounding box, which represent instances of the BPMN \textsf{Process}; these circles represent process snapshots.
+% Token color must match the tokens relation in the type graph (constraint!). This should be checked by the tool when using the concrete syntax.
+The token's color must match the color of the process snapshot holding the token.
 The concrete syntax was inspired by the bpmn-js-token-simulation\footnote{\url{https://github.com/bpmn-io/bpmn-js-token-simulation}}.
 Using this type graph, we can now define how the start graph and graph-transformation rules for the different BPMN constructs are created.
 
@@ -187,7 +187,6 @@ The rule is straightforward and moves a token from the start event to its outgoi
 For the rest of the paper, we will depict all rules in the concrete syntax introduced earlier.
 The rule from \cref{fig:gtRuleAbstract} depicted in concrete syntax is shown in \cref{fig:gtRuleConcrete}.
 
-
 \begin{figure}[h]
     \centering
   \includegraphics[width=0.8\textwidth]{images/rule_abstract.pdf}
@@ -211,7 +210,7 @@ The rule in \cref{fig:taskRules} represents the start of a task, which will move
 \end{figure}
 
 The left rule in \cref{fig:messageEventRules} realizes a message throw event, and the right rule implements a message catch event.
-The message catch event rule consumes a token and a message and creates an outgoing token.
+The message catch event rule deletes a token and a message and adds an outgoing token.
 The message throw event rule moves the token through the event and may send a message to a waiting process snapshot if it has a token waiting at the corresponding message receive event.
 An optional existential quantifier is used to send a message only if the receiving process is ready to receive it.
 The message throw (catch) rule generation is realized by the rule generation template given in \autoref{fig:throwEventTemplates} (\autoref{fig:catchMessageTemplates}) later.
@@ -290,7 +289,7 @@ The upper template generates one rule for each incoming sequence flow.
 The rule deletes an incoming token and adds a process snapshot representing a subprocess. 
 The addition of this process snapshot is represented with a colored circle on the top left corner of the subprocess with a token at each of its start events.
 To depict the \textsf{subprocesses} relation in \autoref{fig:typeGraph}, we chose the same color for the outer ring of the subprocess snapshot and its tokens.
-If the subprocess has no start events, a token for every activity and gateway without incoming sequence flows is created. %, as defined in the BPMN specification.
+If the subprocess has no start events, a token for every activity and gateway without incoming sequence flows is added. %, as defined in the BPMN specification.
 
 The bottom rule template generates one rule to delete a terminated process snapshot and adds tokens at each outgoing sequence flow.
 Subprocesses are terminated by a generic rule (see section \ref{subsec:instAndTermination}) if they neither have tokens nor subprocesses.
@@ -322,9 +321,9 @@ However, the resulting rule is simple since it only deletes a token from an inco
 \autoref{fig:throwEventTemplates} depicts the rule generation templates for \textit{message intermediate throw events} (\textsf{MITE} in \autoref{fig:bpmnConstructsOverview}).
 % Message throw with intermediate catch message events
 The upper rule describes how message throw events interact with message intermediate catch events.
-A \textit{message throw event} consumes an incoming token and adds a token at each outgoing sequence flow.
+A \textit{message throw event} deletes an incoming token and adds a token at each outgoing sequence flow.
 In addition, it sends one message to each waiting process by adding it to the incoming messages of the process.
-However, sending each message is optional, meaning that if a process is not ready to consume a message immediately, the message is not created.
+However, sending each message is optional, meaning that if a process is not ready to consume a message immediately, the message is not added.
 %This behavior corresponds to the BPMN semantics \cite{objectmanagementgroupBusinessProcessModel2013}.
 We implement optional message sending using a nested rule with quantification.
 Concretely, we use an optional existential quantifier to send a message only if the receiving process runs and is ready to receive it \cite{rensinkNestedQuantificationGraph2006}.
@@ -338,7 +337,7 @@ Concretely, we use an optional existential quantifier to send a message only if 
 
 % Message throw with message start events
 The bottom rule shows how message intermediate throw events trigger new process instances when interacting with message start events.
-For each receiving message start event, a new process snapshot with one token at each outgoing sequence flow is created.
+For each receiving message start event, a new process snapshot with one token at each outgoing sequence flow is added.
 It is worth noting that a message throw event might interact with message intermediate catch events and message start events \textit{simultaneously}.
 Thus, the rule generation templates in \autoref{fig:throwEventTemplates} can be mixed, i.e., messages can be sent and processes instantiated by one message throw event.
 We only separated message throw behavior into two rule templates for presentation purposes.
@@ -408,12 +407,12 @@ The atomic proposition \textsf{AllTerminated} is true if there exists no process
 
 Both properties can be checked using our implementation \cite{timkrauterArtifactsTERMGRAPH2022}.
 To fully check Soundness, we need to check \textit{Proper Completion} and \textit{No Dead Activities}.
-The information needed to check these properties is present in the generated state space.
+The information needed to check these properties is in the generated state space.
 
 \subsection{Custom properties} \label{subsec:customProperties}
 % Defining atomic propositions in BPMN is a novelty.
 To make model checking user-friendly, we envision users defining atomic propositions in the extended BPMN syntax, i.e., the concrete syntax introduced in \autoref{fig:typeGraph}.
-Thus, to define an atomic proposition, we let the user attach tokens to a BPMN process snapshots, which we can automatically convert to a graph representing an atomic proposition.
+Thus, to define an atomic proposition, a user adds process snapshots and tokens for a BPMN process model, which we can automatically convert to a graph representing an atomic proposition.
 
 For example, the token distribution shown in \cref{fig:atomicProposition} defines two running process snapshots with a token in task A.
 Differently colored tokens define different process snapshots.
@@ -439,7 +438,7 @@ Finally, we use the graph transformation system to check temporal properties pos
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/full-approach.pdf}
+    \includegraphics[width=0.6\textwidth]{images/full-approach.pdf}
     \caption{Overview of the proposed approach}
     \label{fig:approach}
 \end{figure}
@@ -448,7 +447,7 @@ Finally, we use the graph transformation system to check temporal properties pos
 The first step of the approach is implemented in our web-based tool.
 The tool is open-source, publicly available, and does not require any installation \cite{timkrauterArtifactsTERMGRAPH2022}.
 \Cref{fig:implScreenshot} depicts a screenshot of the implemented tool.
-However, model checking, must be run locally in the graph-transformation tool Groove\footnote{\url{https://groove.ewi.utwente.nl/about}}.
+However, model checking must be run locally in the graph-transformation tool Groove\footnote{\url{https://groove.ewi.utwente.nl/about}}.
 We are currently working on extending our tool such that model-checking can be done without installing Groove locally.
 Groove implements SPO with NACs and thus has all the features we need.
 % Evaluation
@@ -473,7 +472,7 @@ Unfortunately, the implementation is not publicly accessible anymore.
 Moreover, they do not support model checking since their goal is only formalization.
 
 % BProve/Corradini
-The approach by Corradini et al is based on formal BPMN semantics given in rewriting logic and implemented in the Maude system \cite{corradiniFormalApproachAnalysis2021}.
+The approach by Corradini et al. is based on formal BPMN semantics given in rewriting logic and implemented in the Maude system \cite{corradiniFormalApproachAnalysis2021}.
 Using this formal semantics, the tool BProVe\footnote{\url{http://pros.unicam.it/bprove/}} can verify custom LTL properties and BPMN-specific properties, such as Safeness and Soundness.
 Furthermore, the tool is accessible online, not requiring any installation.
 
