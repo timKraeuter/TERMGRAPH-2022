@@ -7,11 +7,11 @@
       <od:links>Link_1jsuhrd</od:links>
     </od:object>
     <od:object name="1:ProcessState" id="Object_1u57j0e" attributeValues="[Running]" />
-    <od:link name="state" id="Link_13ddqpm" sourceRef="Object_1j4ij8b" targetRef="Object_1u57j0e" />
+    <od:link name=":state" id="Link_13ddqpm" sourceRef="Object_1j4ij8b" targetRef="Object_1u57j0e" />
     <od:object name="1:Token" id="Object_159y2ve" attributeValues="elementID=&#34;start&#34;" />
-    <od:link name="tokens" id="Link_008wy3y" sourceRef="Object_1j4ij8b" targetRef="Object_159y2ve" />
+    <od:link name=":tokens" id="Link_008wy3y" sourceRef="Object_1j4ij8b" targetRef="Object_159y2ve" />
     <od:object name="2:Token" id="Object_0wlm9cz" attributeValues="elementID=&#34;startToActivityA&#34;" />
-    <od:link name="tokens" id="Link_1jsuhrd" sourceRef="Object_1j4ij8b" targetRef="Object_0wlm9cz" />
+    <od:link name=":tokens" id="Link_1jsuhrd" sourceRef="Object_1j4ij8b" targetRef="Object_0wlm9cz" />
   </od:odBoard>
   <odDi:odRootBoard id="RootBoard_debug">
     <odDi:odPlane id="Plane_debug" boardElement="Board_debug">
@@ -20,7 +20,7 @@
         <odDi:waypoint x="515" y="443" />
         <odDi:waypoint x="600" y="443" />
         <odDi:odLabel>
-          <dc:Bounds x="550" y="414" width="46" height="18" />
+          <dc:Bounds x="548" y="414" width="50" height="18" />
         </odDi:odLabel>
       </odDi:link>
       <odDi:link id="Link_008wy3y_di" boardElement="Link_008wy3y">
@@ -28,14 +28,14 @@
         <odDi:waypoint x="515" y="353" />
         <odDi:waypoint x="600" y="353" />
         <odDi:odLabel>
-          <dc:Bounds x="550" y="324" width="46" height="18" />
+          <dc:Bounds x="548" y="324" width="50" height="18" />
         </odDi:odLabel>
       </odDi:link>
       <odDi:link id="Link_13ddqpm_di" boardElement="Link_13ddqpm">
         <odDi:waypoint x="590" y="270" />
         <odDi:waypoint x="680" y="270" />
         <odDi:odLabel>
-          <dc:Bounds x="642" y="247" width="34" height="18" />
+          <dc:Bounds x="640" y="247" width="39" height="18" />
         </odDi:odLabel>
       </odDi:link>
       <odDi:odShape id="Object_1j4ij8b_di" boardElement="Object_1j4ij8b">

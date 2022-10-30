@@ -6,25 +6,25 @@
       <od:links>Link_008wy3y</od:links>
     </od:object>
     <od:object name="1:ProcessState" id="Object_1u57j0e" attributeValues="[Running]" />
-    <od:link name="state" id="Link_13ddqpm" sourceRef="Object_1j4ij8b" targetRef="Object_1u57j0e" />
+    <od:link name=":state" id="Link_13ddqpm" sourceRef="Object_1j4ij8b" targetRef="Object_1u57j0e" />
     <od:object name="1:Token" id="Object_159y2ve" attributeValues="elementID=&#34;start&#34;" />
-    <od:link name="tokens" id="Link_008wy3y" sourceRef="Object_1j4ij8b" targetRef="Object_159y2ve" />
+    <od:link name=":tokens" id="Link_008wy3y" sourceRef="Object_1j4ij8b" targetRef="Object_159y2ve" />
   </od:odBoard>
   <odDi:odRootBoard id="RootBoard_debug">
     <odDi:odPlane id="Plane_debug" boardElement="Board_debug">
-      <odDi:link id="Link_13ddqpm_di" boardElement="Link_13ddqpm">
-        <odDi:waypoint x="590" y="270" />
-        <odDi:waypoint x="680" y="270" />
-        <odDi:odLabel>
-          <dc:Bounds x="642" y="247" width="34" height="18" />
-        </odDi:odLabel>
-      </odDi:link>
       <odDi:link id="Link_008wy3y_di" boardElement="Link_008wy3y">
         <odDi:waypoint x="515" y="300" />
         <odDi:waypoint x="515" y="353" />
         <odDi:waypoint x="680" y="353" />
         <odDi:odLabel>
-          <dc:Bounds x="620" y="324" width="46" height="18" />
+          <dc:Bounds x="624" y="330" width="50" height="18" />
+        </odDi:odLabel>
+      </odDi:link>
+      <odDi:link id="Link_13ddqpm_di" boardElement="Link_13ddqpm">
+        <odDi:waypoint x="590" y="270" />
+        <odDi:waypoint x="680" y="270" />
+        <odDi:odLabel>
+          <dc:Bounds x="639" y="247" width="39" height="18" />
         </odDi:odLabel>
       </odDi:link>
       <odDi:odShape id="Object_1j4ij8b_di" boardElement="Object_1j4ij8b">
