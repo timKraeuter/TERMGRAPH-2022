@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<od:definitions xmlns:od="http://tk/schema/od" xmlns:odDi="http://tk/schema/odDi" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC">
+  <od:odBoard id="Board_debug">
+    <od:object name="1:ProcessSnapshot" id="Object_1j4ij8b">
+      <od:links>Link_13ddqpm</od:links>
+      <od:links>Link_008wy3y</od:links>
+      <od:links>Link_1vv5wa6</od:links>
+    </od:object>
+    <od:object name="1:ProcessState" id="Object_1u57j0e" attributeValues="[Running]" />
+    <od:link name=":state" id="Link_13ddqpm" sourceRef="Object_1j4ij8b" targetRef="Object_1u57j0e" />
+    <od:object name="1:Token" id="Object_159y2ve" />
+    <od:link name=":tokens" id="Link_008wy3y" sourceRef="Object_1j4ij8b" targetRef="Object_159y2ve" />
+    <od:object name="1:ProcessSnapshot" id="Object_06eskbx" />
+    <od:link name=":subprocess" id="Link_1vv5wa6" sourceRef="Object_1j4ij8b" targetRef="Object_06eskbx" />
+    <od:object name="1:ProcessSnapshot" id="Object_0wcrjiu">
+      <od:links>Link_16g75wd</od:links>
+      <od:links>Link_1vd8kv4</od:links>
+      <od:links>Link_1e3c0k9</od:links>
+    </od:object>
+    <od:object name="1:ProcessState" id="Object_04p90nu" attributeValues="[Terminated]" />
+    <od:object name="1:Token" id="Object_0sxhlhx" />
+    <od:object name="1:ProcessSnapshot" id="Object_0bpfrua" />
+    <od:link name=":state" id="Link_16g75wd" sourceRef="Object_0wcrjiu" targetRef="Object_04p90nu" />
+    <od:link name=":tokens" id="Link_1vd8kv4" sourceRef="Object_0wcrjiu" targetRef="Object_0sxhlhx" />
+    <od:link name=":subprocess" id="Link_1e3c0k9" sourceRef="Object_0wcrjiu" targetRef="Object_0bpfrua" />
+  </od:odBoard>
+  <odDi:odRootBoard id="RootBoard_debug">
+    <odDi:odPlane id="Plane_debug" boardElement="Board_debug">
+      <odDi:link id="Link_008wy3y_di" boardElement="Link_008wy3y">
+        <odDi:waypoint x="515" y="300" />
+        <odDi:waypoint x="515" y="353" />
+        <odDi:waypoint x="680" y="353" />
+        <odDi:odLabel>
+          <dc:Bounds x="620" y="324" width="50" height="18" />
+        </odDi:odLabel>
+      </odDi:link>
+      <odDi:link id="Link_13ddqpm_di" boardElement="Link_13ddqpm">
+        <odDi:waypoint x="590" y="270" />
+        <odDi:waypoint x="680" y="270" />
+        <odDi:odLabel>
+          <dc:Bounds x="640" y="247" width="39" height="18" />
+        </odDi:odLabel>
+      </odDi:link>
+      <odDi:link id="Link_1vv5wa6_di" boardElement="Link_1vv5wa6">
+        <odDi:waypoint x="515" y="300" />
+        <odDi:waypoint x="515" y="430" />
+        <odDi:waypoint x="680" y="430" />
+        <odDi:odLabel>
+          <dc:Bounds x="587" y="400" width="82" height="18" />
+        </odDi:odLabel>
+      </odDi:link>
+      <odDi:link id="Link_16g75wd_di" boardElement="Link_16g75wd">
+        <odDi:waypoint x="1150" y="270" />
+        <odDi:waypoint x="1240" y="270" />
+        <odDi:odLabel>
+          <dc:Bounds x="1200" y="247" width="39" height="18" />
+        </odDi:odLabel>
+      </odDi:link>
+      <odDi:link id="Link_1vd8kv4_di" boardElement="Link_1vd8kv4">
+        <odDi:waypoint x="1075" y="300" />
+        <odDi:waypoint x="1075" y="353" />
+        <odDi:waypoint x="1240" y="353" />
+        <odDi:odLabel>
+          <dc:Bounds x="1180" y="324" width="50" height="18" />
+        </odDi:odLabel>
+      </odDi:link>
+      <odDi:link id="Link_1e3c0k9_di" boardElement="Link_1e3c0k9">
+        <odDi:waypoint x="1075" y="300" />
+        <odDi:waypoint x="1075" y="430" />
+        <odDi:waypoint x="1240" y="430" />
+        <odDi:odLabel>
+          <dc:Bounds x="1147" y="400" width="82" height="18" />
+        </odDi:odLabel>
+      </odDi:link>
+      <odDi:odShape id="Object_1j4ij8b_di" boardElement="Object_1j4ij8b">
+        <dc:Bounds x="440" y="240" width="150" height="60" />
+      </odDi:odShape>
+      <odDi:odShape id="Object_1u57j0e_di" boardElement="Object_1u57j0e">
+        <dc:Bounds x="680" y="237" width="150" height="65" />
+      </odDi:odShape>
+      <odDi:odShape id="Object_159y2ve_di" boardElement="Object_159y2ve">
+        <dc:Bounds x="680" y="320" width="150" height="65" />
+      </odDi:odShape>
+      <odDi:odShape id="Object_06eskbx_di" boardElement="Object_06eskbx">
+        <dc:Bounds x="680" y="400" width="150" height="60" />
+      </odDi:odShape>
+      <odDi:odShape id="Object_0wcrjiu_di" boardElement="Object_0wcrjiu">
+        <dc:Bounds x="1000" y="240" width="150" height="60" />
+      </odDi:odShape>
+      <odDi:odShape id="Object_04p90nu_di" boardElement="Object_04p90nu">
+        <dc:Bounds x="1240" y="237" width="150" height="65" />
+      </odDi:odShape>
+      <odDi:odShape id="Object_0sxhlhx_di" boardElement="Object_0sxhlhx">
+        <dc:Bounds x="1240" y="320" width="150" height="65" />
+      </odDi:odShape>
+      <odDi:odShape id="Object_0bpfrua_di" boardElement="Object_0bpfrua">
+        <dc:Bounds x="1240" y="400" width="150" height="60" />
+      </odDi:odShape>
+    </odDi:odPlane>
+  </odDi:odRootBoard>
+</od:definitions>

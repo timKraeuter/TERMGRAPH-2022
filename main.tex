@@ -204,7 +204,7 @@ The rule from \cref{fig:gtRuleAbstract} depicted in concrete syntax is shown in 
 
 The rule in \cref{fig:taskRules} represents the start of a task, which will move one token from the incoming sequence flow to the task itself.
 
-\begin{figure}[h]
+\begin{figure}[h!]
     \centering
     \includegraphics[width=0.6\textwidth]{images/bpmn_semantics-rules.pdf}
     \caption{Example graph transformation rule to start a task.}
@@ -216,7 +216,7 @@ The MICE rule deletes a token and a message and adds an outgoing token.
 The MITE rule moves the token through the event and may send a message to a waiting process snapshot if it has a token waiting at the corresponding MICE.
 An optional existential quantifier is used to send a message only if the receiving process is ready to receive it.
 
-\begin{figure}[h]
+\begin{figure}[h!]
     \centering
     \includegraphics[width=1\textwidth]{images/bpmn_semantics-message-events.pdf}
     \caption{Rules for MITE (left) and MICE (right)}
@@ -256,11 +256,17 @@ The generated end event rules delete tokens one by one for each incoming sequenc
 However, they do not terminate processes.
 % General termination rule
 Process termination is implemented with a generic rule---independent of the input BPMN model---which is applicable to all process snapshots.
-The rule is automatically generated once during the higher-order transformation.
+The termination rule (see \cref{fig:terminationRule}) is automatically generated once during the higher-order transformation.
 It is used to terminate processes and subprocesses if they do not have any tokens.
 The rule uses negative-application conditions to only change the state of the process snapshot from running to terminated if it has no tokens and subprocesses.
-The concrete termination rule in Groove is given as an artifact \cite{timkrauterArtifactsTERMGRAPH2022}.
+The termination rule in Groove is given as an artifact \cite{timkrauterArtifactsTERMGRAPH2022}.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.8\textwidth]{images/bpmn_semantics-termination_rule.pdf}
+    \caption{Termination rule}
+    \label{fig:terminationRule}
+\end{figure}
 
 \subsection{Activities \& Subprocesses}
 
@@ -364,7 +370,7 @@ In the bottom rule template, one can see that \textit{receive task} rules are si
 \section{Model checking BPMN} \label{sec:modelChecking}
 
 Model checking a BPMN process model is possible using the generated graph transformation system.
-Besides a graph transformation system, a set of temporal properties to be checked and the atomic propositions used in these properties must be supplied (see \cref{fig:approach}).
+Besides a graph transformation system, a set of temporal properties to be checked and the atomic propositions used in these properties must be supplied.
 An atomic proposition can be formalized as a graph and holds in a given state if there exists a match from the underlying graph of the proposition to the graph representing the state.
 This enables model checking of temporal properties, for example, LTL properties, using the defined atomic propositions.
 
@@ -450,9 +456,9 @@ Groove implements SPO with NACs and thus has all the features we need.
 % Evaluation
 To evaluate the correctness of our implementation, we created a comprehensive test suite, which demonstrates correct rule generation for the implemented BPMN constructs \cite{timkrauterArtifactsTERMGRAPH2022}.
 
-\begin{figure}[h]
+\begin{figure}[h!]
     \centering
-    \includegraphics[width=0.7\textwidth]{images/impl.png}
+    \includegraphics[width=0.8\textwidth]{images/impl.png}
     \caption{Screenshot of the tool}
     \label{fig:implScreenshot}
 \end{figure}
