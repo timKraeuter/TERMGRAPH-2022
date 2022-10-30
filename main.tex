@@ -49,7 +49,7 @@ Yngve Lamo\Mark{*}\orcidlink{0000-0001-9196-1779}
 \begin{abstract}
 The BPMN is a widely used standard notation for defining intra- and inter-organizational workflows.
 However, the informal description of the BPMN execution semantics leads to different interpretations of BPMN constructs and difficulties in checking behavioral properties.
-In this paper, we propose a formalization of the execution semantics of BPMN that, compared to other approaches, covers most of the BPMN constructs.
+In this paper, we propose a formalization of the execution semantics of BPMN that, compared to existing approaches, covers most of the BPMN constructs.
 Our approach is based on a higher-order transformation from BPMN models to graph transformation systems.
 As proof of concept, we have implemented our approach in an open-source web-based tool.
 \end{abstract}
@@ -66,20 +66,21 @@ This is a significant difference compared to other approaches, such as \cite{cor
 Generating specific rules for each model leads to possibly more but simpler transformation rules that can be matched faster.
 Essentially, complexity is partly shifted from the transformation rules to their generation.
 The generated rules are tailored to a given process model and thus are simpler than the general rules in \cite{vangorpVisualTokenbasedFormalization2013}.
+Furthermore, our approach is easily accessible since it is implemented in an open-source web-based tool.
 
 % Paper outline
 The remainder of this paper is structured as follows.
-First, we describe the semantics formalization using graph transformation systems (\cref{sec:formalization}) before explaining how this can be utilized for model checking BPMN-specific and custom properties (\cref{sec:modelChecking}).
+First, we describe the \gls*{bpmn} semantics formalization using graph transformation systems (\cref{sec:formalization}) before explaining how this can be utilized for model checking BPMN-specific and custom properties (\cref{sec:modelChecking}).
 Then, we shortly present the web-based tool implementing our approach.
 Finally, we discuss related work regarding BPMN construct coverage in \cref{sec:relatedWork} and conclude in \cref{sec:conclusion}.
 
 \section{Preliminaries}
 % Describe the application are
-In this paper, we apply graph rewriting theory to formalize the execution semantics of BPMN.
+In this paper, we apply graph transformations to formalize the execution semantics of BPMN.
 Thus, in this section, we will briefly introduce BPMN and its execution semantics.
 Please refer to \cite{freundRealLifeBPMNUsing2019} or the BPMN specification \cite{objectmanagementgroupBusinessProcessModel2013} for further information about BPMN.
 % Describe the applied theory.
-Furthermore, we describe the theoretical background behind our application of graph rewriting.
+Furthermore, we describe the theoretical background behind our application of graph transformations.
 \subsection{BPMN}
 % Introduce BPMN
 BPMN  is a widely used standard notation to define intra- and inter-organizational workflows.
@@ -102,8 +103,7 @@ Furthermore, gateways model conditions, parallelizations and synchronizations \c
 % BPMN semantics: Token distribution
 The BPMN execution semantics are described using the concept of \emph{tokens} \cite{objectmanagementgroupBusinessProcessModel2013}.
 BPMN process models are executed by triggering one or more of their start events, leading to the creation of a token at each triggered start event.
-Tokens are transported between flow nodes by sequence flows (arrows)
-\footnote{The visual bpmn-js token simulation available at \url{https://bpmn-io.github.io/bpmn-js-token-simulation/modeler.html} greatly helps to understand BPMN execution semantics.}.
+Tokens are transported between flow nodes by sequence flows (arrows).
 % Activities
 Activities can start when at least one token is located on an incoming sequence flow.
 The start of an activity will move the incoming token to the activity.
@@ -380,7 +380,7 @@ Soundness is further decomposed into (i) \emph{Option to complete}: any running 
 As an example, we will now describe how to implement the \emph{Safeness} and \emph{Option to complete} properties.
 
 % Safeness
-\textbf{Safeness} is checked using the LTL property defined in \eqref{eq:safeness}.
+\textbf{Safeness} is specified using the LTL property defined in \eqref{eq:safeness}.
 The atomic property \textsf{Unsafe} is true if two tokens of one process snapshot point to the same sequence flow. This atomic proposition \textit{Unsafe} is depicted in \cref{fig:unsafe}; Groove rules for all the atomic proposition are included in \cite{timkrauterArtifactsTERMGRAPH2022}.
 
 \begin{figure}[h]
@@ -391,7 +391,7 @@ The atomic property \textsf{Unsafe} is true if two tokens of one process snapsho
 \end{figure}
 
 % Option to complete
-\emph{Option to complete} is checked using the LTL property defined in \eqref{eq:optionToComplete}.
+\emph{Option to complete} is specified using the LTL property defined in \eqref{eq:optionToComplete}.
 The atomic proposition \textsf{AllTerminated} is true if there exists no process snapshot in the state \textsf{Running}, i.e., all process snapshots are \textsf{Terminated}.
 
 \noindent\begin{minipage}{.5\linewidth}
