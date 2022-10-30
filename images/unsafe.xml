@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<od:definitions xmlns:od="http://tk/schema/od" xmlns:odDi="http://tk/schema/odDi" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC">
+  <od:odBoard id="Board_debug">
+    <od:object name="1:ProcessSnapshot" id="Object_1j4ij8b">
+      <od:links>Link_008wy3y</od:links>
+      <od:links>Link_1jsuhrd</od:links>
+    </od:object>
+    <od:object name="1:Token" id="Object_159y2ve">
+      <od:links>Link_0izi00c</od:links>
+    </od:object>
+    <od:link name=":tokens" id="Link_008wy3y" sourceRef="Object_1j4ij8b" targetRef="Object_159y2ve" />
+    <od:object name="2:Token" id="Object_0wlm9cz">
+      <od:links>Link_008w9iw</od:links>
+    </od:object>
+    <od:link name=":tokens" id="Link_1jsuhrd" sourceRef="Object_1j4ij8b" targetRef="Object_0wlm9cz" />
+    <od:object name="1:String" id="Object_1rxbizy" />
+    <od:link name=":elementID" id="Link_0izi00c" sourceRef="Object_159y2ve" targetRef="Object_1rxbizy" />
+    <od:link name=":elementID" id="Link_008w9iw" sourceRef="Object_0wlm9cz" targetRef="Object_1rxbizy" />
+  </od:odBoard>
+  <odDi:odRootBoard id="RootBoard_debug">
+    <odDi:odPlane id="Plane_debug" boardElement="Board_debug">
+      <odDi:link id="Link_008w9iw_di" boardElement="Link_008w9iw">
+        <odDi:waypoint x="710" y="445" />
+        <odDi:waypoint x="855" y="445" />
+        <odDi:waypoint x="855" y="432" />
+        <odDi:odLabel>
+          <dc:Bounds x="780" y="450" width="77" height="18" />
+        </odDi:odLabel>
+      </odDi:link>
+      <odDi:link id="Link_0izi00c_di" boardElement="Link_0izi00c">
+        <odDi:waypoint x="710" y="353" />
+        <odDi:waypoint x="855" y="353" />
+        <odDi:waypoint x="855" y="367" />
+        <odDi:odLabel>
+          <dc:Bounds x="780" y="329" width="77" height="18" />
+        </odDi:odLabel>
+      </odDi:link>
+      <odDi:link id="Link_1jsuhrd_di" boardElement="Link_1jsuhrd">
+        <odDi:waypoint x="445" y="430" />
+        <odDi:waypoint x="445" y="445" />
+        <odDi:waypoint x="600" y="445" />
+        <odDi:odLabel>
+          <dc:Bounds x="548" y="422" width="50" height="18" />
+        </odDi:odLabel>
+      </odDi:link>
+      <odDi:link id="Link_008wy3y_di" boardElement="Link_008wy3y">
+        <odDi:waypoint x="445" y="370" />
+        <odDi:waypoint x="445" y="353" />
+        <odDi:waypoint x="600" y="353" />
+        <odDi:odLabel>
+          <dc:Bounds x="547" y="328" width="50" height="18" />
+        </odDi:odLabel>
+      </odDi:link>
+      <odDi:odShape id="Object_159y2ve_di" boardElement="Object_159y2ve">
+        <dc:Bounds x="600" y="320" width="110" height="65" />
+      </odDi:odShape>
+      <odDi:odShape id="Object_1j4ij8b_di" boardElement="Object_1j4ij8b">
+        <dc:Bounds x="370" y="370" width="150" height="60" />
+      </odDi:odShape>
+      <odDi:odShape id="Object_1rxbizy_di" boardElement="Object_1rxbizy">
+        <dc:Bounds x="810" y="367" width="90" height="65" />
+      </odDi:odShape>
+      <odDi:odShape id="Object_0wlm9cz_di" boardElement="Object_0wlm9cz">
+        <dc:Bounds x="600" y="412" width="110" height="65" />
+      </odDi:odShape>
+    </odDi:odPlane>
+  </odDi:odRootBoard>
+</od:definitions>
