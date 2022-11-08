@@ -17,6 +17,7 @@ It depicts BPMN-FlowNodes on the left and the corresponding rule generation temp
 #### Events
 ![Rule generation templates for message throw events](./artifacts/throw_events.svg)
 ![Rule generation templates for message catch events and receive tasks](./artifacts/catch_events.svg)
+![Rule generation templates for link events](./artifacts/link-event.svg)
 
 ### Process termination
 Process termination is implemented by the following graph transformation rule in Groove:
