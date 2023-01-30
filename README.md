@@ -1,5 +1,4 @@
 # TERMGRAPH-2022
-This repository contains the sources for [the paper](./paper.pdf) submitted to [TERMGRAPH-2022](http://www.termgraph.org.uk/2022/) together with additional information below.
 
 The extended abstract of this paper has been published as a [preprint on EasyChair](https://easychair.org/publications/preprint/KSnQ).
 
