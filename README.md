@@ -1,6 +1,7 @@
 # TERMGRAPH-2022
 
 The extended abstract of this paper has been published as a [preprint on EasyChair](https://easychair.org/publications/preprint/KSnQ).
+The follow up paper was published at [ICGT-2023](https://doi.org/10.1007/978-3-031-36709-0_11).
 
 ## BPMN Semantics formalization
 
