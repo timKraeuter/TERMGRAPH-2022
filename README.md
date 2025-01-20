@@ -76,9 +76,9 @@ Adding this feature is planned for the full version of the paper due to the curr
 ## Implementation
 
 ### Tool
-The tool is available online [here](https://bpmnanalyzer.whitefield-c9fed487.northeurope.azurecontainerapps.io).
+The tool is available online [here](https://rust-bpmn-analyzer.wittyrock-9d6a3c00.northeurope.azurecontainerapps.io).
 
-[![Atomic property Unsafe implemented in Groove.](./images/impl.png)](https://bpmnanalyzer.whitefield-c9fed487.northeurope.azurecontainerapps.io)
+[![Atomic property Unsafe implemented in Groove.](./images/impl.png)](https://rust-bpmn-analyzer.wittyrock-9d6a3c00.northeurope.azurecontainerapps.io)
 
 The sourcecode of the tool is available [here](https://github.com/timKraeuter/Rewrite_Rule_Generation) and instructions how to run it locally on your machine can be found [here](https://github.com/timKraeuter/Rewrite_Rule_Generation/blob/master/server/README.md).
 
